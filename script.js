@@ -36,18 +36,41 @@ $(document).ready(function(){
      })
 })
 //toggle all submenu
-function showMenu(menu){
-     document.querySelectorAll(".subMenu").forEach(subMenu => {
-          subMenu.style.display = "none";
-     });
-     $(`#${menu}`).toggle();
-     
-}
-document.addEventListener("DOMContentLoaded", function(){
-     document.querySelectorAll(".allMenus").forEach(menus =>{
-          menus.onclick = function(){
-               showMenu(this.dataset.menu);
-          }
+$(document).ready(function(){
+     $("#adminMenu").click(function(){
+          $("#adminMenu ul").toggle();
+          $("#frontDesk ul").hide();
+          $("#payments ul").hide();
+          $("#reports ul").hide();
+          $("#financial_reports ul").hide();
+     })
+     $("#frontDesk").click(function(){
+         $("#frontDesk ul").toggle();
+         $("#adminMenu ul").hide();
+         $("#payments ul").hide();
+         $("#reports ul").hide();
+         $("#financial_reports ul").hide();
+     })
+     $("#payments").click(function(){
+         $("#payments ul").toggle();
+         $("#adminMenu ul").hide();
+         $("#frontDesk ul").hide();
+         $("#reports ul").hide();
+         $("#financial_reports ul").hide();
+     })
+     $("#reports").click(function(){
+         $("#reports ul").toggle();
+         $("#payments ul").hide();
+         $("#adminMenu ul").hide();
+         $("#frontDesk ul").hide();
+         $("#financial_reports ul").hide();
+     })
+     $("#financial_reports").click(function(){
+         $("#financial_reports ul").toggle();
+         $("#reports ul").hide();
+         $("#payments ul").hide();
+         $("#adminMenu ul").hide();
+         $("#frontDesk ul").hide();
      })
 })
 //show payment mode forms
@@ -244,31 +267,32 @@ function activateUser(user_id){
      }
 }
 
-// add rooms 
-function addRoom(){
-     let room_category = document.getElementById("room_category").value;
-     let room = document.getElementById("room").value;
-     if(room_category.length == 0 || room_category.replace(/^\s+|\s+$/g, "").length == 0){
-          alert("Please enter room category!");
-          $("#category").focus();
+// add items 
+function addItem(){
+     let department = document.getElementById("department").value;
+     let item_category = document.getElementById("item_category").value;
+     let item = document.getElementById("item").value;
+     if(item_category.length == 0 || item_category.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please select item category!");
+          $("#item_category").focus();
           return;
-     }else if(room.length == 0 || room.replace(/^\s+|\s+$/g, "").length == 0){
-          alert("Please enter room name");
-          $("#room").focus();
+     }else if(item.length == 0 || item.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please enter item name");
+          $("#item").focus();
           return;
      }else{
           $.ajax({
                type : "POST",
-               url : "../controller/add_room.php",
-               data : {room_category:room_category, room:room},
+               url : "../controller/add_item.php",
+               data : {department:department, item_category:item_category, item:item},
                success : function(response){
                $(".info").html(response);
                }
           })
      }
-     $("#room_category").val('');
-     $("#room").val('');
-     $("#room").focus();
+     // $("#room_category").val('');
+     $("#item").val('');
+     $("#item").focus();
      return false;    
 }
 
@@ -689,39 +713,125 @@ function checkOut(){
      return false;
 }
 
-//display change price form
-function displayPriceForm(form){
-     document.querySelectorAll(".priceForm").forEach(forms=>{
-         forms.style.display = "none";
+//display modify item name
+function modifyItemForm(item_id){
+     // alert(item_id);
+     $.ajax({
+          type : "GET",
+          url : "../controller/get_item_name.php?item_id="+item_id,
+          success : function(response){
+               $(".info").html(response);
+          }
      })
-     document.querySelector(`#${form}`).style.display = "flex";
+     return false;
+ 
+ }
+//display change price for other items
+function displayPriceForm(item_id){
+     // alert(item_id);
+     $.ajax({
+          type : "GET",
+          url : "../controller/get_item_details.php?item_id="+item_id,
+          success : function(response){
+               $(".info").html(response);
+          }
+     })
+     return false;
+ 
+ }
+//  display change rom price
+function roomPriceForm(item_id){
+     // alert(item_id);
+     $.ajax({
+          type : "GET",
+          url : "../controller/get_room_details.php?item_id="+item_id,
+          success : function(response){
+               $(".info").html(response);
+          }
+     })
+     return false;
  
  }
  
  //close price form
  function closeForm(){
-     $(".closeForm").click(function(){
+     
          $(".priceForm").hide();
-     })
+     
  }
 
- //change price
- function changePrice(){
-     let category_id = document.getElementById("category_id").value;
+ //change room price
+ function changeRoomPrice(){
+     let item_id = document.getElementById("item_id").value;
      let price = document.getElementById("price").value;
 
      $.ajax({
           type : "POST",
-          url : "../controller/edit_price.php",
-          data: {category_id:category_id, price:price},
+          url : "../controller/edit_room_price.php",
+          data: {item_id:item_id, price:price},
           success : function(response){
                $("#edit_price").html(response);
           }
      })
      setTimeout(function(){
           $("#edit_price").load("room_price.php #edit_price");
-     }, 3000);
+     }, 1500);
      return false;
+ }
+ //change other item price
+ function changeItemPrice(){
+     let item_id = document.getElementById("item_id").value;
+     let cost_price = document.getElementById("cost_price").value;
+     let sales_price = document.getElementById("sales_price").value;
+     if(cost_price >= sales_price){
+          alert("Selling price can not be lesser than cost price!");
+          $("sales_price").focus();
+          return;
+     }else if(cost_price.length == 0 || cost_price.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please enter cost price!");
+          $("#cost_price").focus();
+          return;
+     }else if(sales_price.length == 0 || sales_price.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please enter selling price!");
+          $("#sales_price").focus();
+          return;
+     }else{
+          $.ajax({
+               type : "POST",
+               url : "../controller/edit_price.php",
+               data: {item_id:item_id, cost_price:cost_price, sales_price:sales_price},
+               success : function(response){
+                    $("#edit_item_price").html(response);
+               }
+          })
+          setTimeout(function(){
+               $("#edit_item_price").load("item_price.php #edit_item_price");
+          }, 1500);
+          return false
+     }
+ }
+ //modify item name
+ function modifyItem(){
+     let item_id = document.getElementById("item_id").value;
+     let item_name = document.getElementById("item_name").value;
+     if(item_name.length == 0 || item_name.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please input item name!");
+          $("#item_name").focus();
+          return;
+     }else{
+          $.ajax({
+               type : "POST",
+               url : "../controller/modify_item.php",
+               data: {item_id:item_id, item_name:item_name},
+               success : function(response){
+                    $("#edit_item_name").html(response);
+               }
+          })
+          setTimeout(function(){
+               $("#edit_item_name").load("modify_item.php #edit_item_name");
+          }, 1500);
+          return false
+     }
  }
 //  search checkIns 
 function searchCheckIns(){

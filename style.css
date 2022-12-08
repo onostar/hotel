@@ -10,7 +10,7 @@
     --primaryColor:rgb(15, 140, 161);
     --secondaryColor: rgba(241, 56, 23, 0.9);
     --otherColor: rgb(3, 69, 75);
-    --moreColor:hsla(197, 71%, 30%, .7);
+    --moreColor:rgba(11, 99, 134, 0.7);
 }
 body{
     position:relative;
@@ -590,7 +590,7 @@ main hr{
     top:0;
     left:0;
     width:100%;
-    height:100%;
+    height:85vh;
     margin:0;
     background:#fff;
 }
@@ -608,7 +608,28 @@ main hr{
     border-radius:10px;
     /* z-index:3; */
 }
-
+#change_pwd{
+    position:absolute;
+    top:0;
+    left:35vw;
+    width:30%;
+    height:auto!important;
+}
+#change_pwd h1{
+    width:50%;
+    height:auto!important;
+    margin:0 auto!important;
+    padding:0;
+}
+#change_pwd h1 img{
+    width:100%;
+    height:100%!important;
+    margin:0!important;
+}
+#change_pwd h2{
+    margin:0 auto!important;
+    font-size:1rem!important;
+}
 .login_page h2{
     text-align: center;
     text-transform: capitalize;
@@ -675,6 +696,10 @@ main hr{
     height:100%;
     top:0;
     left:30%;
+}
+#change_banner .adds{
+    width:100%;
+    left:0;
 }
 /* .adds h2{
     color:#fff;
@@ -812,8 +837,8 @@ main hr{
     font-size:1.1rem;
     padding:5px;
 }
-.succeed{
-    /* background:#fff;
+/* .succeed{
+    background:#fff;
     border-radius: 10px;
     box-shadow: 2px 2px 2px var(--moreColor);
     color: green;
@@ -825,8 +850,8 @@ main hr{
     display:flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center; */
-}
+    align-items: center;
+} */
 .succeed i{
     font-size:4rem;
     border:2px solid green;
@@ -1523,6 +1548,14 @@ main hr{
         transform:scale(1);
     }
 }
+.add_user_form .item_head{
+    background:var(--moreColor);
+    color:#fff;
+    /* border-right: 1px solid #c4c4c4; */
+    padding:10px;
+    
+}
+
 #assignDrivers .add_user_form{
     animation:none;
     transform: scale(1);
@@ -1609,6 +1642,9 @@ main hr{
 }
 .add_user_form button:focus, .add_user_form button:hover{
     background: var(--secondaryColor);
+}
+.priceForm label{
+    text-align:left!important;
 }
 #addRestaurant, #addCategories, #addItems, #disableUsers, #deleteItems{
     display:none;

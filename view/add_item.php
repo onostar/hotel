@@ -8,7 +8,7 @@
     <div class="add_user_form" style="width:35%">
         <h3 style="background:var(--moreColor)">Create items</h3>
         <!-- <form method="POST" id="addUserForm"> -->
-        <form class="addUserForm">
+        <section class="addUserForm">
             <div class="inputs">
                 <div class="data" style="width:100%; margin:10px 0;">
                     <label for="department">Department</label>
@@ -40,6 +40,6 @@
                     <button type="submit" id="add_item" name="add_item" onclick="addItem()">Save record <i class="fas fa-save"></i></button>
                 </div>
             </div>
-        </form>    
+        </section>    
     </div>
 </div>

@@ -6,18 +6,18 @@
 
 ?>
     <div class="info"></div>
-<div class="displays allResults" id="room_list">
-    <h2>List of rooms with prices</h2>
+<div class="displays allResults" id="bar_items">
+    <h2>List of bar items with prices</h2>
     <hr>
     <div class="search">
         <input type="search" id="searchRoom" placeholder="Enter keyword" onkeyup="searchData(this.value)">
     </div>
-    <table id="room_list_table" class="searchTable">
+    <table id="bar_items_table" class="searchTable">
         <thead>
             <tr style="background:var(--moreColor)">
                 <td>S/N</td>
-                <td>Room Category</td>
-                <td>Room</td>
+                <td>Category</td>
+                <td>Item name</td>
                 <td>Price</td>
                 <td>Status</td>
             </tr>
@@ -25,8 +25,8 @@
         <tbody>
             <?php
                 $n = 1;
-                $get_rooms = new selects();
-                $details = $get_rooms->fetch_details_cond('items', 'department', 'Accomodation');
+                $get_items = new selects();
+                $details = $get_items->fetch_details_cond('items', 'department', 'Bar');
                 if(gettype($details) === 'array'){
                 foreach($details as $detail):
             ?>
@@ -43,20 +43,15 @@
                 <td><?php echo $detail->item_name?></td>
                 <td>
                     <?php 
-                        //get category name
-                        $get_price = new selects();
-                        $cat_price = $get_price->fetch_details_group('categories', 'price', 'category_id', $detail->category);
-                        echo "₦".number_format($cat_price->price, 2);
+                        echo "₦".number_format($detail->sales_price, 2);
                     ?>
                 </td>
                 <td>
                     <?php
                         if($detail->item_status == 0){
-                            echo "<span style='color:green'>Available <i class='fas fa-check'></i></span>";
-                        }else if($detail->item_status == 1){
-                            echo "<span style='color:var(--moreColor)'>Booked <i class='fas fa-spinner'></i></span>";
+                            echo "<span style='color:green'>Active <i class='fas fa-check'></i></span>";
                         }else{
-                            echo "<span style='color:red'>Occupied <i class='fas fa-ban'></i></span>";
+                            echo "<span style='color:red'>Disabled <i class='fas fa-ban'></i></span>";
                         }
                     ?>
                 </td>

@@ -9,7 +9,7 @@
     <meta name="keywords" content="morgue, mortuary, dead bodies">
     <meta name="description" content="An application developed for the management of deadbodies placed in the morgue from a particular date to another">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Change Password | Morgue</title>
+    <title>Change Password | Hotel management</title>
     <link rel="icon" type="image/png" size="32x32" href="../images/logo.png">
     <link rel="stylesheet" href="../fontawesome-free-6.0.0-web/css/all.css">
     <link rel="stylesheet" href="../fontawesome-free-6.0.0-web/css/all.min.css">
@@ -18,23 +18,27 @@
 </head>
 <body>
     <main id="reg_body">
-    <section class="reg_log">
             
-            <div class="login_page">
+        <section class="reg_log" id="change_banner">
+            <div class="adds">
+                <img src="../images/banner.webp" alt="login banner">
+            </div>
+            <div class="login_page" id="change_pwd">
+                
                 <h1>
                     <a href="../index.php">
                         <img src="../images/logo.png" alt="logo">
                     </a>
                 </h1>
-                
-                <h2>Welcome User!</h2>
-                <p>Change your password</p>
+                <h2>Change your password</h2>
+                <p></p>
                 <?php
                     if(isset($_SESSION['success'])){
                         echo "<p class='success succeed'>" . $_SESSION['success']. "</p>
                         <script>
                             setTimeout(function(){
                                 $('.succeed').hide();
+                                window.open('../index.php', '_parent');
                             }, 5000);
                         </script>
                         ";
@@ -93,14 +97,14 @@
                 
                 ?>
                 <div id="foot">
-                    <p >&copy;<?php echo Date("Y");?> Morgue. All Rights Reserved.</p>
+                    <p >&copy;<?php echo Date("Y");?> Hotel. All Rights Reserved.</p>
 
                 </div>
 
             </div>
-            <div class="adds">
+            <!-- <div class="adds">
                 <img src="images/bus.jpg" alt="morgue login banner">
-            </div>
+            </div> -->
         </section>
     </main>
     <script src="../jquery.js"></script>

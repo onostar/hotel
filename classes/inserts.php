@@ -75,6 +75,32 @@
             }
             
         }
+        //add items
+        protected function add_items($value1, $value2, $value3){
+            //check if item exists
+            $check_item = $this->connectdb()->prepare("SELECT * FROM items WHERE department = :department AND category = :category AND item_name = :item_name");
+            $check_item->bindValue("department", $value1);
+            $check_item->bindValue("category", $value2);
+            $check_item->bindValue("item_name", $value3);
+            $check_item->execute();
+            if($check_item->rowCount() > 0){
+                echo "<p class='exist'><span>$value3</span> already exists!</p>";
+                die();
+                
+            }else{
+                $add_item = $this->connectdb()->prepare("INSERT INTO items (department, category, item_name) VALUES (:department, :category, :item_name)");
+                $add_item->bindValue("department", $value1);
+                $add_item->bindValue("category", $value2);
+                $add_item->bindValue("item_name", $value3);
+                $add_item->execute();
+                if($add_item){
+                    echo "<p><span>$value3</span> added successfully!</p>";
+                }else{
+                    echo "<p class='exist'><span>$value3</span> could not be created!</p>";
+                }
+            }
+            
+        }
         //add banks
         protected function add_bank($value1, $value2){
             //check if item exists
@@ -311,5 +337,22 @@
 
         public function payment(){
             $this->post_payment($this->posted, $this->guest, $this->mode, $this->bank, $this->sender, $this->amount_due, $this->amount_paid, $this->invoice);
+        }
+    }
+
+    // controller for adding new items
+    class add_items extends inserts{
+        private $value1;
+        private $value2;
+        private $value3;
+
+        public function __construct($value1, $value2, $value3)
+        {
+            $this->value1 = $value1;
+            $this->value2 = $value2;
+            $this->value3 = $value3;
+        }
+        public function create_item(){
+            $this->add_items($this->value1, $this->value2, $this->value3);
         }
     }

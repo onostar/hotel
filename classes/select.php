@@ -199,6 +199,19 @@
             }
         }
         //fetch details with negative condition
+        public function fetch_details_negCond1($table, $column1, $value1){
+            $get_user = $this->connectdb()->prepare("SELECT * FROM $table WHERE $column1 != :$column1");
+            $get_user->bindValue("$column1", $value1);
+            $get_user->execute();
+            if($get_user->rowCount() > 0){
+                $rows = $get_user->fetchAll();
+                return $rows;
+            }else{
+                $rows = "No records found";
+                return $rows;
+            }
+        }
+        //fetch details with negative condition and a positive
         public function fetch_details_negCond($table, $column1, $value1, $column2, $value2){
             $get_user = $this->connectdb()->prepare("SELECT * FROM $table WHERE $column1 != :$column1 AND $column2 = :$column2");
             $get_user->bindValue("$column1", $value1);
