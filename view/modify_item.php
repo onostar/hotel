@@ -15,7 +15,7 @@
         <h2>Modify item names</h2>
         <hr>
         <div class="search">
-            <input type="search" id="searchGuestPayment" placeholder="Enter keyword" onkeyup="searchData(this.value)">
+            <input type="search" id="searchGuestPayment" placeholder="Enter keyword" git onkeyup="searchData(this.value)">
         </div>
         <table id="priceTable" class="searchTable">
             <thead>

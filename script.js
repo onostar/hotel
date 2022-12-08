@@ -38,39 +38,52 @@ $(document).ready(function(){
 //toggle all submenu
 $(document).ready(function(){
      $("#adminMenu").click(function(){
-          $("#adminMenu ul").toggle();
-          $("#frontDesk ul").hide();
-          $("#payments ul").hide();
-          $("#reports ul").hide();
-          $("#financial_reports ul").hide();
+          $(".adminMenu").toggle();
+          $(".frontDesk").hide();
+          $(".payments").hide();
+          $(".reports").hide();
+          $(".financial_reports").hide();
+          $(".inventory").hide();
      })
      $("#frontDesk").click(function(){
-         $("#frontDesk ul").toggle();
-         $("#adminMenu ul").hide();
-         $("#payments ul").hide();
-         $("#reports ul").hide();
-         $("#financial_reports ul").hide();
+          $(".adminMenu").hide();
+          $(".frontDesk").toggle();
+          $(".payments").hide();
+          $(".reports").hide();
+          $(".financial_reports").hide();
+          $(".inventory").hide();
      })
      $("#payments").click(function(){
-         $("#payments ul").toggle();
-         $("#adminMenu ul").hide();
-         $("#frontDesk ul").hide();
-         $("#reports ul").hide();
-         $("#financial_reports ul").hide();
+          $(".adminMenu").hide();
+          $(".frontDesk").hide();
+          $(".payments").toggle();
+          $(".reports").hide();
+          $(".financial_reports").hide();
+          $(".inventory").hide();
      })
      $("#reports").click(function(){
-         $("#reports ul").toggle();
-         $("#payments ul").hide();
-         $("#adminMenu ul").hide();
-         $("#frontDesk ul").hide();
-         $("#financial_reports ul").hide();
+          $(".adminMenu").hide();
+          $(".frontDesk").hide();
+          $(".payments").hide();
+          $(".reports").toggle();
+          $(".financial_reports").hide();
+          $(".inventory").hide();
      })
      $("#financial_reports").click(function(){
-         $("#financial_reports ul").toggle();
-         $("#reports ul").hide();
-         $("#payments ul").hide();
-         $("#adminMenu ul").hide();
-         $("#frontDesk ul").hide();
+          $(".adminMenu").hide();
+          $(".frontDesk").hide();
+          $(".payments").hide();
+          $(".reports").hide();
+          $(".financial_reports").toggle();
+          $(".inventory").hide();
+     })
+     $("#inventory").click(function(){
+          $(".adminMenu").hide();
+          $(".frontDesk").hide();
+          $(".payments").hide();
+          $(".reports").hide();
+          $(".financial_reports").hide();
+          $(".inventory").toggle();
      })
 })
 //show payment mode forms

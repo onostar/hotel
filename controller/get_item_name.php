@@ -9,11 +9,10 @@
     include "../classes/select.php";
 
     $get_item = new selects();
-    $row = $get_item->fetch_details_group('items', 'item_name', 'item_id', $id);
-    //  if(gettype($rows) == 'array'){
-        // foreach($rows as $row):
+    $rows = $get_item->fetch_details_cond('items', 'item_id', $id);
+     if(gettype($rows) == 'array'){
+        foreach($rows as $row):
             
-        
     ?>
     <div class="add_user_form priceForm">
         <h3 style="background:var(--primaryColor)">Modify <?php echo strtoupper($row->item_name)?> name</h3>
@@ -35,7 +34,7 @@
     </div>
     
 <?php
-    // endforeach;
-    //  }
+    endforeach;
+     }
     }    
 ?>

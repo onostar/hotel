@@ -159,6 +159,18 @@
                 return $rows;
             }
         }
+        //fetch sum
+        public function fetch_sum($table, $column1){
+            $get_user = $this->connectdb()->prepare("SELECT SUM($column1) AS total FROM $table");
+            $get_user->execute();
+            if($get_user->rowCount() > 0){
+                $rows = $get_user->fetchAll();
+                return $rows;
+            }else{
+                $rows = "No records found";
+                return $rows;
+            }
+        }
         //fetch sum with current date AND condition
         public function fetch_sum_curdateCon($table, $column1, $column2, $condition, $value){
             $get_user = $this->connectdb()->prepare("SELECT SUM($column1) AS total FROM $table WHERE $condition =:$condition AND date($column2) = CURDATE()");
