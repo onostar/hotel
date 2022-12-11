@@ -28,6 +28,18 @@
                 return $rows;
             }
         }
+        //fetch details with like or close to
+        public function fetch_details_like($table, $column, $condition){
+            $get_user = $this->connectdb()->prepare("SELECT * FROM $table WHERE $column LIKE '%$condition%'");
+            $get_user->execute();
+            if($get_user->rowCount() > 0){
+                $rows = $get_user->fetchAll();
+                return $rows;
+            }else{
+                $rows = "No records found";
+                return $rows;
+            }
+        }
         //fetch details count without condition
         public function fetch_count($table){
             $get_user = $this->connectdb()->prepare("SELECT * FROM $table");

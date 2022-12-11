@@ -17,16 +17,16 @@
     ?>
     <div class="add_user_form priceForm">
         <h3 style="background:var(--primaryColor)">Edit price for <?php echo strtoupper($row->item_name)?></h3>
-        <section class="addUserForm">
+        <section class="addUserForm" style="text-align:left;">
             <div class="inputs">
                 <!-- <div class="data item_head"> -->
                     <input type="hidden" name="item_id" id="item_id" value="<?php echo $row->item_id?>" required>
                 <div class="data" style="width:30%">
-                    <label for="cost_price" style="text-align:left!important;">Cost price (NGN)</label>
+                    <label for="cost_price">Cost price (NGN)</label>
                     <input type="text" name="cost_price" id="cost_price" value="<?php echo $row->cost_price?>">
                 </div>
                 <div class="data" style="width:30%">
-                    <label for="sales_price" style="text-align:left!important;">Sales price (NGN)</label>
+                    <label for="sales_price"">Sales price (NGN)</label>
                     <input type="text" name="sales_price" id="sales_price" value="<?php echo $row->sales_price?>">
                 </div>
                 <div class="data" style="width:30%">

@@ -1,0 +1,47 @@
+<?php
+    include "../classes/dbh.php";
+    include "../classes/select.php";
+?>
+
+<div id="stockin" class="displays">
+    <div class="add_user_form" style="width:50%; margin:10px 0;">
+        <h3 style="background:var(--moreColor); text-align:left!important;" >Stockin Purchases by invoice</h3>
+        <!-- <form method="POST" id="addUserForm"> -->
+        <section class="addUserForm">
+            <div class="inputs">
+                <div class="data">
+                    <label for="Invoice">Invoice Number</label>
+                    <input type="text" name="invoice" id="invoice" required>
+                </div>
+                <div class="data">
+                    <label for="Sele">Supplier</label>
+                    <select name="vendor" id="vendor">
+                        <option value=""selected required>Select supplier</option>
+                        <?php
+                            $get_dep = new selects();
+                            $rows = $get_dep->fetch_details('vendors');
+                            foreach($rows as $row){
+                        ?>
+                        <option value="<?php echo $row->vendor_id?>"><?php echo $row->vendor?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+                <div class="data" style="width:100%; margin:10px 0">
+                    <label for="item"> Search Item</label>
+                    <input type="text" name="item" id="item" list="suggestions" required placeholder="Input item name" oninput="displayStockinForm(this.value);">
+                    <datalist id="suggestions">
+                        <?php
+                            $get_item = new selects();
+                            $rows = $get_item->fetch_details_cond('items', 'department', 'Bar');
+                            foreach($rows as $row){
+                        ?>
+                        <option value="<?php echo $row->item_name?>"><?php echo $row->item_name?></option>
+                        <?php } ?>
+                    </datalist>
+                </div>
+            </div>
+        </section>
+    </div>
+    <div class="info" style="width:100%; margin:0"></div>
+    <div class="stocked_in"></div>
+</div>

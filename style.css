@@ -1792,7 +1792,7 @@ main hr{
 .displays{
     /* display:none; */
     width:90%!important;
-    margin:50px auto!important;
+    margin:20px auto!important;
 }
 .displays h2{
     margin-top:0;
@@ -1813,6 +1813,10 @@ main hr{
 }
 .decline i{
     color:red;
+}
+#suggestions option{
+    padding:10px!important;
+    font-size:.9rem!important;
 }
 #rpt_img{
     width:30px;

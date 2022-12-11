@@ -101,6 +101,31 @@
             }
             
         }
+        //add vendors
+        protected function add_vendors($value1, $value2, $value3, $value4){
+            //check if item exists
+            $check_item = $this->connectdb()->prepare("SELECT * FROM vendors WHERE vendor = :vendor");
+            $check_item->bindValue("vendor", $value1);
+            $check_item->execute();
+            if($check_item->rowCount() > 0){
+                echo "<p class='exist'><span>$value1</span> already exists!</p>";
+                die();
+                
+            }else{
+                $add_vendor = $this->connectdb()->prepare("INSERT INTO vendors (vendor, contact_person, phone, email_address) VALUES (:vendor, :contact_person, :phone, :email_address)");
+                $add_vendor->bindValue("vendor", $value1);
+                $add_vendor->bindValue("contact_person", $value2);
+                $add_vendor->bindValue("phone", $value3);
+                $add_vendor->bindValue("email_address", $value4);
+                $add_vendor->execute();
+                if($add_vendor){
+                    echo "<p><span>$value1</span> created successfully!</p>";
+                }else{
+                    echo "<p class='exist'><span>$value1</span> could not be created!</p>";
+                }
+            }
+            
+        }
         //add banks
         protected function add_bank($value1, $value2){
             //check if item exists
@@ -130,7 +155,7 @@
         protected function check_in_guest($posted, $room, $last_name, $first_name, $age, $gender, $contact, $address, $phone, $relationship, $cause, $check_in_date, $check_out_date, $amount){
             
             //check if already checkin
-            $confirm_check = $this->connectdb()->prepare("SELECT * FROM check_ins WHERE last_name = :last_name AND first_name = :first_name");
+            $confirm_check  = $this->connectdb()->prepare("SELECT * FROM check_ins WHERE last_name = :last_name AND first_name = :first_name");
             $confirm_check->bindValue("last_name", $last_name);
             $confirm_check->bindValue("first_name", $first_name);
             $confirm_check->execute();
@@ -354,5 +379,23 @@
         }
         public function create_item(){
             $this->add_items($this->value1, $this->value2, $this->value3);
+        }
+    }
+    // controller for adding new supplier
+    class add_suppliers extends inserts{
+        private $value1;
+        private $value2;
+        private $value3;
+        private $value4;
+
+        public function __construct($value1, $value2, $value3, $value4)
+        {
+            $this->value1 = $value1;
+            $this->value2 = $value2;
+            $this->value3 = $value3;
+            $this->value4 = $value4;
+        }
+        public function create_vendor(){
+            $this->add_vendors($this->value1, $this->value2, $this->value3, $this->value4);
         }
     }

@@ -58,7 +58,7 @@
                     <li><a href="javascript:void(0);" title="List of bar items" class="page_navs" onclick="showPage('bar_items.php')"><i class="fas fa-beer"></i> Bar items</a></li>
                     <li><a href="javascript:void(0);" title="List of restaurant items" class="page_navs" onclick="showPage('restaurant_items.php')"><i class="fas fa-utensils"></i> Restaurant items</a></li>
                     <li><a href="javascript:void(0);" title="List of banks" class="page_navs" onclick="showPage('Bank_list.php')"><i class="fas fa-bank"></i> Bank List</a></li>
-                    <li><a href="javascript:void(0);" title="List of suppliers" class="page_navs" onclick="showPage('supplier_list.php')"><i class="fas fa-users"></i> List of suppliers</a></li>
+                    <li><a href="javascript:void(0);" title="List of suppliers" class="page_navs" onclick="showPage('vendor_list.php')"><i class="fas fa-users"></i> List of suppliers</a></li>
                     <li><a href="javascript:void(0);" title="List of rooms" class="page_navs" onclick="showPage('guest_list.php')"><i class="fas fa-users"></i> Current guest List</a></li>
                     <li><a href="javascript:void(0);" title="Check in report" class="page_navs" onclick="showPage('checkin_report.php')"><i class="fas fa-gauge"></i> Check in report</a></li>
                     <li><a href="javascript:void(0);" title="Guest check out report" class="page_navs" onclick="showPage('check_out_report.php')"><i class="fas fa-door-open"></i> Check out report</a></li>

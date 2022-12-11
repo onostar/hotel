@@ -16,7 +16,7 @@
     ?>
     <div class="add_user_form priceForm">
         <h3 style="background:var(--primaryColor)">Modify <?php echo strtoupper($row->item_name)?> name</h3>
-        <section class="addUserForm">
+        <section class="addUserForm" style="text-align:left">
             <div class="inputs">
                 <!-- <div class="data item_head"> -->
                     <input type="hidden" name="item_id" id="item_id" value="<?php echo $row->item_id?>" required>

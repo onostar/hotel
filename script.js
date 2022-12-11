@@ -308,6 +308,45 @@ function addItem(){
      $("#item").focus();
      return false;    
 }
+// add suppliers 
+function addSupplier(){
+     let supplier = document.getElementById("supplier").value;
+     let contact_person = document.getElementById("contact_person").value;
+     let phone = document.getElementById("phone").value;
+     let email = document.getElementById("email").value;
+     if(supplier.length == 0 || supplier.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please input supplier name!");
+          $("#supplier").focus();
+          return;
+     }else if(contact_person.length == 0 || contact_person.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please input contact person name");
+          $("#contact_person").focus();
+          return;
+     }else if(phone.length == 0 || phone.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please input phone number");
+          $("#phone").focus();
+          return;
+     }else if(email.length == 0 || email.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please input email address");
+          $("#email").focus();
+          return;
+     }else{
+          $.ajax({
+               type : "POST",
+               url : "../controller/add_vendor.php",
+               data : {supplier:supplier, contact_person:contact_person, phone:phone, email:email},
+               success : function(response){
+               $(".info").html(response);
+               }
+          })
+     }
+     $("#supplier").val('');
+     $("#contact_person").val('');
+     $("#phone").val('');
+     $("#email").val('');
+     $("#supplier").focus();
+     return false;    
+}
 
 // get item categories
 function getCategory(post_department){
@@ -752,6 +791,19 @@ function displayPriceForm(item_id){
      return false;
  
  }
+//display stockin form
+function displayStockinForm(item){
+     // alert(item_id);
+     $.ajax({
+          type : "GET",
+          url : "../controller/get_stockin_details.php?item_id="+item,
+          success : function(response){
+               $(".info").html(response);
+          }
+     })
+     return false;
+ 
+ }
 //  display change rom price
 function roomPriceForm(item_id){
      // alert(item_id);
@@ -1053,4 +1105,23 @@ function getRoomReports(room){
           return;
      }
      return false;
+}
+
+//get vendors
+function getVendors(vendor){
+     let ven_input = vendor;
+     if(ven_input){
+          $.ajax({
+               type : "POST",
+               url :"../controller/get_vendors.php",
+               data : {ven_input:ven_input},
+               success : function(response){
+                    $("#vendors").html(response);
+               }
+          })
+          return false;
+     }else{
+          $("#vendors").html("<option value='' selected>No result</option>")
+     }
+     
 }
