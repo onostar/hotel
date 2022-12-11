@@ -875,19 +875,17 @@ function stockin(){
 }
 
 //delete individual purchases
-function deletePurchase(){
-     let purchase_id  = document.getElementById("purchase_id").value;
-     let purchase_item  = document.getElementById("purchase_item").value;
+function deletePurchase(purchase, item){
      let confirmDel = confirm("Are you sure you want to delete this purchase?", "");
      if(confirmDel){
           
           $.ajax({
-               type : "POST",
-               url : "../controller/delete_purchase.php",
-               data : {purchase_id:purchase_id, purchase_item:purchase_item},
+               type : "GET",
+               url : "../controller/delete_purchase.php?purchase_id="+purchase+"&item_id="+item,
                success : function(response){
                     $(".stocked_in").html(response);
                }
+               
           })
           return false;
      }else{
@@ -1219,4 +1217,30 @@ function getVendors(vendor){
           $("#vendors").html("<option value='' selected>No result</option>")
      }
      
+}
+
+//  search purchases 
+function searchPurchase(){
+     let purchase_from = document.getElementById('purchase_from').value;
+     let purchase_to = document.getElementById('purchase_to').value;
+     /* authentication */
+     if(purchase_from .length == 0 || purchase_from .replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please select a date!");
+          $("#from_date").focus();
+          return;
+     }else if(purchase_to.length == 0 || purchase_to.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please select a date range!");
+          $("#to_date").focus();
+          return;
+     }else{
+          $.ajax({
+               type: "POST",
+               url: "../controller/search_purchase.php",
+               data: {purchase_from:purchase_from, purchase_to:purchase_to},
+               success: function(response){
+               $(".new_data").html(response);
+               }
+          });
+     }
+     return false;
 }

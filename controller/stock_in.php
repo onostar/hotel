@@ -71,11 +71,7 @@
                 </td>
                 <td><?php echo $detail->expiration_date?></td>
                 <td>
-                    <section>
-                        <input type="hidden" name="purchase_id" id="purchase_id" value="<?php echo $detail->purchase_id?>">
-                        <input type="hidden" name="purchase_item" id="purchase_item" value="<?php echo $detail->item?>">
-                        <button type="submit" name="del_purchase" id="del_purchase" style="background:none; box-shadow:none!important; border:none" title="delete purchase" onclick="deletePurchase()"><i class="fas fa-trash" style="color:red; font-size:1rem;"></i></buton>
-                    </section>
+                    <a style="color:red; font-size:1rem" href="javascript:void(0) "title="delete purchase" onclick="deletePurchase('<?php echo $detail->purchase_id?>', <?php echo $detail->item?>)"><i class="fas fa-trash"></i></a>
                 </td>
                 
             </tr>

@@ -2,8 +2,8 @@
     
     // if(isset($_GET['id'])){
     //     $id = $_GET['id'];
-        $purchase = $_POST['purchase_id'];
-        $item = $_POST['purchase_item'];
+        $purchase = $_GET['purchase_id'];
+        $item = $_GET['item_id'];
         // instantiate classes
         include "../classes/dbh.php";
         include "../classes/select.php";
