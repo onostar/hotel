@@ -1,6 +1,9 @@
 <?php
+    session_start();
     include "../classes/dbh.php";
     include "../classes/select.php";
+    if(isset($_SESSION['user_id'])){
+        $user_id = $_SESSION['user_id'];
 ?>
 
 <div id="stockin" class="displays">
@@ -9,12 +12,13 @@
         <!-- <form method="POST" id="addUserForm"> -->
         <section class="addUserForm">
             <div class="inputs">
+                
                 <div class="data">
                     <label for="Invoice">Invoice Number</label>
                     <input type="text" name="invoice" id="invoice" required>
                 </div>
                 <div class="data">
-                    <label for="Sele">Supplier</label>
+                    <label for="vendor">Supplier</label>
                     <select name="vendor" id="vendor">
                         <option value=""selected required>Select supplier</option>
                         <?php
@@ -28,7 +32,7 @@
                 </div>
                 <div class="data" style="width:100%; margin:10px 0">
                     <label for="item"> Search Item</label>
-                    <input type="text" name="item" id="item" list="suggestions" required placeholder="Input item name" oninput="displayStockinForm(this.value);">
+                    <input type="text" name="item" id="item" list="suggestions" required placeholder="Input item name" oninput="displayStockinForm()">
                     <datalist id="suggestions">
                         <?php
                             $get_item = new selects();
@@ -45,3 +49,8 @@
     <div class="info" style="width:100%; margin:0"></div>
     <div class="stocked_in"></div>
 </div>
+<?php
+    }else{
+        header("Location: ../index.php");
+    }
+?>

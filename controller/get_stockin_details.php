@@ -1,7 +1,10 @@
 <?php
-
-    if (isset($_GET['item_id'])){
-        $id = $_GET['item_id'];
+    session_start();
+    if(isset($_SESSION['user_id'])){
+        $user_id = $_SESSION['user_id'];
+    $item = htmlspecialchars(stripslashes($_POST['item']));
+    $vendor = htmlspecialchars(stripslashes($_POST['vendor']));
+    $invoice = htmlspecialchars(stripslashes($_POST['invoice']));
     
 
     // instantiate class
@@ -9,7 +12,7 @@
     include "../classes/select.php";
 
     $get_item = new selects();
-    $rows = $get_item->fetch_details_cond('items', 'item_name', $id);
+    $rows = $get_item->fetch_details_cond('items', 'item_name', $item);
      if(gettype($rows) == 'array'){
         foreach($rows as $row):
             
@@ -19,6 +22,9 @@
         <section class="addUserForm" style="text-align:left!important;">
             <div class="inputs">
                 <!-- <div class="data item_head"> -->
+                    <input type="hidden" name="posted_by" id="posted_by" value="<?php echo $user_id?>" required>
+                    <input type="hidden" name="invoice_number" id="invoice_number" value="<?php echo $invoice?>" required>
+                    <input type="hidden" name="supplier" id="supplier" value="<?php echo $vendor?>" required>
                     <input type="hidden" name="item_id" id="item_id" value="<?php echo $row->item_id?>" required>
                 <div class="data" style="width:18%; margin:5px;">
                     <label for="quantity">Quantity</label>
@@ -33,7 +39,7 @@
                     <input type="text" name="sales_price" id="sales_price" value="<?php echo $row->sales_price?>">
                 </div>
                 <div class="data" style="width:18%; margin:5px;">
-                    <label for="expiration">Expiration date</label>
+                    <label for="expiration_date">Expiration date</label>
                     <input type="date" name="expiration_date" id="expiration_date" required>
                 </div>
                 <div class="data" style="width:auto; margin:5px;">
@@ -46,5 +52,7 @@
 <?php
     endforeach;
      }
-    }    
+    }else{
+        header("Location: ../index.php");
+    } 
 ?>

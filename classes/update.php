@@ -54,6 +54,32 @@
                 echo "<div class='info'><p class='exist'>Update failed! <i class='fas fa-ban'></i></p></div>";
             } */
         }
+        //update quantity (addition)
+        public function update_quantity($value1, $value2, $value3, $condition_value){
+            $update = $this->connectdb()->prepare("UPDATE items SET cost_price = :cost_price, sales_price = :sales_price, quantity = quantity + :quantity WHERE item_id = :item_id");
+            $update->bindValue("cost_price", $value1);
+            $update->bindValue("sales_price", $value2);
+            $update->bindValue("quantity", $value3);
+            $update->bindValue("item_id", $condition_value);
+            $update->execute();
+            /* if($update){
+                echo "<div class='info'><p>Updated successfully! <i class='fas fa-check'></i></p></div>";
+            }else{
+                echo "<div class='info'><p class='exist'>Update failed! <i class='fas fa-ban'></i></p></div>";
+            } */
+        }
+        //update quantity (subtraction)
+        public function subtract_quantity($value, $condition_value){
+            $update = $this->connectdb()->prepare("UPDATE items SET quantity = quantity - :quantity WHERE item_id = :item_id");
+            $update->bindValue("quantity", $value);
+            $update->bindValue("item_id", $condition_value);
+            $update->execute();
+            /* if($update){
+                echo "<div class='info'><p>Updated successfully! <i class='fas fa-check'></i></p></div>";
+            }else{
+                echo "<div class='info'><p class='exist'>Update failed! <i class='fas fa-ban'></i></p></div>";
+            } */
+        }
 
         //update password
         public function updatePassword($username, $current_password, $new_password){

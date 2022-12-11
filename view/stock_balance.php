@@ -70,15 +70,11 @@
 
         // get sum
         $get_total = new selects();
-        $amounts = $get_total->fetch_sum('items', 'cost_price');
+        $amounts = $get_total->fetch_sum_2col('items', 'cost_price', 'quantity');
         foreach($amounts as $amount){
             $total_amount = $amount->total;
         }
-        $qtys = $get_total->fetch_sum('items', 'quantity');
-        foreach($qtys as $qty){
-            $total_qty = $qty->total;
-        }
-        $total_worth = $total_amount * $total_qty;
-        echo "<p class='total_amount'>Store worth: ₦".number_format($total_worth, 2)."</p>";
+        // $total_worth = $total_amount * $total_qty;
+        echo "<p class='total_amount'>Store worth: ₦".number_format($total_amount, 2)."</p>";
     ?>
 </div>

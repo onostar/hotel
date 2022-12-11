@@ -226,6 +226,30 @@
                 echo "<p class='exist'><span>Failed to insert payment</p>";
             }
         }
+
+        //stock in item quantity
+        protected function stockin_item($posted, $item, $vendor, $invoice, $quantity, $cost, $sales, $expiration){
+            
+            //check if already checkin
+            // $confirm_check  = $this->connectdb()->prepare("SELECT * FROM purchases WHERE vendor = :vendor AND invoice = :invoice");
+            // $confirm_check->bindValue("vendor", $vendor);
+            // $confirm_check->bindValue("invoice", $invoice);
+            // $confirm_check->execute();
+            // if(!$confirm_check->rowCount() > 0){
+                $stockin = $this->connectdb()->prepare("INSERT INTO purchases (item, invoice, vendor, cost_price, sales_price, quantity, expiration_date, posted_by) VALUES (:item, :invoice, :vendor, :cost_price, :sales_price, :quantity, :expiration_date, :posted_by)");
+                $stockin->bindvalue("item", $item);
+                $stockin->bindvalue("invoice", $invoice);
+                $stockin->bindvalue("vendor", $vendor);
+                $stockin->bindvalue("cost_price", $cost);
+                $stockin->bindvalue("sales_price", $sales);
+                $stockin->bindvalue("quantity", $quantity);
+                $stockin->bindvalue("expiration_date", $expiration);
+                $stockin->bindvalue("posted_by", $posted);
+                $stockin->execute();
+            // }else{
+            //     echo "<p class='exist'>Invoice <span>$invoice</span> from the selected supplier already exists</p>";
+            // }
+        }
     }
 
 
@@ -397,5 +421,33 @@
         }
         public function create_vendor(){
             $this->add_vendors($this->value1, $this->value2, $this->value3, $this->value4);
+        }
+    }
+
+    //controller for stocin of items
+    class stockins extends inserts{
+        private $item;
+        private $vendor;
+        private $invoice;
+        private $quantity;
+        private $cost;
+        private $sales;
+        private $expiration;
+        private $posted;
+
+        public function __construct($item, $vendor, $invoice, $quantity, $cost, $sales, $expiration, $posted)
+        {
+            $this->item = $item;
+            $this->vendor = $vendor;
+            $this->invoice = $invoice;
+            $this->quantity = $quantity;
+            $this->cost = $cost;
+            $this->sales = $sales;
+            $this->expiration = $expiration;
+            $this->posted = $posted;
+        }
+
+        public function stockin(){
+            $this->stockin_item($this->posted, $this->item, $this->vendor, $this->invoice, $this->quantity, $this->cost, $this->sales, $this->expiration);
         }
     }

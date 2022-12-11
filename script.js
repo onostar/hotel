@@ -792,18 +792,113 @@ function displayPriceForm(item_id){
  
  }
 //display stockin form
-function displayStockinForm(item){
+function displayStockinForm(){
      // alert(item_id);
-     $.ajax({
-          type : "GET",
-          url : "../controller/get_stockin_details.php?item_id="+item,
-          success : function(response){
-               $(".info").html(response);
-          }
-     })
-     return false;
- 
+     let invoice = document.getElementById("invoice").value;
+     let vendor = document.getElementById("vendor").value;
+     let item = document.getElementById("item").value;
+     if(invoice.length == 0 || invoice.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please input invoice number!");
+          $("#invoice").focus();
+          return;
+     }else if(vendor.length == 0 || vendor.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please select supplier!");
+          $("#vendor").focus();
+          return;
+     }else{
+          $.ajax({
+               type : "POST",
+               url : "../controller/get_stockin_details.php",
+               data : {invoice:invoice, vendor:vendor, item:item},
+               success : function(response){
+                    $(".info").html(response);
+               }
+          })
+          $("#invoice").attr("readonly", true);
+          $("#vendor").attr("readonly", true);
+          return false;
+     }
+     
  }
+
+ //stockin in items
+function stockin(){
+     let posted_by = document.getElementById("posted_by").value;
+     let invoice_number = document.getElementById("invoice_number").value;
+     let supplier = document.getElementById("supplier").value;
+     let item_id = document.getElementById("item_id").value;
+     let quantity = document.getElementById("quantity").value;
+     let cost_price = document.getElementById("cost_price").value;
+     let sales_price = document.getElementById("sales_price").value;
+     let expiration_date = document.getElementById("expiration_date").value;
+     let todayDate = new Date();
+     let today = todayDate.toLocaleDateString();
+     // alert(today);
+     if(quantity.length == 0 || quantity.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please input quantity purchased!");
+          $("#quantity").focus();
+          return;
+     }else if(quantity == "0"){
+          alert("Please input quantity purchased!");
+          $("#quantity").focus();
+          return;
+     }else if(cost_price.length == 0 || cost_price.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please input cost price");
+          $("#cost_price").focus();
+          return;
+     }else if(sales_price.length == 0 || sales_price.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please input selling price");
+          $("#sales_price").focus();
+          return;
+     }else if(expiration_date.length == 0 || expiration_date.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please input item expiration date");
+          $("#expiration_date").focus();
+          return;
+     }else if(new Date(today).getTime() > new Date(expiration_date).getTime()){
+          alert("You can not stock in expired items!");
+          $("#expiration_date").focus();
+          return;
+     }else{
+          $.ajax({
+               type : "POST",
+               url : "../controller/stock_in.php",
+               data : {posted_by:posted_by,supplier:supplier, invoice_number:invoice_number, item_id:item_id, quantity:quantity, cost_price:cost_price, sales_price:sales_price, expiration_date:expiration_date},
+               success : function(response){
+               $(".stocked_in").html(response);
+               }
+          })
+          $("#quantity").val('');
+          $("#expiration_date").val('');
+          $("#quantity").focus();
+          return false; 
+     }
+}
+
+//delete individual purchases
+function deletePurchase(){
+     let purchase_id  = document.getElementById("purchase_id").value;
+     let purchase_item  = document.getElementById("purchase_item").value;
+     let confirmDel = confirm("Are you sure you want to delete this purchase?", "");
+     if(confirmDel){
+          
+          $.ajax({
+               type : "POST",
+               url : "../controller/delete_purchase.php",
+               data : {purchase_id:purchase_id, purchase_item:purchase_item},
+               success : function(response){
+                    $(".stocked_in").html(response);
+               }
+          })
+          return false;
+     }else{
+          return;
+     }
+}
+//close stock in form
+function closeStockin(){
+     $("#stockin").load("stockin_purchase.php #stockin");
+}
+
 //  display change rom price
 function roomPriceForm(item_id){
      // alert(item_id);
