@@ -49,6 +49,7 @@
                     <li><a href="javascript:void(0);" title="Stock balance" class="page_navs" onclick="showPage('stock_balance.php')"><i class="fas fa-database"></i> Stock balance</a></li>
                     <li><a href="javascript:void(0);" title="Stockin items purchased" class="page_navs" onclick="showPage('stockin_purchase.php')"><i class="fas fa-cart-plus"></i> Stockin purchases</a></li>
                     <li><a href="javascript:void(0);" title="Add a supplier purchased" class="page_navs" onclick="showPage('add_vendor.php')"><i class="fas fa-user-tie"></i> Add supplier</a></li>
+                    <li><a href="javascript:void(0);" title="Adjust item quantity" class="page_navs" onclick="showPage('stock_adjustment.php')"><i class="fas fa-folder"></i> Adjust Quantity</a></li>
                     
                 </ul>
             </li>

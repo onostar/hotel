@@ -897,6 +897,42 @@ function closeStockin(){
      $("#stockin").load("stockin_purchase.php #stockin");
 }
 
+//display adjust quantity form
+function displayQuantityForm(item_id){
+     // alert(item_id);
+     $.ajax({
+          type : "GET",
+          url : "../controller/get_item_qty.php?item_id="+item_id,
+          success : function(response){
+               $(".info").html(response);
+          }
+     })
+     return false;
+ 
+ }
+ //adjust item quantity
+ function adjustQty(){
+     let item_id = document.getElementById("item_id").value;
+     let quantity = document.getElementById("quantity").value;
+     if(quantity.length == 0 || quantity.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please input quantity!");
+          $("#item_name").focus();
+          return;
+     }else{
+          $.ajax({
+               type : "POST",
+               url : "../controller/stock_adjustment.php",
+               data: {item_id:item_id, quantity:quantity},
+               success : function(response){
+                    $("#adjust_quantity").html(response);
+               }
+          })
+          setTimeout(function(){
+               $("#adjust_quantity").load("stock_adjustment.php #adjust_quantity");
+          }, 1500);
+          return false
+     }
+ }
 //  display change rom price
 function roomPriceForm(item_id){
      // alert(item_id);

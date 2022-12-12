@@ -109,6 +109,20 @@
                 return $rows;
             }
         }
+        //fetch with two condition (one is negative)
+        public function fetch_details_2cond1neg($table, $condition1, $condition2, $value1, $value2){
+            $get_user = $this->connectdb()->prepare("SELECT * FROM $table WHERE $condition1 = :$condition1 AND $condition2 != :$condition2");
+            $get_user->bindValue("$condition1", $value1);
+            $get_user->bindValue("$condition2", $value2);
+            $get_user->execute();
+            if($get_user->rowCount() > 0){
+                $rows = $get_user->fetchAll();
+                return $rows;
+            }else{
+                $rows = "No records found";
+                return $rows;
+            }
+        }
         //fetch between two dates
         public function fetch_details_date($table, $condition1, $value1, $value2){
             $get_user = $this->connectdb()->prepare("SELECT * FROM $table WHERE $condition1 BETWEEN '$value1' AND '$value2'");
