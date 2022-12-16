@@ -101,6 +101,31 @@
             }
             
         }
+        //add staffs
+        protected function add_staffs($value1, $value2, $value3){
+            //check if item exists
+            $check_item = $this->connectdb()->prepare("SELECT * FROM staffs WHERE staff_name = :staff_name OR phone_number = :phone_number");
+            $check_item->bindValue("staff_name", $value1);
+            $check_item->bindValue("phone_number", $value2);
+            $check_item->execute();
+            if($check_item->rowCount() > 0){
+                echo "<p class='exist'><span>$value1</span> already exists!</p>";
+                die();
+                
+            }else{
+                $add_item = $this->connectdb()->prepare("INSERT INTO staffs (staff_name, phone_number, home_address) VALUES (:staff_name, :phone_number, :home_address)");
+                $add_item->bindValue("staff_name", $value1);
+                $add_item->bindValue("phone_number", $value2);
+                $add_item->bindValue("home_address", $value3);
+                $add_item->execute();
+                if($add_item){
+                    echo "<p><span>$value1</span> added successfully!</p>";
+                }else{
+                    echo "<p class='exist'><span>$value1</span> could not be created!</p>";
+                }
+            }
+            
+        }
         //add vendors
         protected function add_vendors($value1, $value2, $value3, $value4){
             //check if item exists
@@ -403,6 +428,22 @@
         }
         public function create_item(){
             $this->add_items($this->value1, $this->value2, $this->value3);
+        }
+    }
+    // controller for adding staffs
+    class add_staff extends inserts{
+        private $value1;
+        private $value2;
+        private $value3;
+
+        public function __construct($value1, $value2, $value3)
+        {
+            $this->value1 = $value1;
+            $this->value2 = $value2;
+            $this->value3 = $value3;
+        }
+        public function create_staff(){
+            $this->add_staffs($this->value1, $this->value2, $this->value3);
         }
     }
     // controller for adding new supplier

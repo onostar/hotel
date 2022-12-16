@@ -21,6 +21,7 @@
                     <li><a href="javascript:void(0);" title="Activate users" class="page_navs" onclick="showPage('activate_user.php')"><i class="fas fa-user-check"></i> Activate user</a></li>
                     <li><a href="javascript:void(0);" title="Add departments" class="page_navs" onclick="showPage('add_department.php')"><i class="fas fa-layer-group"></i> Add Departments</a></li>
                     <li><a href="javascript:void(0);" title="Add categories" class="page_navs" onclick="showPage('add_category.php')"><i class="fas fa-layer-group"></i> Add Categories</a></li>
+                    <li><a href="javascript:void(0);" title="Add sales representatives" class="page_navs" onclick="showPage('add_staff.php')"><i class="fas fa-user-tie"></i> Add Sales Rep</a></li>
                     <li><a href="javascript:void(0);" title="Create items" class="page_navs" onclick="showPage('add_item.php')"><i class="fas fa-gift"></i> Add Items</a></li>
                     <li><a href="javascript:void(0);" title="modify item names" class="page_navs" onclick="showPage('modify_item.php')"><i class="fas fa-folder"></i> Modify Items</a></li>
                     <li><a href="javascript:void(0);" title="Add banks" class="page_navs" onclick="showPage('add_bank.php')"><i class="fas fa-bank"></i> Add Bank</a></li>
@@ -38,8 +39,10 @@
                     <li><a href="javascript:void(0);" title="Extend guest stay" class="page_navs" onclick="showPage('extend_stay.php')"><i class="fa-solid fa-calendar-plus"></i> Extend stay</a></li>
                 </ul>
             </li>
-            <li><a href="javascript:void(0);" class="allMenus" title="payment menu" data-menu="payments" id="payments"><span><i class="fas fa-gem"></i> Payments </span><span class="second_icon"><i class="fas fa-chevron-down more_option"></i></span></a>
+            <li><a href="javascript:void(0);" class="allMenus" title="payment menu" data-menu="payments" id="payments"><span><i class="fas fa-gem"></i> BIlls & Payments</span><span class="second_icon"><i class="fas fa-chevron-down more_option"></i></span></a>
                 <ul class="subMenu payments">
+                    <li><a href="javascript:void(0);" title="Create new bill" class="page_navs" onclick="showPage('new_bill.php')"><i class="fas fa-clipboard"></i> Create new bill</a></li>
+                    <li><a href="javascript:void(0);" title="Add to exisiting bill" class="page_navs" onclick="showPage('add_to_bill.php')"><i class="fas fa-clipboard"></i> Add to bill</a></li>
                     <li><a href="javascript:void(0);" title="Guest payments" class="page_navs" onclick="showPage('guest_payment.php')"><i class="fas fa-money-check-dollar"></i> New Guest payment</a></li>
                     <li><a href="javascript:void(0);" title="Add payments" class="page_navs" onclick="showPage('other_payment.php')"><i class="fas fa-hand-holding-dollar"></i> Make payment</a></li>
                 </ul>
@@ -60,6 +63,7 @@
                     <li><a href="javascript:void(0);" title="List of restaurant items" class="page_navs" onclick="showPage('restaurant_items.php')"><i class="fas fa-utensils"></i> Restaurant items</a></li>
                     <li><a href="javascript:void(0);" title="List of banks" class="page_navs" onclick="showPage('Bank_list.php')"><i class="fas fa-bank"></i> Bank List</a></li>
                     <li><a href="javascript:void(0);" title="List of suppliers" class="page_navs" onclick="showPage('vendor_list.php')"><i class="fas fa-users"></i> List of suppliers</a></li>
+                    <li><a href="javascript:void(0);" title="List of staffs" class="page_navs" onclick="showPage('staff_list.php')"><i class="fas fa-user-tie"></i> Staff List</a></li>
                     <li><a href="javascript:void(0);" title="List of rooms" class="page_navs" onclick="showPage('guest_list.php')"><i class="fas fa-users"></i> Current guest List</a></li>
                     <li><a href="javascript:void(0);" title="Check in report" class="page_navs" onclick="showPage('checkin_report.php')"><i class="fas fa-gauge"></i> Check in report</a></li>
                     <li><a href="javascript:void(0);" title="Guest check out report" class="page_navs" onclick="showPage('check_out_report.php')"><i class="fas fa-door-open"></i> Check out report</a></li>

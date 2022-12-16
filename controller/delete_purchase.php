@@ -9,7 +9,7 @@
         include "../classes/select.php";
         include "../classes/update.php";
         include "../classes/delete.php";
-echo $item;
+// echo $item;
         //get item details
         $get_qty = new selects();
         $rows = $get_qty->fetch_details_cond('purchases', 'purchase_id', $purchase);
@@ -75,11 +75,7 @@ echo $item;
                 </td>
                 <td><?php echo $detail->expiration_date?></td>
                 <td>
-                    <form>
-                        <input type="hidden" name="purchase_id" id="purchase_id" value="<?php echo $detail->purchase_id?>">
-                        <input type="hidden" name="item" id="item" value="<?php echo $item?>">
-                        <button type="submit" name="del_purchase" id="del_purchase" style="background:none;" title="delete purchase" onclick="deletePurchase()"><i class="fas fa-trash" style="color:red; font-size:1rem;"></i></buton>
-                    </form>
+                    <a style="color:red; font-size:1rem" href="javascript:void(0) "title="delete purchase" onclick="deletePurchase('<?php echo $detail->purchase_id?>', <?php echo $detail->item?>)"><i class="fas fa-trash"></i></a>
                 </td>
                 
             </tr>

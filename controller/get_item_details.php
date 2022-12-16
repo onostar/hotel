@@ -26,7 +26,7 @@
                     <input type="text" name="cost_price" id="cost_price" value="<?php echo $row->cost_price?>">
                 </div>
                 <div class="data" style="width:30%">
-                    <label for="sales_price"">Sales price (NGN)</label>
+                    <label for="sales_price">Sales price (NGN)</label>
                     <input type="text" name="sales_price" id="sales_price" value="<?php echo $row->sales_price?>">
                 </div>
                 <div class="data" style="width:30%">

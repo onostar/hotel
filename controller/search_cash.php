@@ -8,7 +8,7 @@
     include "../classes/select.php";
 
     $get_revenue = new selects();
-    $details = $get_revenue->fetch_details_2dateCon('payments', 'payment_mode', 'post_date', $from, $to, 'Cash');
+    $details = $get_revenue->fetch_details_2dateCon('payments', 'payment_mode', 'date(post_date)', $from, $to, 'Cash');
     $n = 1;  
 ?>
 <h2>Cash Report from '<?php echo date("jS M, Y", strtotime($from)) . "' to '" . date("jS M, Y", strtotime($to))?>'</h2>

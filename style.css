@@ -2637,6 +2637,38 @@ main hr{
 #journey{
     display:none;
 }
+#create_bill .create_bills{
+    display:none;
+}
+#create_bill .bill_type{
+    padding:10px;
+    
+}
+.item_categories{
+    padding:20px;
+}
+.item_categories button{
+    margin:10px;
+    color:#222;
+    background:rgb(236, 231, 231);
+}
+.item_categories button:hover, .item_categories button:focus{
+    background:var(--otherColor);
+    color:#fff;
+}
+.item_categories .diff_cats{
+    display:none;
+}
+#sales_item{
+    background:var(--primaryColor);
+    color:#fff;
+
+}
+#sales_item option{
+    background:var(--otherColor);
+    color:#fff;
+    padding:10px 5px;
+}
 @media screen and (max-width: 800px){
     #topHeader{
         justify-content: space-between;

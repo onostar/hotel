@@ -8,7 +8,7 @@
     include "../classes/select.php";
 
     $get_revenue = new selects();
-    $details = $get_revenue->fetch_details_date('payments', 'post_date', $from, $to);
+    $details = $get_revenue->fetch_details_date('payments', 'date(post_date)', $from, $to);
     $n = 1;  
 ?>
 <h2>Revenue Report from '<?php echo date("jS M, Y", strtotime($from)) . "' to '" . date("jS M, Y", strtotime($to))?>'</h2>

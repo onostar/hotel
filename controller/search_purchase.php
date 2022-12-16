@@ -8,7 +8,7 @@
     include "../classes/select.php";
 
     $get_purchase = new selects();
-    $details = $get_purchase->fetch_details_date('purchases', 'post_date', $from, $to);
+    $details = $get_purchase->fetch_details_date('purchases', 'date(post_date)', $from, $to);
     $n = 1;  
 ?>
 <h2>Purchase Register between '<?php echo date("jS M, Y", strtotime($from)) . "' and '" . date("jS M, Y", strtotime($to))?>'</h2>
@@ -25,7 +25,7 @@
                 <td>Item</td>
                 <td>Quantity</td>
                 <td>Cost</td>
-                <td>Post Time</td>
+                <td>Post Date</td>
                 <td>Received by</td>
                 
             </tr>
@@ -55,7 +55,7 @@
                 </td>
                 <td style="text-align:center; color:green;"><?php echo $detail->quantity;?></td>
                 <td><?php echo "₦".number_format($detail->cost_price, 2)?></td>
-                <td style="color:var(--moreColor)"><?php echo date("H:i:sa", strtotime($detail->post_date));?></td>
+                <td style="color:var(--moreColor)"><?php echo date("jS M, Y", strtotime($detail->post_date));?></td>
                 <td>
                     <?php
                         //get posted by

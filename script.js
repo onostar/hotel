@@ -308,6 +308,44 @@ function addItem(){
      $("#item").focus();
      return false;    
 }
+// add staffs 
+function addStaff(){
+     let staff_name = document.getElementById("staff_name").value;
+     let phone_number = document.getElementById("phone_number").value;
+     let home_address = document.getElementById("home_address").value;
+     if(staff_name.length == 0 || staff_name.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please input staff name!");
+          $("#staff_name").focus();
+          return;
+     }else if(home_address.length == 0 || home_address.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please input staff residential address");
+          $("#home_address").focus();
+          return;
+     }else if(phone_number.length == 0 || phone_number.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please input staff phone number");
+          $("#phone_number").focus();
+          return;
+     }else if(phone_number.length < 11){
+          alert("Phone number is too short");
+          $("#phone_number").focus();
+          return;
+     }else{
+          $.ajax({
+               type : "POST",
+               url : "../controller/add_staff.php",
+               data : {staff_name:staff_name, phone_number:phone_number, home_address:home_address},
+               success : function(response){
+               $(".info").html(response);
+               }
+          })
+     }
+     // $("#room_category").val('');
+     $("#staff_name").val('');
+     $("#phone_number").val('');
+     $("#home_address").val('');
+     $("#staff_name").focus();
+     return false;    
+}
 // add suppliers 
 function addSupplier(){
      let supplier = document.getElementById("supplier").value;
@@ -1257,16 +1295,16 @@ function getVendors(vendor){
 
 //  search purchases 
 function searchPurchase(){
-     let purchase_from = document.getElementById('purchase_from').value;
-     let purchase_to = document.getElementById('purchase_to').value;
+     let purchase_from = document.getElementById("purchase_from").value;
+     let purchase_to = document.getElementById("purchase_to").value;
      /* authentication */
      if(purchase_from .length == 0 || purchase_from .replace(/^\s+|\s+$/g, "").length == 0){
           alert("Please select a date!");
-          $("#from_date").focus();
+          $("#purchase_from").focus();
           return;
      }else if(purchase_to.length == 0 || purchase_to.replace(/^\s+|\s+$/g, "").length == 0){
           alert("Please select a date range!");
-          $("#to_date").focus();
+          $("#purchase_to").focus();
           return;
      }else{
           $.ajax({
@@ -1278,5 +1316,63 @@ function searchPurchase(){
                }
           });
      }
+     return false;
+}
+
+//show bill types forms
+function showWalkin(){
+     $("#walkin_customers").show();
+     $("#existing_guests").hide();
+}
+function showGuest(){
+     $("#walkin_customers").hide();
+     $("#existing_guests").show();
+}
+//show sales form categories (bar and restuarant)
+function showBar(){
+     $("#bar_items").show();
+     $("#restaurant_items").hide();
+}
+function showRestaurant(){
+     $("#bar_items").hide();
+     $("#restaurant_items").show();
+}
+
+//get item for sales
+function getItems(item_name){
+     let item = item_name;
+     // alert(check_room);
+     // return;
+     if(item.length >= 3){
+          if(item){
+               $.ajax({
+                    type : "POST",
+                    url :"../controller/get_items.php",
+                    data : {item:item},
+                    success : function(response){
+                         $("#sales_item").html(response);
+                    }
+               })
+               return false;
+          }else{
+               $("#sales_item").html("<p>Please enter atleast 3 letters</p>");
+          }
+     }
+     
+}
+
+//add sales
+function addSales(item_id){
+     let item = item_id;
+     let sales_invoice = document.getElementById("sales_invoice").value;
+     let staff = document.getElementById("staff").value;
+     $.ajax({
+          type : "POST",
+          url : "../controller/add_sales.php",
+          data : {item:item, sales_invoice:sales_invoice, staff:staff},
+          success : function(response){
+               $(".sales_order").html(response);
+          }
+     })
      return false;
 }
