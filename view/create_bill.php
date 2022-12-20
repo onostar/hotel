@@ -9,8 +9,9 @@
     
     if(isset($_GET['staff_id'])){
         $staff = $_GET['staff_id'];
+        $_SESSION['staff'] = $staff;
 
-    }
+    
 
 
 ?>
@@ -19,7 +20,7 @@
         //generate receipt invoice
         $random_num = mt_rand(10000000, 99999999);
         $invoice = "wk00".$staff.$random_num;
-
+        $_SESSION['invoice'] = $invoice;
     ?>
     
     <div class="add_user_form" style="width:50%; margin:10px 0; box-shadow:none">
@@ -30,25 +31,25 @@
 
         <div class="item_categories">
             <!-- buttons -->
-            <button id="bar_btn" onclick="showBar()">Bar Items <i class="fas fa-beer"></i></button>
-            <button id="res_btn" onclick="showRestaurant()">Restaurant Items <i class="fas fa-utensils"></i></button>
+            <!-- <button id="bar_btn" onclick="showBar()">Bar Items <i class="fas fa-beer"></i></button>
+            <button id="res_btn" onclick="showRestaurant()">Restaurant Items <i class="fas fa-utensils"></i></button> -->
 
             <!-- search forms -->
         <!-- <form method="POST" id="addUserForm"> -->
             <section class="addUserForm">
                 <div class="inputs">
                     <!-- bar items form -->
-                    <div class="data diff_cats" id="bar_items" style="width:100%; margin:10px 0">
-                        <label for="item"> Search Bar Items</label>
+                    <div class="data" id="bar_items" style="width:100%; margin:2px 0">
+                        <label for="item"> Search Items</label>
                         <input type="hidden" name="sales_invoice" id="sales_invoice" value="<?php echo $invoice?>">
                         <input type="hidden" name="staff" id="staff" value="<?php echo $staff?>">
                         <input type="text" name="item" id="item" required placeholder="Input item name" onkeyup="getItems(this.value)">
-                        <select name="sales_item" id="sales_item" onclick="addSales(this.value);">
+                        <div id="sales_item">
                             
-                    </select>
+                        </div>
                     </div>
                     <!-- restaurant item form -->
-                    <div class="data diff_cats" id="restaurant_items" style="width:100%; margin:10px 0">
+                    <!-- <div class="data diff_cats" id="restaurant_items" style="width:100%; margin:10px 0">
                         <label for="item"> Search Restaurant Items</label>
                         <input type="text" name="item" id="item" list="suggestions" required placeholder="Input item name" oninput="displayStockinForm()">
                         <datalist id="suggestions">
@@ -60,7 +61,7 @@
                             <option value="<?php echo $row->item_name?>"><?php echo $row->item_name?></option>
                             <?php } ?>
                         </datalist>
-                    </div>
+                    </div> -->
                 </div>
                 
             </section>
@@ -73,6 +74,7 @@
 
 </div>
 <?php
+    }
     }else{
         header("Location: ../index.php");
     }

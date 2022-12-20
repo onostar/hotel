@@ -1364,12 +1364,9 @@ function getItems(item_name){
 //add sales
 function addSales(item_id){
      let item = item_id;
-     let sales_invoice = document.getElementById("sales_invoice").value;
-     let staff = document.getElementById("staff").value;
      $.ajax({
-          type : "POST",
-          url : "../controller/add_sales.php",
-          data : {item:item, sales_invoice:sales_invoice, staff:staff},
+          type : "GET",
+          url : "../controller/add_sales.php?sales_item="+item,
           success : function(response){
                $(".sales_order").html(response);
           }

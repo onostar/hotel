@@ -275,6 +275,26 @@
             //     echo "<p class='exist'>Invoice <span>$invoice</span> from the selected supplier already exists</p>";
             // }
         }
+        //stock in item quantity
+        protected function post_sales($posted, $item, $staff, $invoice, $quantity, $price){
+            // check if item already exist
+            $confirm_check  = $this->connectdb()->prepare("SELECT * FROM sales WHERE invoice = :invoice AND item = :item");
+            $confirm_check->bindValue("invoice", $invoice);
+            $confirm_check->bindValue("item", $item);
+            $confirm_check->execute();
+            if(!$confirm_check->rowCount() > 0){
+                $add_sales = $this->connectdb()->prepare("INSERT INTO sales (item, invoice, staff, price, quantity, posted_by) VALUES (:item, :invoice, :staff, :price, :quantity, :posted_by)");
+                $add_sales->bindvalue("item", $item);
+                $add_sales->bindvalue("invoice", $invoice);
+                $add_sales->bindvalue("staff", $staff);
+                $add_sales->bindvalue("price", $price);
+                $add_sales->bindvalue("quantity", $quantity);
+                $add_sales->bindvalue("posted_by", $posted);
+                $add_sales->execute();
+            }else{
+                echo "<p class='exist'>Item already exists in sales order</p>";
+            }
+        }
     }
 
 
@@ -490,5 +510,28 @@
 
         public function stockin(){
             $this->stockin_item($this->posted, $this->item, $this->vendor, $this->invoice, $this->quantity, $this->cost, $this->sales, $this->expiration);
+        }
+    }
+    //controller for adding sales
+    class post_sales extends inserts{
+        private $item;
+        private $staff;
+        private $invoice;
+        private $quantity;
+        private $price;
+        private $posted;
+
+        public function __construct($item, $staff, $invoice, $quantity, $price, $posted)
+        {
+            $this->item = $item;
+            $this->staff = $staff;
+            $this->invoice = $invoice;
+            $this->quantity = $quantity;
+            $this->price = $price;
+            $this->posted = $posted;
+        }
+
+        public function add_sales(){
+            $this->post_sales($this->posted, $this->item, $this->staff, $this->invoice, $this->quantity, $this->price);
         }
     }

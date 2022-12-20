@@ -42,7 +42,7 @@
         }
         //fetch details with like or close to with a condition
         public function fetch_details_likeCond($table, $column, $value, $condition, $con_value){
-            $get_user = $this->connectdb()->prepare("SELECT * FROM $table WHERE $condition = :$condition AND $column LIKE '%$value%'");
+            $get_user = $this->connectdb()->prepare("SELECT * FROM $table WHERE $condition != :$condition AND $column LIKE '%$value%'");
             $get_user->bindValue("$condition", $con_value);
             $get_user->execute();
             if($get_user->rowCount() > 0){

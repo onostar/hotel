@@ -5,12 +5,12 @@
     include "../classes/select.php";
 
     $get_item = new selects();
-    $rows = $get_item->fetch_details_likeCond('items', 'item_name', $item, 'department', 'Bar');
+    $rows = $get_item->fetch_details_likeCond('items', 'item_name', $item, 'department', 'Accomodation');
      if(gettype($rows) == 'array'){
         foreach($rows as $row):
         
     ?>
-    <option value="<?php echo $row->item_id?>"><?php echo $row->item_name?></option>
+    <option onclick="addSales('<?php echo $row->item_id?>')"><?php echo $row->item_name?></option>
     
 <?php
     endforeach;
