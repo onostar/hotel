@@ -292,7 +292,7 @@
                 $add_sales->bindvalue("posted_by", $posted);
                 $add_sales->execute();
             }else{
-                echo "<p class='exist'>Item already exists in sales order</p>";
+                echo "<div class='notify'><p>Item already exists in sales order</p></div>";
             }
         }
     }

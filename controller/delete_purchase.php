@@ -26,7 +26,7 @@
         if($update_qty){
             //delete purcahse
             $delete = new deletes();
-            $delete->delete_purchase($purchase);
+            $delete->delete_item('purchases', 'purchase_id', $purchase);
             if($delete){
 ?>
 <!-- display stockins for items with same invoice number -->

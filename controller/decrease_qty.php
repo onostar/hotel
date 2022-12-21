@@ -1,45 +1,19 @@
 <?php
-// instantiate class
-include "../classes/dbh.php";
-include "../classes/select.php";
-include "../classes/inserts.php";
-    // session_start();
-    if(isset($_SESSION['user_id'])){
-        $user_id = $_SESSION['user_id'];
-        if(isset($_SESSION['invoice'])){
-            $invoice = $_SESSION['invoice'];
-        }
-        if(isset($_SESSION['staff'])){
-            $staff = $_SESSION['staff'];
-        }
-        if(isset($_GET['sales_item'])){
-            $item = $_GET['sales_item'];
-        }
-
-    $quantity = 1;
-    
-    //get selling price
-    $get_item = new selects();
-    $rows = $get_item->fetch_details_cond('items', 'item_id', $item);
-     if(gettype($rows) == 'array'){
-        foreach($rows as $row){
-            $price = $row->sales_price;
-            $name = $row->item_name;
-            $department = $row->department;
-            $qty = $row->quantity;
-        }
-            if($department == "Bar" && $qty == 0){
-                echo "<div class='notify'><p><span>$name</span> has zero quantity! Cannot proceed</p>";
-            }else if($price == 0){
-                echo "<div class='notify'><p><span>$name</span> does not have selling price! Cannot proceed</p></div>";
-            }else{
-                //insert into sales order
-                $sell_item = new post_sales($item, $staff, $invoice, $quantity, $price, $user_id);
-                $sell_item->add_sales();
-                if($sell_item){
-
-        ?>
-<!-- display sales for this invoice number -->
+        $item = $_GET['item'];
+        // instantiate classes
+        include "../classes/dbh.php";
+        include "../classes/select.php";
+        include "../classes/update.php";
+        //get invoice
+        $get_invoice = new selects();
+        $rows = $get_invoice->fetch_details_group('sales', 'invoice', 'sales_id', $item);
+        $invoice = $rows->invoice;
+        //update quantity
+        $update = new Update_table();
+        $update->decrease_qty(1, $item);
+        if($update){
+?>
+<!-- display items with same invoice number -->
 <div class="displays allResults" id="stocked_items">
     <h2>Items in sales order</h2>
     <table id="addsales_table" class="searchTable">
@@ -116,16 +90,8 @@ include "../classes/inserts.php";
         <button onclick="postSales()" style="background:red; padding:8px; border-radius:5px;">Save and Print <i class="fas fa-power-off"></i></button>
     </div>
 </div>    
-
 <?php
-                }
-            }
-?>
-   
-    
-<?php
-         }
-    }else{
-        header("Location: ../index.php");
-    } 
+            }            
+        
+    // }
 ?>

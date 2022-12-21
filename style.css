@@ -824,7 +824,19 @@ main hr{
     color:#fff;
     /* margin-bottom:5px; */
     text-align:center;
-
+    font-size: 1rem;
+}
+.notify p{
+    background:rgb(241, 94, 68)!important;
+    color:#fff;
+    /* margin-bottom:5px; */
+    text-align:center;
+    font-size: 1.1rem;
+    width:50%!important;
+}
+.notify span{
+    font-weight: bold;
+    text-transform: uppercase;
 }
 .success{
     width:70%;

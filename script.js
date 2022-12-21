@@ -1373,3 +1373,46 @@ function addSales(item_id){
      })
      return false;
 }
+//delete individual items from sales order
+function deleteSales(sales, item){
+     let confirmDel = confirm("Are you sure you want to remove this item?", "");
+     if(confirmDel){
+          
+          $.ajax({
+               type : "GET",
+               url : "../controller/delete_sales.php?sales_id="+sales+"&item_id="+item,
+               success : function(response){
+                    $(".sales_order").html(response);
+               }
+               
+          })
+          return false;
+     }else{
+          return;
+     }
+}
+//increase quantity for sales item
+function increaseQty(sales, item){
+     // alert(sales);
+     $.ajax({
+          type : "GET",
+          url : "../controller/increase_qty.php?sales_id="+sales+"&item_id="+item,
+          success : function(response){
+               $(".sales_order").html(response);
+          }
+          
+     })
+     return false;
+}
+//decrease quantity for sales item
+function reduceQty(sales){
+     $.ajax({
+          type : "GET",
+          url : "../controller/decrease_qty.php?item="+sales,
+          success : function(response){
+               $(".sales_order").html(response);
+          }
+          
+     })
+     return false;
+}

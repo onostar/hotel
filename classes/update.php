@@ -68,7 +68,7 @@
                 echo "<div class='info'><p class='exist'>Update failed! <i class='fas fa-ban'></i></p></div>";
             } */
         }
-        //update quantity (subtraction)
+        //update quantity (subtraction) for stockin
         public function subtract_quantity($value, $condition_value){
             $update = $this->connectdb()->prepare("UPDATE items SET quantity = quantity - :quantity WHERE item_id = :item_id");
             $update->bindValue("quantity", $value);
@@ -79,6 +79,26 @@
             }else{
                 echo "<div class='info'><p class='exist'>Update failed! <i class='fas fa-ban'></i></p></div>";
             } */
+        }
+        //update quantity (addition) for sales
+        public function increase_qty($value, $condition_value){
+            
+            $update = $this->connectdb()->prepare("UPDATE sales SET quantity = quantity + :quantity WHERE sales_id = :sales_id");
+            $update->bindValue("quantity", $value);
+            $update->bindValue("sales_id", $condition_value);
+            $update->execute();
+            /* if($update){
+                echo "<div class='info'><p>Updated successfully! <i class='fas fa-check'></i></p></div>";
+            }else{
+                echo "<div class='info'><p class='exist'>Update failed! <i class='fas fa-ban'></i></p></div>";
+            } */
+        }
+        //update quantity (addition) for sales
+        public function decrease_qty($value, $condition_value){
+            $update = $this->connectdb()->prepare("UPDATE sales SET quantity = quantity - :quantity WHERE sales_id = :sales_id");
+            $update->bindValue("quantity", $value);
+            $update->bindValue("sales_id", $condition_value);
+            $update->execute();
         }
 
         //update password
