@@ -1416,3 +1416,57 @@ function reduceQty(sales){
      })
      return false;
 }
+//show more options for sales item to edit price and quantity
+function showMore(sales){
+     $.ajax({
+          type : "GET",
+          url : "../controller/edit_price_qty.php?item="+sales,
+          success : function(response){
+               $(".show_more").html(response);
+          }
+          
+     })
+     return false;
+}
+
+//update sales quantit and price
+function updatePriceQty(){
+     let sales_id = document.getElementById("sales_id").value;
+     let qty = document.getElementById("qty").value;
+     let price = document.getElementById("price").value;
+     let inv_qty = document.getElementById("inv_qty").value;
+     /* authentication */
+     if(qty.length == 0 || qty.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please input quantity!");
+          $("#qty").focus();
+          return;
+     }else if(price.length == 0 || price.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please input unit price!");
+          $("#price").focus();
+          return;
+     }else if(qty < 1){
+          alert("Qauntity cannot be zero or negative!");
+          $("#qty").focus();
+          return;
+     }else if(price < 1){
+          alert("Price cannot be zero or negative!");
+          $("#price").focus();
+          return;
+     }else if(qty > inv_qty){
+          alert("Available quantity is less than required!");
+          $("#qty").focus();
+          return;
+     }else{
+          $.ajax({
+               type: "POST",
+               url: "../controller/update_price_qty.php",
+               data: {sales_id:sales_id, qty:qty, price:price},
+               success: function(response){
+               $(".sales_order").html(response);
+               }
+          });
+
+     }
+     $(".show_more").html('');
+     return false;
+}

@@ -24,7 +24,7 @@
 ?>
 <!-- display items with same invoice number -->
 <div class="displays allResults" id="stocked_items">
-    <h2>Items in sales order</h2>
+    <!-- <h2>Items in sales order</h2> -->
     <table id="addsales_table" class="searchTable">
         <thead>
             <tr style="background:var(--moreColor)">
@@ -58,6 +58,8 @@
                     <span style="font-size:1.2rem; margin:0 2px"><?php echo $detail->quantity?></span>
                     <a style="color:#fff; background:green;border-radius:4px;padding:5px 8px;" href="javascript:void(0)" title="increase quantity" onclick="increaseQty('<?php echo $detail->sales_id?>', '<?php echo $detail->item?>')"><i class="fas fa-arrow-up"></i></a>
                     <a style="color:#fff; background:var(--primaryColor);border-radius:4px;padding:5px 8px;" href="javascript:void(0)" title="decrease quantity" onclick="reduceQty('<?php echo $detail->sales_id?>')"><i class="fas fa-arrow-down"></i></a>
+                    <a style="color:#fff; background:var(--otherColor);border-radius:4px;padding:5px 8px;" href="javascript:void(0)" title="show more options" onclick="showMore('<?php echo $detail->sales_id?>')"><i class="fas fa-chevron-up"></i></a>
+
                 </td>
                 <td>
                     <?php 
@@ -66,8 +68,7 @@
                 </td>
                 <td>
                     <?php 
-                        $item_total = $detail->quantity * $detail->price;
-                        echo "₦".number_format($item_total, 2);
+                        echo "₦".number_format($detail->total_amount, 2);
                     ?>
                 </td>
                 <td>
@@ -105,10 +106,22 @@
         $update = new Update_table();
         $update->increase_qty(1, $sales);
         if($update){
+        //update total amount
+        // check item new quantity in sales order
+        $check_itemqty = new selects();
+        $shows = $check_itemqty->fetch_details_cond('sales', 'sales_id', $sales);
+        foreach($shows as $show){
+            $new_qty = $show->quantity;
+            $unit_price = $show->price;
+        }
+        $total_price = $new_qty * $unit_price;
+        $update_total = new Update_table();
+        $update_total->update('sales', 'total_amount', 'sales_id', $total_price, $sales);
+        if($update_total){
 ?>
 <!-- display items with same invoice number -->
 <div class="displays allResults" id="stocked_items">
-    <h2>Items in sales order</h2>
+    <!-- <h2>Items in sales order</h2> -->
     <table id="addsales_table" class="searchTable">
         <thead>
             <tr style="background:var(--moreColor)">
@@ -142,6 +155,8 @@
                     <span style="font-size:1.2rem; margin:0 2px"><?php echo $detail->quantity?></span>
                     <a style="color:#fff; background:green;border-radius:4px;padding:5px 8px;" href="javascript:void(0)" title="increase quantity" onclick="increaseQty('<?php echo $detail->sales_id?>', '<?php echo $detail->item?>')"><i class="fas fa-arrow-up"></i></a>
                     <a style="color:#fff; background:var(--primaryColor);border-radius:4px;padding:5px 8px;" href="javascript:void(0)" title="decrease quantity" onclick="reduceQty('<?php echo $detail->sales_id?>')"><i class="fas fa-arrow-down"></i></a>
+                    <a style="color:#fff; background:var(--otherColor);border-radius:4px;padding:5px 8px;" href="javascript:void(0)" title="show more options" onclick="showMore('<?php echo $detail->sales_id?>')"><i class="fas fa-chevron-up"></i></a>
+
                 </td>
                 <td>
                     <?php 
@@ -150,8 +165,8 @@
                 </td>
                 <td>
                     <?php 
-                        $item_total = $detail->quantity * $detail->price;
-                        echo "₦".number_format($item_total, 2);
+                        
+                        echo "₦".number_format($detail->total_amount, 2);
                     ?>
                 </td>
                 <td>
@@ -185,6 +200,6 @@
 </div>    
 <?php
             }            
-        
+        }
     }
 ?>
