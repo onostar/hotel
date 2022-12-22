@@ -10,7 +10,19 @@
         foreach($rows as $row):
         
     ?>
-    <option onclick="addSales('<?php echo $row->item_id?>')"><?php echo $row->item_name?></option>
+    <option onclick="addSales('<?php echo $row->item_id?>')">
+        <?php
+            if($row->department == 'Bar'){
+        ?>
+        <?php echo $row->item_name." (Price => ₦".$row->sales_price.", Quantity => ".$row->quantity.")"?>
+
+        <?php
+            }else{
+        ?>
+        <?php echo $row->item_name." (Price => ₦".$row->sales_price.")"?>
+
+        <?php }?>
+    </option>
     
 <?php
     endforeach;
