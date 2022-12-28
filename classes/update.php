@@ -109,6 +109,13 @@
             $update->bindValue("sales_id", $condition_value);
             $update->execute();
         }
+        //update quantity (substraction) for inventory after sales
+        public function update_inv_qty($value, $condition_value){
+            $update = $this->connectdb()->prepare("UPDATE items SET quantity = quantity - :quantity WHERE item_id = :item_id");
+            $update->bindValue("quantity", $value);
+            $update->bindValue("item_id", $condition_value);
+            $update->execute();
+        }
 
         //update password
         public function updatePassword($username, $current_password, $new_password){

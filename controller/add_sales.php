@@ -113,7 +113,7 @@ include "../classes/inserts.php";
         echo "<p class='total_amount' style='color:green'>Total Due: ₦".number_format($total_amount, 2)."</p>";
     ?>
     <div class="close_stockin">
-        <button onclick="postSales()" style="background:red; padding:8px; border-radius:5px;">Save and Print <i class="fas fa-power-off"></i></button>
+        <button onclick="postSales('<?php echo $invoice?>')" style="background:red; padding:8px; border-radius:5px;">Save and Print <i class="fas fa-print"></i></button>
     </div>
 </div>    
 

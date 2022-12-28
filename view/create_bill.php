@@ -1,4 +1,4 @@
-<div id="all_payments">
+<div id="create_bill">
 <?php
     session_start();
     include "../classes/dbh.php";

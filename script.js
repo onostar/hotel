@@ -1470,3 +1470,19 @@ function updatePriceQty(){
      $(".show_more").html('');
      return false;
 }
+
+//post sales
+function postSales(invoice){
+     $.ajax({
+          type : "GET",
+          url : "../controller/post_sales.php?invoice="+invoice,
+          success : function(response){
+               $("#create_bill").html(response);
+          }
+     })
+     setTimeout(function(){
+          $("#create_bill").load("create_bill.php #create_bill");
+     }, 500);
+     return false;
+     
+}

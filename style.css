@@ -3507,3 +3507,25 @@ main hr{
 
 
 }
+@media print{
+    body *{
+        visibility:none;
+    }
+    #sales_receipt, #sales_receipt *{
+        visibility: visible;
+    }
+    #sales_receipt{
+        display:block!important;
+        position:absolute;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+        padding-bottom:5px;
+        background:#fff;
+        /* box-shadow: 2px 2px 2px 2px #c4c4c4; */
+    }
+   /*  #clearanceSlip .slip{
+        width:100%;
+    } */
+}
