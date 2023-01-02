@@ -12,7 +12,7 @@ include "../classes/select.php";
         
         //update all items with this invoice
         $update_invoice = new Update_table();
-        $update_invoice->update('sales', 'sales_status', 'invoice', $invoice, 1);
+        $update_invoice->update('sales', 'sales_status', 'invoice', 1, $invoice);
             if($update_invoice){
                 //update quantity of the items in inventory
                 //get all items first in the invoice
