@@ -7,12 +7,12 @@
     include "../classes/select.php";
 
     $get_category = new selects();
-    $row = $get_category->fetch_details_group('rooms', 'category', 'room_id', $room);
+    $row = $get_category->fetch_details_group('items', 'category', 'item_id', $room);
      $category = $row->category;
     
     $prices = $get_category->fetch_details_group('categories', 'price', 'category_id', $category);
 ?>
-    <input type="hidden" name="room_fee" id="room_fee" value="<?php echo $prices->price?>">
+    <input type="text" name="room_fee" id="room_fee" value="<?php echo $prices->price?>" style="color:green; font-weight:bold;">
 <?php
         
 ?>

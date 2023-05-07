@@ -22,7 +22,7 @@
                         <option value=""selected required>Select category</option>
                         <?php
                             $get_category = new selects();
-                            $rows = $get_category->fetch_details('categories');
+                            $rows = $get_category->fetch_details_cond('categories', 'department', 'accomodation');
                             foreach($rows as $row){
                         ?>
                         <option value="<?php echo $row->category_id?>"><?php echo $row->category?></option>
@@ -72,7 +72,7 @@
             <div class="inputs">
                 <div class="data" style="width:48%">
                     <label for="check_in_date">Check in date</label>
-                    <input type="date" name="check_in_date" id="check_in_date" required>
+                    <input type="date" name="check_in_date" id="check_in_date" value="<?php echo date("Y-m-d")?>"required>
                 </div>
                 <div class="data" class="data" style="width:48%">
                     <label for="check_out_date">Check out date</label>

@@ -16,13 +16,12 @@
         <input type="search" id="searchGuestPayment" placeholder="Enter keyword" onkeyup="searchData(this.value)">
     </div>
     <table id="guest_payment_table" class="searchTable">
-        <thead>
+        <thead style="background:var(--otherColor)">
             <tr>
                 <td>S/N</td>
                 <td>Full Name</td>
                 <td>Room Category</td>
                 <td>Room</td>
-                <td>Contact Person</td>
                 <td></td>
             </tr>
         </thead>
@@ -40,7 +39,7 @@
                 <td>
                     <?php 
                         $get_cat = new selects();
-                        $categories = $get_cat->fetch_details_group('rooms', 'category', 'room_id', $detail->room);
+                        $categories = $get_cat->fetch_details_group('items', 'category', 'item_id', $detail->room);
                         $category_id = $categories->category;
                         //get category name
                         $get_cat_name = new selects();
@@ -53,12 +52,11 @@
                 <td>
                     <?php 
                         $get_room = new selects();
-                        $rooms = $get_room->fetch_details_group('rooms', 'room', 'room_id', $detail->room);
-                        echo $rooms->room;
+                        $rooms = $get_room->fetch_details_group('items', 'item_name', 'item_id', $detail->room);
+                        echo $rooms->item_name;
                     ?>
                 </td>
-                <td><?php echo $detail->contact_person?></td>
-                <td style="text-align:center"><span style="font-weight:bold; background:skyblue; border-radius:5px; text-align:Center; width:auto;padding:5px 10px;"><a href="javascript:void(0)" class="page_navs" title="View guest details" style="color:#fff" onclick="showPage('post_payment.php?guest_id=<?php echo $detail->guest_id?>')">Details</a></span></td>
+                <td style="text-align:center"><span style="font-weight:bold; background:var(--primaryColor); border-radius:5px; text-align:Center; width:auto;padding:5px 10px;"><a href="javascript:void(0)" class="page_navs" title="View guest details" style="color:#fff" onclick="showPage('post_payment.php?guest_id=<?php echo $detail->guest_id?>')"><i class="fas fa-eye"></i> Details</a></span></td>
             </tr>
             
             <?php $n++; endforeach;}?>

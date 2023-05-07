@@ -7,11 +7,8 @@
     $first_name = ucwords(htmlspecialchars(stripslashes($_POST['first_name'])));
     $age = ucwords(htmlspecialchars(stripslashes($_POST['age'])));
     $gender = ucwords(htmlspecialchars(stripslashes($_POST['gender'])));
-    $contact_person = ucwords(htmlspecialchars(stripslashes($_POST['contact_person'])));
     $contact_address = ucwords(htmlspecialchars(stripslashes($_POST['contact_address'])));
     $contact_phone = ucwords(htmlspecialchars(stripslashes($_POST['contact_phone'])));
-    $relationship = ucwords(htmlspecialchars(stripslashes($_POST['relationship'])));
-    $cause = ucwords(htmlspecialchars(stripslashes($_POST['death_cause'])));
     $check_in_date = htmlspecialchars(stripslashes($_POST['check_in_date']));
     $check_out_date = htmlspecialchars(stripslashes($_POST['check_out_date']));
     $amount = htmlspecialchars(stripslashes($_POST['amount_due']));
@@ -21,10 +18,10 @@
     include "../classes/dbh.php";
     include "../classes/inserts.php";
     include "../classes/update.php";
-    $check_in = new check_in($posted, $room, $last_name, $first_name, $age, $gender, $contact_person, $contact_phone, $contact_address, $relationship, $cause, $amount, $check_in_date, $check_out_date);
+    $check_in = new check_in($posted, $room, $last_name, $first_name, $age, $gender, $contact_phone, $contact_address, $amount, $check_in_date, $check_out_date);
 
     $check_in->check_in();
     if($check_in){
         $update_room = new Update_table();
-        $update_room->update('rooms', 'room_status', 'room_id', 1, $room);
+        $update_room->update('items', 'item_status', 'item_id', 1, $room);
     }

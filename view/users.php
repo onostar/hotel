@@ -71,23 +71,23 @@
                     <div class="quick_links">
                         <div class="links page_navs" onclick="showPage('check_in.php')" title="Check in Guest">
                             <i class="fas fa-pen-alt"></i>
-                            <p>Check in</p>
+                            <!-- <p>Check in</p> -->
                         </div>
                         <div class="links page_navs" onclick="showPage('guest_payment.php')" title="New Guest payment">
-                            <i class="fas fa-hand-holding-dollar"></i>
-                            <p>New Guest Payment</p>
+                            <i class="fas fa-hand-holding-dollar" style="color:orange"></i>
+                            <!-- <p>New Guest Payment</p> -->
                         </div>
                         <div class="links page_navs" onclick="showPage('other_payment.php')" title="Post other payments">
-                            <i class="fas fa-money-check"></i>
-                            <p>Other Payments</p>
+                            <i class="fas fa-money-check" style="color:red"></i>
+                            <!-- <p>Other Payments</p> -->
                         </div>
                         <div class="links page_navs" onclick="showPage('check_out.php')" title="Check out guest">
-                            <i class="fas fa-door-open"></i>
-                            <p>Check out guest</p>
+                            <i class="fas fa-door-open" style="color:green"></i>
+                            <!-- <p>Check out guest</p> -->
                         </div>
                         <div class="links page_navs" onclick="showPage('cancel_checkin.php')" title="Cancel guest checkin">
-                            <i class="fas fa-power-off"></i>
-                            <p>Cancel checkin</p>
+                            <i class="fas fa-power-off" style="color:red"></i>
+                            <!-- <p>Cancel checkin</p> -->
                         </div>
                     </div>
                 </div>

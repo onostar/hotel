@@ -11,12 +11,13 @@
     --secondaryColor: rgba(241, 56, 23, 0.9);
     --otherColor: rgb(3, 69, 75);
     --moreColor:rgba(11, 99, 134, 0.7);
+    --background:linear-gradient(45deg, hsla(202, 81%, 22%, .9), hsl(189, 83%, 35%));
 }
 body{
     position:relative;
     font:14px/1.5 'Poppins', Sans-serif;
     color:#222;
-    background:#f4f7ea;
+    background:#fcfafa;
     /* overflow: hidden; */
 }
 a{
@@ -200,9 +201,9 @@ nav i{
     border:none;
     display:inline;
 }
-.menu-icon, .menu_icon{
+/* .menu-icon, .menu_icon{
     display:none;
-}
+} */
 
 button{
     background: var(--primaryColor);
@@ -267,14 +268,25 @@ header{
 }
 .logo{
     width:15vw;
-    height:10vh;
+    height:5vh;
 }
 .logo img{
     width:100%;
     height:100%;
 }
+.comp_logo{
+    width:100%;
+    height:100px;
+    border-radius: 20px;
+}
+.comp_logo img{
+    width:100%;
+    height: 100%;
+    object-fit: cover;
+    
+}
 .search input{
-    width:30vw;
+    width:30%;
     padding:5px;
     border-radius:5px;
 }
@@ -304,7 +316,7 @@ header h2{
     box-shadow:2px 2px 2px 2px #c4c4c4;
     padding:8px;
     /* background:var(--secondaryColor); */
-    color:var(--secondaryColor);
+    color:var(--sotherColor);
     margin:10px;
     text-transform: uppercase;
     transition:.2s all ease-in-out;
@@ -330,6 +342,14 @@ header h2{
 #loginDiv:hover{
     color:#fff;
     background:var(--primaryColor);
+}
+#loginDiv p{
+    color:var(--secondaryColor);
+    text-align: center;
+    margin:0;
+}
+#loginDiv:hover p, #loginDiv:focus p{
+    color:#fff!important;
 }
 .login_option{
     display:none;
@@ -449,6 +469,11 @@ header i{
 .menu_icon{
     display:none;
 }
+.menu_icon i{
+    font-size: 1.2rem;
+    color:var(--primaryColor);
+    border-radius: 20px;
+}
 .logout{
     color:#fff;
 }
@@ -563,50 +588,65 @@ main hr{
     object-fit: cover;
 }
 #reg_body{
-    background:#fff;
+    background:var(--background);
     width:100%;
-    height:90vh;
+    height:100vh;
     margin:0;
 }
 #reg_body .header{
-    width:90%;
+    width:100%;
     display:flex;
-    justify-content: space-between;
-    margin:10px auto;
+    justify-content: center;
+    /* margin:10px auto; */
+    gap:2rem;
+    padding:0px 20px;
+    background:#fff;
 }
 .header h1{
     width:15vw;
+    height:5vw;
+    padding:20px 0;
 }
 .header h1 a{
     width:100%;
-    padding:0;
-    margin:0;
+
 }
 .header h1 a img{
+    height:100%;
     width:100%;
 }
+#reg_body .header h3{
+    font-size: 2rem;
+    padding:10px;
+    text-align:center;
+    color:var(--primaryColor);
+    text-transform: capitalize;
+}
 .reg_log{
-    position:relative;
+    /* position:relative;
     top:0;
-    left:0;
+    left:0; */
     width:100%;
-    height:85vh;
+    /* height:85vh; */
     margin:0;
-    background:#fff;
+    /* background:#fff; */
 }
 
 .login_page{
-    position:absolute;
+   /*  position:absolute;
     top:0;
-    left:8vw;
+    left:8vw; */
     width:32%;
     height:80%;
     background:#fff;
     padding:10px;
-    margin-top:10px;
+    margin:40px auto 0;
     box-shadow: 2px 2px 2px 3px #c4c4c4;
     border-radius:10px;
     /* z-index:3; */
+}
+#foot{
+    color:var(--otherColor);
 }
 #change_pwd{
     position:absolute;
@@ -690,12 +730,12 @@ main hr{
 }
 
 .adds{
-    position:absolute;
+    /* position:absolute; */
     /* background:var(--primaryColor); */
-    width:70%;
+    width:100%;
     height:100%;
     top:0;
-    left:30%;
+    left:0;
 }
 #change_banner .adds{
     width:100%;
@@ -826,13 +866,18 @@ main hr{
     text-align:center;
     font-size: 1rem;
 }
+.notify{
+    background:rgb(145, 185, 81)!important;
+    width:90%;
+    margin:0 auto;
+    padding:5px 10px;
+    border-radius: 5px;
+}
 .notify p{
-    background:rgb(241, 94, 68)!important;
     color:#fff;
     /* margin-bottom:5px; */
-    text-align:center;
-    font-size: 1.1rem;
-    width:50%!important;
+    /* text-align:center; */
+    font-size: 1rem;
 }
 .notify span{
     font-weight: bold;
@@ -1043,6 +1088,9 @@ main hr{
 .allResults table td{
     border:1px solid #c4c4c4;
 }
+table tr:nth-child(even){
+    background:#f7ead1!important;
+}
 .allResults table thead{
     background:var(--primaryColor);
     color:#fff;
@@ -1081,6 +1129,7 @@ main hr{
 .amount_due{
     background: #fff;
     padding:20px;
+    color:green;
 }
 .amount_due h2{
     text-align: right!important;
@@ -1091,27 +1140,34 @@ main hr{
 }
 .all_details h2{
     text-transform: capitalize;
-    color:var(--moreColor);
+    color:var(--secondaryColor);
+    font-size: 1.3rem;;
 }
 .guest_name .allResults, .guest_name .displays{
     margin:0;
 }
+.guest_name table{
+    margin:0!important;
+}
 .guest_name h4{
-    background:var(--moreColor);
+    background:var(--otherColor);
     padding:10px;
     border-radius: 5px;
     width:90%;
     margin:0 auto!important;
-    font-size: .9rem;
+    font-size: 1rem;
     color:#fff;
 }
 .total_amount{
     text-decoration:underline;
-    color:green;
+    color:red;
     text-align:right;
     font-size:1.2rem;
     font-weight: bold; 
     margin:10px 0;
+}
+#selectBank, #multiples{
+    display:none;
 }
 .payment_mode h3{
     text-transform: capitalize;
@@ -1208,9 +1264,14 @@ main hr{
     width:100%;
     height:100%;
     align-items:center;
+    transition: all 1s ease-in-out;
+    
+}
+.admin_main aside nav:hover, .admin_main aside nav:focus{
     overflow-y: scroll;
-    scrollbar-width: none;
-    scroll-behavior: smooth;
+    scrollbar-width:thin;
+    scroll-behavior:smooth;
+    scrollbar-color: white;
 }
 .navs{
     display:none;
@@ -1358,7 +1419,7 @@ main hr{
     display:flex;
     justify-content: space-between;
     align-items: center;
-    margin:0 auto!important;
+    margin:10px auto!important;
 }
 .quick_links{
     /* display:none; */
@@ -1370,7 +1431,7 @@ main hr{
     margin:10px 0;
 }
 .quick_links .links{
-    width:50px;
+    min-width:50px;
     min-height:50px;
     display:flex;
     text-align: center;
@@ -1391,7 +1452,7 @@ main hr{
     font-size:1.5rem;
 }
 .quick_links .links p{
-    display:none;
+    /* display:none; */
     color:var(--primaryColor);
     font-size:.8rem;
     text-transform: capitalize;
@@ -1451,13 +1512,18 @@ main hr{
     flex-wrap:wrap;
     gap:0;
 }
+.dashboard_all h3{
+    color:var(--moreColor);
+    width:90%;
+    margin:auto;
+}
 #dashboard .cards{
-    min-width:270px;
-    height:100px;
+    min-width:220px;
+    height:80px;
     margin: 0;
     box-shadow:2px 2px 2px 2px #c4c4c4;
     border-radius:4px;
-    padding:20px;
+    padding:10px;
     cursor:pointer;
     transition: .2s all ease-in-out;
 }
@@ -1475,22 +1541,22 @@ main hr{
     flex-direction: column;
 }
 #dashboard .cards p{
-    font-size:1rem;
+    font-size:.9rem;
     /* text-align:center; */
-    text-transform: uppercase;
+    text-transform: capitalize;
 }
 #dashboard .cards p:nth-child(2){
-    font-size: 1.2rem;
+    font-size: 1rem;
 }
 #dashboard .cards .infos{
     /* margin-top:20px; */
     display:flex;
     align-items: center;
-    justify-content:space-between;
-    gap:1.4rem;
+    justify-content:space-between!important;
+    gap:1rem;
 }
 .cards .infos i{
-    font-size:1.5rem;
+    font-size:1.2rem;
 }
 #dashboard #card1{
     background:linear-gradient(45deg, hsla(120, 100%, 50%, 0.7), hsla(120, 100%, 25%, 0.8));
@@ -1502,7 +1568,7 @@ main hr{
     background:linear-gradient(45deg,hsla(0, 100%, 50%, .7), hsla(0, 100%, 40%, .7));
 }
 #dashboard #card0{
-    background:linear-gradient(45deg, hsla(60, 73%, 40%, .8), hsla(60, 73%, 35%, .8));
+    background:linear-gradient(45deg, rgba(176, 28, 102, 0.8), rgba(216, 82, 149, 0.8));
 }
 #dashboard #card4{
     background:linear-gradient(45deg, hsla(180, 81%, 44%, .8), hsl(180, 81%, 24%, .8));
@@ -1549,10 +1615,10 @@ main hr{
     margin:0 auto;
     box-shadow:3px 3px 5px 3px #807d7d;
     background:#fff;
-    transform:scale(0);
+    /* transform:scale(0);
     animation:.2s show 1;
     animation-fill-mode: forwards;
-    animation-timing-function: linear;
+    animation-timing-function: linear; */
     
 }
 @keyframes show{
@@ -1641,7 +1707,7 @@ main hr{
 }
 #days p{
     font-size:1.1rem;
-    color:green;
+    /* color:green; */
 }
 .add_user_form button{
     background:green;
@@ -1936,6 +2002,15 @@ main hr{
     gap:0;
     margin:0 auto!important;
 }
+.daily_monthly h3{
+    color:#fff!important;
+    padding:10px;
+    text-align:center;
+    font-size: 1rem;
+    text-transform: uppercase;
+    background:linear-gradient(45deg, rgba(199, 21, 95, 0.8), rgba(238, 95, 155, 0.8));
+    
+}
 .daily_monthly div{
     width:48%;
     max-height:400px;
@@ -2008,7 +2083,7 @@ main hr{
     width:80%!important;
 }
 .select_date{
-    width:50%;
+    width:100%;
     margin:10px 0 20px;
 }
 #vehicleRevenue .select_date, #vehicleExpense .select_date{
@@ -2024,7 +2099,10 @@ main hr{
 }
 .select_date section .from_to_date{
     margin:0;
-    width:32%;
+    width:20%;
+}
+.select_date section button{
+    width:20%!important;
 }
 #vehicleRevenue .select_date section .from_to_date, #vehicleExpense .select_date section .from_to_date{
     width:30%;
@@ -2582,49 +2660,8 @@ main hr{
     color:#222!important;
 }
 
-#helpCenter ul{
-    width:80%;
-    margin:auto;
-    background:#fff;
-    padding:20px;
-}
-#helpCenter li{
-    list-style: none;
-    border-bottom: 1px solid rgba(124, 121, 121, 0.5);
-}
-#helpCenter h4{
-    display:flex;
-    justify-content: space-between;
-    cursor: pointer;
-    font-size:1rem;
-    color:#3b3b3b;
-    font-family: "Poppins";
-    margin:5px;
-    font-weight:normal;
-}
-#helpCenter i{
-    font-size: .9rem;
-    padding:10px 0;
-    color:var(--secondaryColor);
-}
-#helpCenter p{
-    display:none;
-    margin:0 15px;
-    border-left:1px solid rgba(102, 100, 100, .2);
-    /* transform: scale(0); */
-    padding:10px;
-    animation:.3s faq 1;
-    animation-timing-function: linear;
-    animation-fill-mode: forwards;
-}
-@keyframes faq{
-    0%{
-        transform:translateY(100%);
-    }
-    100%{
-        transform: translateY(0%);
-    }
-}
+x
+
 #total_amount{
     display:flex!important;
     align-items: center;
@@ -2649,13 +2686,62 @@ main hr{
 #journey{
     display:none;
 }
-#create_bill .create_bills{
+/* #direct_sales .create_bills{
     display:none;
 }
-#create_bill .bill_type{
+#direct_sales .bill_type{
     padding:10px;
     
+} */
+/* #sales_receipt{
+    display:none;
+} */
+#printBtn{
+    width:90%;
+    margin:auto;
 }
+#printBtn button{
+    background:green!important;
+    padding:10px 20px;
+    border-radius: 5px;
+    font-size:1rem;
+}
+#change_price{
+    background:var(--otherColor);
+    font-size: .9rem;
+}
+/* .sales_receipt{
+    padding:10px;
+}
+.sales_receipt h2, .sales_receipt p{
+    text-align:center;
+    font-size:.9rem;
+}
+.sales_receipt .receipt_head{
+    display:flex;
+    justify-content: center;
+    gap:.5rem;
+    margin:2px 0;
+}
+.sales_receipt .total_amount{
+    text-align: right;
+    font-size:.9rem;
+}
+
+.sales_receipt .sold_by{
+    text-align: left;
+    font-size:.9rem;
+
+}
+.sales_receipt table{
+    width:92%!important;
+    margin:auto!important;
+    box-shadow:none;
+}
+.sales_receipt table thead tr td{
+    font-size:.9rem;
+    padding:2px;
+} */
 .item_categories{
     padding:20px;
 }
@@ -2680,7 +2766,140 @@ main hr{
     background:var(--otherColor);
     color:#fff;
     padding:10px 5px;
+    /* margin:2px 0; */
+    border-bottom: 1px solid #fff;
 }
+#sales_item option:hover{
+    background:var(--moreColor);
+
+}
+.profitNloss{
+    background: #fff;;
+}
+.prof_loss{
+    display:flex;
+    /* gap:3rem; */
+    justify-content: space-between;
+    margin:0 50px;
+    padding:10px 100px;
+    
+}
+.prof_loss h3{
+    font-weight: normal;
+    color:var(--otherColor);
+    font-size: 1rem;
+
+}
+.prof_loss p{
+    color:green;
+    font-size: 1rem;
+    text-align: left;
+}
+#add_rights{
+    display: flex;
+    gap:2rem;
+}
+/* #add_rghts .add_user_form{
+    width:30%!important;
+    margin:10px;
+} */
+#add_rights .rights{
+    width:50%;
+    background:#fff;
+    padding:10px;
+}
+
+#add_rights .rights .each_right a{
+    color:red;
+}
+.download_excel{
+    box-shadow: 2px 2px 2px #c4c4c4;
+    padding:5px 10px;
+    margin:5px;
+    background: green;
+    color:#fff;
+    border-radius: 5px;
+}
+.page_links{
+    display:flex;
+    flex-wrap: wrap;
+    gap:.3rem;
+    margin:10px 0;
+}
+.page_links li{
+    list-style: none;
+}
+.pages{
+    display:flex;
+}
+.pages a{
+    background:#fff;
+    border:1px solid var(--primaryColor);
+    padding:5px;
+    color:var(--moreColor);
+}
+.pages a:hover, .pages a:focus{
+    background:var(--otherColor);
+    color: #fff;;
+}
+.help_details{
+    width:80%;
+    margin:20px 50px;   
+}
+#helpCenter{
+    width:100%;
+    background:#fff;
+    /* padding:20px; */
+}
+#helpCenter li{
+    list-style: none;
+    padding: 5px;
+    border-bottom: 1px solid rgba(124, 123, 123, .3);
+}
+#FAQ h3{
+    text-align: center;
+    color:#fff;
+    background: var(--otherColor);
+    padding:5px;
+    text-transform: capitalize;
+}
+#helpCenter h4{
+    display:flex;
+    justify-content: space-between;
+    cursor: pointer;
+    font-size:1rem;
+    color:#3b3b3b;
+    font-family: "Poppins";
+    margin:5px;
+    /* font-weight:normal; */
+}
+#helpCenter i{
+    font-size: 1.1rem;
+    color:var(--secondaryColor);
+}
+#helpCenter i:last-child{
+    font-size: .9rem;
+}
+#helpCenter p{
+    display:none;
+    /* margin:0 15px; */
+    background:#fff;
+    /* border-left:1px solid rgba(102, 100, 100, .2); */
+    /* transform: scale(0); */
+    padding:10px;
+    animation:.3s faq 1;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+}
+@keyframes faq{
+    0%{
+        transform:translateY(100%);
+    }
+    100%{
+        transform: translateY(0%);
+    }
+}
+
 @media screen and (max-width: 800px){
     #topHeader{
         justify-content: space-between;
@@ -2723,6 +2942,9 @@ main hr{
     .new_header h1 img{
         width:100%;
         margin:5px;
+    }
+    header h2{
+        display:none;
     }
     #user_name span{
         display:none;
@@ -2775,9 +2997,25 @@ main hr{
     .reg_log{
         gap:0;
     }
+    .header h1{
+        width:40vw;
+        height:10vh;
+    }
+    .header h3{
+        display:none;
+    }
    .login_page{
-       width:100%;
+       width:90%;
    }
+   /* .login_page h1{
+        text-align:center;
+        width:50%;
+        margin:auto;
+        height:50px;
+   }
+   .login_page h1 img{
+    width:100%;
+   } */
     .adds{
         display:none;
     }
@@ -3047,8 +3285,8 @@ main hr{
         left:0;
     } */
     .logo{
-        width:38vw;
-        height:6vh;
+        width:30vw;
+        height:4vh;
     }
     .rms{
          margin-left:0;
@@ -3071,20 +3309,20 @@ main hr{
         display: block;
     }
     .menu_icon i{
-        color:var(--secondaryColor);
+        color:var(--primaryColor);
         border-radius:10px;
         font-size:2rem;
-        border-radius:10px;
+        border-radius:20px;
     }
     .login{
         position:relative;
-        display:none;
+        /* display:none; */
     }
     .admin_main .main_menu, .admin_main .mobile_menu{
         display:none;
         position:fixed;
-        top:10vh;
-        width:70vw;
+        top:8vh;
+        width:60vw;
         height:100vh;
         margin:0;
         z-index:1;
@@ -3166,10 +3404,15 @@ main hr{
             transform: translateY(0);
         }
     }
+    .login_option{
+        min-width: 20vw;
+    }
     .login_option h3{
         color:#000;
     }
-    
+    #loginBtn{
+        width:90%;
+    }
     #signupBtn{
         border:none;
         padding:0;
@@ -3198,11 +3441,15 @@ main hr{
     #quickLinks{
         display:flex;
     }
+    .quick_links{
+        width:100%;
+    }
     #dashboard{
-        width:98%;
+        width:100%;
         flex-wrap:wrap;
         align-items:Center;
         justify-content: center;
+        margin:10px;
     }
     #dashboard #userSummary{
         min-width:180px;
@@ -3221,7 +3468,8 @@ main hr{
         font-size:.9rem;
     }
     #dashboard .cards .infos{
-        font-size:1.7rem;
+        font-size:1.4rem;
+        gap:.5rem;
     }
     #reg_success, .reg_success{   
         width:90%;
@@ -3256,6 +3504,13 @@ main hr{
     }
     .add_user_form form .inputs{
         margin:0;
+    }
+    .add_user_form .inputs input, .add_user_form .inputs select{
+        width:100%;
+        margin:10px 20px;
+    }
+    .add_user_form .inputs button{
+        margin:0 20px;
     }
     .add_user_form form .inputs .data{
         width:100%;
@@ -3316,12 +3571,33 @@ main hr{
         width:80%;
     }
     .displays{
-        width:100%!important;
+        width:95%;
         margin:0;
+    }
+    .displays .add_user_form{
+        width:100%!important;
+    }
+    .displays .add_user_form .data{
+        width:90%!important;
+        margin:0!important;
+    }
+    .displays .add_user_form .data label{
+        margin:0 20px!important;
+    }
+    #edit_item_name .displays{
+        width:100%!important;
     }
     #searchResults, .allResults{
         width:100%!important;
         margin:0;
+    }
+    .allResults table{
+        /* width:95%; */
+        overflow-x: scroll;
+        scrollbar-width: none;
+    }
+    .allResults table td{
+        font-size: .9rem;
     }
     #addBanner .bannerBtns button{
         margin:10px;
@@ -3381,6 +3657,85 @@ main hr{
     .packages h2{
         font-size:1.4rem;
     }
+    #add_rights{
+        flex-wrap: wrap;
+        flex-direction: column;
+    }
+    /* #add_rghts .add_user_form{
+        width:30%!important;
+        margin:10px;
+    } */
+    #add_rights .rights{
+        width:100%;
+        background:#fff;
+        padding:10px;
+    }
+    #add_rights .add_user_form{
+        width:100%!important;
+    }
+    #add_rights .add_user_form .data{
+        width:90%!important;
+        margin:0!important;
+    }
+    #add_rights .add_user_form .data label{
+        margin:0 20px!important;
+    }
+    #add_rights .add_user_form .data input{
+        margin-top:0!important;
+    }
+
+    .priceForm{
+        width:100%!important;
+    }
+    .priceForm .addUserForm{
+        width: 100% !important;
+    }
+    .priceForm .inputs{
+        flex-wrap:wrap!important;
+    }
+    .priceForm .inputs .data{
+        width:40%!important;
+        overflow: hidden;
+        margin:0!important;
+    }
+    .priceForm .inputs .data input{
+        width:100%!important;
+    }
+    .priceForm .inputs .item_head{
+        width:auto!important;
+    }
+    .priceForm .inputs .adjust_btn{
+        width:50%!important;
+    }
+    .from_to_date{
+        width:33%!important;
+    }
+    .select_date #search_date{
+        width:30%!important;
+    }
+    .search input{
+        width:100%;
+    }
+    .payment_details h3{
+        font-size:1rem;
+    }
+    #remove_item{
+        width:100%!important;
+    }
+    #revenueReport .total_amount{
+        width:50%!important;
+        font-size:1rem;
+    }
+    .search{
+        display:flex!important;
+    }
+    #helpCenter{
+        width:100%;
+        /* padding:20px; */
+    }
+    #helpCenter h4{
+        font-size:.9rem;
+    }
 }
 @media screen and (max-width:650px){
     #login_reg{
@@ -3395,137 +3750,41 @@ main hr{
     .reg_form .inputs .data{
         width:47%
     }
-    
-    
-
-    
-    
-}
-
-@media print{
-    body *{
-        visibility: hidden;
+    #dashboard .cards{
+        min-width:90%;
+        height:60px;
+        margin: 0;
+        box-shadow:2px 2px 2px 2px #c4c4c4;
+        border-radius:4px;
+        padding:10px;
+        cursor:pointer;
+        transition: .2s all ease-in-out;
     }
-    body{
-        width:100%;
-        height:100vh;
-        position:relative;
-
-    }
-    header{
-        display:none;
-    }
-    #topHeader{
-        display:none;
-    }
-    .admin_main{
-        display:block;
-        position:absolute;
-        left:0;
-        right:0;
-        width:100%;
-        height:100%;
-    }
-    .admin_main aside{
-        display:none;
-    }
-    #contents{
-        /* display:none; */
-        margin:0;
-        width:100vw;
-        height:100vw;
-        /* margin-top:10vh; */
-        position:absolute;
-        left:0;
-        right:0;
-        width:100%;
-        height:100%;
-    }
-    #contents .success_message, #contents .error_message, #contents #dashboard{
-        display:none;
-    }
-    .management{
-        display:none;
-        margin:0;
-        position:absolute;
-        left:0;
-        right:0;
-        width:100%;
-        height:100%;
-    }
-    #paid_receipt{
-        display:block;
-    }
-    .clearanceSlip, .clearanceSlip *{
-        visibility: visible;
-        margin:0;
-        padding:0;
-    }
-    .clearanceSlip{
-        position:absolute;
-        top:0;
-        left:0;
-        width:100vw;
-        height:100vh;
-        padding-bottom:5px;
-        background:#fff;
-        box-shadow: 2px 2px 2px 2px #c4c4c4;
-    }
-    /* #clearanceSlip .logos{
-        display:flex;
-        justify-content: center;
-        align-items: center;
-        color:#fff;
-        width:100%;
-        height:50px;
-        background: linear-gradient(35deg, rgba(32, 70, 45, 0.9), #11b84e)!important;
+    #dashboard .cards .infos{
+        justify-content:space-between!important;
         gap:.5rem;
-        padding:5px;
-    } */
-    #addRestaurant, #approved_table, .allResults, .displays, .management{
-        display:none;
-
+        text-align: left!important;
     }
-    .download_slip, #certificate{
-        display:block!important;
-        position:relative;
-        top:0!important;
-        left:0!important;
-        margin:0!important;
-        padding:0!important;
-        width:100vw!important;
-        height:100vh;
-    }
-    .download_slip .clearanceSlip, #attendanceSlip{
-        display:block;
-        position:relative!important;
-        top:0!important;
-        left:0!important;
-        width:100%!important;
-        height:100%!important;
-    }
-
-
+    
+    
 }
+
 @media print{
     body *{
         visibility:none;
     }
-    #sales_receipt, #sales_receipt *{
-        visibility: visible;
+    .sales_receipt, .sales_receipt *{
+        visibility: visible!important;
     }
-    #sales_receipt{
+    .sales_receipt{
         display:block!important;
         position:absolute;
-        top:0;
-        left:0;
-        width:100%;
-        height:100%;
-        padding-bottom:5px;
+        top:0!important;
+        left:0!important;
+        width:100vw!important;
+        height:100vh!important;
+        /* padding-bottom:5px; */
         background:#fff;
         /* box-shadow: 2px 2px 2px 2px #c4c4c4; */
     }
-   /*  #clearanceSlip .slip{
-        width:100%;
-    } */
 }

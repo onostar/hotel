@@ -7,19 +7,19 @@
     include "../classes/select.php";
 
     $get_room = new selects();
-    $rows = $get_room->fetch_details_2cond('rooms', 'category', 'room_status', $category, 0);
+    $rooms = $get_room->fetch_details_2cond('items', 'category', 'item_status', $category, 0);
 ?>
     <option value=""selected>Select a room</option>
 <?php
-    if(gettype($rows) == 'array'){
-        foreach ($rows as $row) {
+    if(gettype($rooms) == 'array'){
+        foreach ($rooms as $room) {
             
 
 ?>
-    <option value="<?php echo $row->room_id?>"><?php echo $row->room?></option>
+    <option value="<?php echo $room->item_id?>"><?php echo $room->item_name?></option>
 <?php
         }   
     }else{
-        echo "<option value=''selected>Please select a category</option>";
+        echo "<option value=''selected>No available room</option>";
     }
 ?>

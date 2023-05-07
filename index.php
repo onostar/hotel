@@ -25,14 +25,20 @@
                     <img src="images/logo.png" alt="logo">
                 </a>
             </h1>
+            <h3>Demo Hotels & Lounge</h3>
+           
         </div>
         <section class="reg_log">
-            <div class="adds">
-                <img src="images/banner.webp" alt="login banner">
-            </div>
+            <!-- <div class="adds">
+                <img src="images/software.jpg" alt="login banner">
+            </div> -->
             <div class="login_page">
                 
-                
+            <!-- <h1>
+                <a href="index.php">
+                    <img src="images/logo.png" alt="logo">
+                </a>
+            </h1> -->
                 <h2>Welcome User!</h2>
                 <p>Sign in to continue</p>
                 <?php
@@ -87,7 +93,7 @@
                 </form>
                 
                 <div id="foot">
-                    <p >&copy;<?php echo Date("Y");?> Hotel. All Rights Reserved.</p>
+                    <p >&copy;<?php echo Date("Y");?> Dorthpro Digitals. All Rights Reserved.</p>
 
                 </div>
 

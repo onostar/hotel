@@ -453,11 +453,8 @@ function checkIn(){
      let first_name = document.getElementById("first_name").value;
      let age = document.getElementById("age").value;
      let gender = document.getElementById("gender").value;
-     let contact_person = document.getElementById("contact_person").value;
      let contact_address = document.getElementById("contact_address").value;
      let contact_phone = document.getElementById("contact_phone").value;
-     let relationship = document.getElementById("relationship").value;
-     let death_cause = document.getElementById("death_cause").value;
      let check_in_date = document.getElementById("check_in_date").value;
      let check_out_date = document.getElementById("check_out_date").value;
      let amount_due = document.getElementById("amount_due").value;
@@ -488,10 +485,7 @@ function checkIn(){
           alert("Please Select Gender");
           $("#gender").focus();
           return;
-     }else if(contact_person.length == 0 || contact_person.replace(/^\s+|\s+$/g, "").length == 0){
-          alert("Please Enter contact person's name");
-          $("#contact_person").focus();
-          return;
+    
      }else if(contact_address.length == 0 || contact_address.replace(/^\s+|\s+$/g, "").length == 0){
           alert("Please Enter contact person's Address");
           $("#contact_address").focus();
@@ -500,14 +494,7 @@ function checkIn(){
           alert("Please Enter contact's Phone number");
           $("#contact_phone").focus();
           return;
-     }else if(relationship.length == 0 || relationship.replace(/^\s+|\s+$/g, "").length == 0){
-          alert("Please Select Contact's relationship");
-          $("#relationship").focus();
-          return;
-     }else if(death_cause.length == 0 || death_cause.replace(/^\s+|\s+$/g, "").length == 0){
-          alert("Please Select Cause of Death");
-          $("#death_cause").focus();
-          return;
+    
      }else if(check_in_date.length == 0 || check_in_date.replace(/^\s+|\s+$/g, "").length == 0){
           alert("Please Input Check in date");
           $("#check_in_date").focus();
@@ -532,7 +519,7 @@ function checkIn(){
           $.ajax({
                type : "POST",
                url : "../controller/check_in.php",
-               data : {posted_by:posted_by,check_in_room:check_in_room, last_name:last_name, first_name:first_name, age:age, gender:gender, contact_person:contact_person, contact_address:contact_address, contact_phone:contact_phone, relationship:relationship, death_cause:death_cause, check_in_date:check_in_date, check_out_date:check_out_date, amount_due:amount_due},
+               data : {posted_by:posted_by,check_in_room:check_in_room, last_name:last_name, first_name:first_name, age:age, gender:gender, contact_address:contact_address, contact_phone:contact_phone, check_in_date:check_in_date, check_out_date:check_out_date, amount_due:amount_due},
                success : function(response){
                $(".info").html(response);
                }
@@ -542,10 +529,14 @@ function checkIn(){
           $("#last_name").val('');
           $("#first_name").val('');
           $("#amount_due").val('');
-          $("#check_in_date").val('');
+          $("#gender").val('');
+          $("#contact_address").val('');
+          $("#contact_phone").val('');
+          // $("#check_in_date").val('');
           $("#check_out_date").val('');
+          $("#age").val('');
           $("#days").html('');
-          $("#last_name").focus();
+          $("#check_in_category").focus();
           return false; 
      }
         
@@ -563,7 +554,7 @@ function calculateDays(){
      days = secondDay.getTime() - firstDay.getTime();
      totalDays = days / (1000 * 60 * 60 * 24);
      newAmount = totalDays * parseInt(room_fee);
-     amount.innerHTML = "<input type='number' name='amount_due' id='amount_due' value='"+newAmount+"'>";
+     amount.innerHTML = "<input type='number' name='amount_due' id='amount_due' value='"+newAmount+"' style='color:green'>";
      num_days.innerHTML = "<p>(Checking in for "+totalDays+" days)</p>";
      // alert(totalDays);
 }

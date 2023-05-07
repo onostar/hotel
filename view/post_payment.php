@@ -15,7 +15,7 @@
 ?>
 <div id="post_payment" class="displays all_details">
     <!-- <div class="info"></div> -->
-    <button class="page_navs" id="back" onclick="showPage('other_payment.php')"><i class="fas fa-angle-double-left"></i> Back</button>
+    <button class="page_navs" id="back" onclick="showPage('guest_payment.php')"><i class="fas fa-angle-double-left"></i> Back</button>
     <h2>Payment Details</h2>
     <div class="guest_name">
         <h4>
@@ -50,7 +50,7 @@
                         <td>
                             <?php 
                                 $get_cat = new selects();
-                                $categories = $get_cat->fetch_details_group('rooms', 'category', 'room_id', $detail->room);
+                                $categories = $get_cat->fetch_details_group('items', 'category', 'item_id', $detail->room);
                                 $category_id = $categories->category;
                                 //get category name
                                 $get_cat_name = new selects();

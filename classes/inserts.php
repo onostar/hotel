@@ -177,25 +177,23 @@
         }
 
         //check in
-        protected function check_in_guest($posted, $room, $last_name, $first_name, $age, $gender, $contact, $address, $phone, $relationship, $cause, $check_in_date, $check_out_date, $amount){
+        protected function check_in_guest($posted, $room, $last_name, $first_name, $age, $gender, $phone, $address, $amount, $check_in_date, $check_out_date){
             
             //check if already checkin
-            $confirm_check  = $this->connectdb()->prepare("SELECT * FROM check_ins WHERE last_name = :last_name AND first_name = :first_name");
+            $confirm_check  = $this->connectdb()->prepare("SELECT * FROM check_ins WHERE last_name = :last_name AND first_name = :first_name AND contact_phone = :contact_phone");
             $confirm_check->bindValue("last_name", $last_name);
             $confirm_check->bindValue("first_name", $first_name);
+            $confirm_check->bindValue("contact_phone", $phone);
             $confirm_check->execute();
             if(!$confirm_check->rowCount() > 0){
-                $check_in = $this->connectdb()->prepare("INSERT INTO check_ins (last_name, first_name, room, age, gender, contact_person, contact_phone, contact_address, relationship, death_cause, check_in_date, check_out_date, amount_due, posted_by) VALUES (:last_name, :first_name, :room, :age, :gender, :contact_person, :contact_phone, :contact_address, :relationship, :death_cause, :check_in_date, :check_out_date, :amount_due, :posted_by)");
+                $check_in = $this->connectdb()->prepare("INSERT INTO check_ins (last_name, first_name, room, age, gender, contact_phone, contact_address, check_in_date, check_out_date, amount_due, posted_by) VALUES (:last_name, :first_name, :room, :age, :gender, :contact_phone, :contact_address, :check_in_date, :check_out_date, :amount_due, :posted_by)");
                 $check_in->bindvalue("last_name", $last_name);
                 $check_in->bindvalue("first_name", $first_name);
                 $check_in->bindvalue("room", $room);
                 $check_in->bindvalue("age", $age);
                 $check_in->bindvalue("gender", $gender);
-                $check_in->bindvalue("contact_person", $contact);
                 $check_in->bindvalue("contact_phone", $phone);
                 $check_in->bindvalue("contact_address", $address);
-                $check_in->bindvalue("relationship", $relationship);
-                $check_in->bindvalue("death_cause",$cause);
                 $check_in->bindvalue("check_in_date",$check_in_date);
                 $check_in->bindvalue("check_out_date",$check_out_date);
                 $check_in->bindvalue("amount_due",$amount);
@@ -375,35 +373,29 @@
         private $first_name;
         private $age;
         private $gender;
-        private $contact;
         private $phone;
         private $address;
-        private $relationship;
-        private $cause;
         private $amount;
         private $check_in_date;
         private $check_out_date;
 
-        public function __construct($posted, $room, $last_name, $first_name, $age, $gender, $contact, $phone, $address, $relationship, $cause, $amount, $check_in_date, $check_out_date)
+        public function __construct($posted, $room, $last_name, $first_name, $age, $gender, $phone, $address, $amount, $check_in_date, $check_out_date)
         {
             $this->posted = $posted;
             $this->room = $room;
             $this->last_name = $last_name;
             $this->first_name = $first_name;
             $this->address = $address;
-            $this->relationship = $relationship;
             $this->age = $age;
             $this->gender = $gender;
-            $this->contact = $contact;
             $this->phone = $phone;
-            $this->cause = $cause;
             $this->amount = $amount;
             $this->check_in_date = $check_in_date;
             $this->check_out_date =$check_out_date;
         }
 
         public function check_in(){
-            $this->check_in_guest($this->posted, $this->room, $this->last_name, $this->first_name, $this->age, $this->gender, $this->contact, $this->address, $this->phone, $this->relationship, $this->cause, $this->check_in_date, $this->check_out_date, $this->amount);
+            $this->check_in_guest($this->posted, $this->room, $this->last_name, $this->first_name, $this->age, $this->gender, $this->phone, $this->address, $this->amount, $this->check_in_date, $this->check_out_date);
         }
     }
 
