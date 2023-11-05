@@ -11,8 +11,9 @@
     <hr>
     <div class="search">
         <input type="search" id="searchRoom" placeholder="Enter keyword" onkeyup="searchData(this.value)">
+        <a class="download_excel" href="javascript:void(0)" onclick="convertToExcel('vendor_list_table', 'List of suppliers')"title="Download to excel"><i class="fas fa-file-excel"></i></a>
     </div>
-    <table id="room_list_table" class="searchTable">
+    <table id="vendor_list_table" class="searchTable">
         <thead>
             <tr style="background:var(--moreColor)">
                 <td>S/N</td>

@@ -1,15 +1,21 @@
 <?php
     session_start();
+    include "../classes/dbh.php";
+    include "../classes/select.php";
+
+    $get_company = new selects();
+    $rows = $get_company->fetch_details('companies');
+    foreach($rows as $row){
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="keywords" content="morgue, mortuary, dead bodies">
-    <meta name="description" content="An application developed for the management of deadbodies placed in the morgue from a particular date to another">
+    <meta name="keywords" content="Hotel, Lodging, Accomodation, lounge, bar, hotel software, lodging and accomodation software, accounting, hotel software">
+    <meta name="description" content="An online/offline hotel and lodging software management system. Developed for the management of guests check in, check out, bills, restaurant, etc">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Change Password | Hotel management</title>
+    <title>Hotel management | Change password</title>
     <link rel="icon" type="image/png" size="32x32" href="../images/logo.png">
     <link rel="stylesheet" href="../fontawesome-free-6.0.0-web/css/all.css">
     <link rel="stylesheet" href="../fontawesome-free-6.0.0-web/css/all.min.css">
@@ -18,18 +24,25 @@
 </head>
 <body>
     <main id="reg_body">
+       <!--  <div class="header">
+            <h1>
+                <a href="index.php">
+                    <img src="../images/logo.png" alt="logo">
+                </a>
+            </h1>
+            <h3><?php echo $row->company?></h3>
+            -->
+        </div>
+        <section class="reg_log">
             
-        <section class="reg_log" id="change_banner">
-            <div class="adds">
-                <img src="../images/banner.webp" alt="login banner">
-            </div>
-            <div class="login_page" id="change_pwd">
+            <div class="login_page">
                 
-                <h1>
+                <!-- <h1>
                     <a href="../index.php">
                         <img src="../images/logo.png" alt="logo">
                     </a>
-                </h1>
+                </h1> -->
+                <h3 class="mobile_company"><?php echo $row->company?></h3>
                 <h2>Change your password</h2>
                 <p></p>
                 <?php
@@ -97,7 +110,7 @@
                 
                 ?>
                 <div id="foot">
-                    <p >&copy;<?php echo Date("Y");?> Hotel. All Rights Reserved.</p>
+                    <p >&copy;<?php echo Date("Y");?> Dorthpro digitals. All Rights Reserved.</p>
 
                 </div>
 
@@ -111,3 +124,4 @@
     <script src="../script.js"></script>
 </body>
 </html>
+<?php }?>

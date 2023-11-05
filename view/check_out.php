@@ -28,7 +28,7 @@
             <?php
                 $n = 1;
                 $get_users = new selects();
-                $details = $get_users->fetch_details_dateCond('check_ins', 'status', 1);
+                $details = $get_users->fetch_details_curdateCon('check_ins', 'check_out_date','guest_status', 1);
                 if(gettype($details) === 'array'){
                 foreach($details as $detail):
             ?>

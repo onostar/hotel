@@ -1,5 +1,6 @@
 <?php
-
+    session_start();
+    $store = $_SESSION['store_id'];
     $from = htmlspecialchars(stripslashes($_POST['from_date']));
     $to = htmlspecialchars(stripslashes($_POST['to_date']));
 
@@ -8,27 +9,25 @@
     include "../classes/select.php";
 
     $get_revenue = new selects();
-    $details = $get_revenue->fetch_details_2dateCon('payments', 'payment_mode', 'date(post_date)', $from, $to, 'Transfer');
+    $details = $get_revenue->fetch_details_2date2Con('payments', 'date(post_date)', $from, $to, 'payment_mode', 'Transfer', 'store', $store);
     $n = 1;  
 ?>
-<h2>Transfer Report from '<?php echo date("jS M, Y", strtotime($from)) . "' to '" . date("jS M, Y", strtotime($to))?>'</h2>
+<h2>Transfer Sales Report Between '<?php echo date("jS M, Y", strtotime($from)) . "' and '" . date("jS M, Y", strtotime($to))?>'</h2>
     <hr>
     <div class="search">
         <input type="search" id="searchRevenue" placeholder="Enter keyword" onkeyup="searchData(this.value)">
+        <a class="download_excel" href="javascript:void(0)" onclick="convertToExcel('data_table', 'Transfer Sales report')"title="Download to excel"><i class="fas fa-file-excel"></i></a>
     </div>
-    <table id="Revenue_table" class="searchTable">
+    <table id="data_table" class="searchTable">
         <thead>
         <tr style="background:var(--primaryColor)">
                 <td>S/N</td>
                 <td>Invoice</td>
-                <td>Guest</td>
-                <td>Item</td>
-                <td>Bank</td>
-                <td>Sender</td>
                 <td>Amount</td>
+                <td>Bank</td>
                 <td>Date</td>
                 <td>Post Time</td>
-                <td>Collectd by</td>
+                <td>Posted by</td>
                 
             </tr>
         </thead>
@@ -40,24 +39,8 @@
 ?>
             <tr>
                 <td style="text-align:center; color:red;"><?php echo $n?></td>
-                <td><a style="color:green" href="javascript:void(0)" title="View payment details" onclick="showPage('invoice_details.php?payment_id=<?php echo $detail->payment_id?>')"><?php echo $detail->invoice?></a></td>
-                <td>
-                    <?php
-                        $get_guest = new selects();
-                        $rows = $get_guest->fetch_details_cond('check_ins', 'guest_id', $detail->guest);
-                        foreach($rows as $row){
-                            $full_name = $row->first_name . " ".$row->last_name;
-                        }
-                        echo $full_name;
-                    ?>
-                </td>
-                <td>
-                    <?php 
-                        /* $get_room = new selects();
-                        $rooms = $get_room->fetch_details_group('rooms', 'room', 'room_id', $detail->room);
-                        echo $rooms->room; */
-                    ?>
-                </td>
+                <td><a style="color:green" href="javascript:void(0)" title="View payment details" onclick="showPage('invoice_details.php?payment_id=<?php echo $detail->payment_id?>')"><?php echo $detail->invoice?></a></td> 
+                <td><?php echo "₦".number_format($detail->amount_paid, 2)?></td>
                 <td>
                     <?php 
                         $get_bank = new selects();
@@ -67,9 +50,7 @@
                         }
                     ?>
                 </td>
-                <td><?php echo $detail->sender?></td>
-                <td><?php echo "₦".number_format($detail->amount_paid, 2)?></td>
-                <td style="color:var(--moreColor)"><?php echo date("jS M, Y", strtotime($detail->post_date));?></td>
+                <td style="color:var(--moreColor)"><?php echo date("d-m-y", strtotime($detail->post_date));?></td>
                 <td style="color:var(--moreColor)"><?php echo date("H:i:sa", strtotime($detail->post_date));?></td>
                 <td>
                     <?php
@@ -81,17 +62,17 @@
                 </td>
                 
             </tr>
-            <?php $n++; }?>
+            <?php $n++; }}?>
         </tbody>
     </table>
 <?php
-    }else{
+    if(gettype($details) == "string"){
         echo "<p class='no_result'>'$details'</p>";
     }
     // get sum
     $get_total = new selects();
-    $amounts = $get_total->fetch_sum_2dateCond('payments', 'amount_paid', 'payment_mode', 'post_date', $from, $to, 'Transfer');
+    $amounts = $get_total->fetch_sum_2date2Cond('payments', 'amount_paid', 'date(post_date)', 'store', 'payment_mode', $from, $to, $store, 'Transfer');
     foreach($amounts as $amount){
-        echo "<p class='total_amount'>Total: ₦".number_format($amount->total, 2)."</p>";
+        echo "<p class='total_amount' style='color:green'>Total: ₦".number_format($amount->total, 2)."</p>";
     }
 ?>

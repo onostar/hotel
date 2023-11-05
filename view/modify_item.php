@@ -11,11 +11,11 @@
 ?>
 
     <div class="info"></div>
-    <div class="displays allResults" style="width:70%!important;">
+    <div class="displays allResults" style="width:70%;">
         <h2>Modify item names</h2>
         <hr>
         <div class="search">
-            <input type="search" id="searchGuestPayment" placeholder="Enter keyword" git onkeyup="searchData(this.value)">
+            <input type="search" id="searchGuestPayment" placeholder="Enter keyword" onkeyup="searchData(this.value)">
         </div>
         <table id="priceTable" class="searchTable">
             <thead>
@@ -28,6 +28,8 @@
                 </tr>
             </thead>
 
+            
+            <tbody>
             <?php
                 $n = 1;
                 $select_cat = new selects();
@@ -35,13 +37,15 @@
                 if(gettype($rows) == "array"){
                 foreach($rows as $row):
             ?>
-            <tbody>
                 <tr>
                     <td style="text-align:center;"><?php echo $n?></td>
                     
                     <td>
                         <?php 
-                            echo $row->department;
+                            //get department
+                            $get_dep = new selects();
+                            $detail = $get_dep->fetch_details_group('departments', 'department', 'department_id', $row->department);
+                            echo $detail->department;
                         ?>
                     </td>
                     <td>
@@ -55,12 +59,13 @@
                     </td>
                     <td><?php echo $row->item_name?></td>
                     <td class="prices">
-                        <a style="background:var(--moreColor)!important; color:#fff!important; padding:4px; border-radius:5px;" href="javascript:void(0)" data-form="check<?php echo $row->item_id?>" class="each_prices" onclick="modifyItemForm('<?php echo $row->item_id?>');">Modify name <i class="fas fa-pen"></i></a>
+                        <a style="background:var(--moreColor)!important; color:#fff!important; padding:6px; border-radius:5px;" href="javascript:void(0)" data-form="check<?php echo $row->item_id?>" class="each_prices" onclick="getForm('<?php echo $row->item_id?>', 'get_item_name.php');"><i class="fas fa-pen"></i></a>
                     </td>
                 </tr>
+            <?php $n++; endforeach; }?>
+
             </tbody>
 
-            <?php $n++; endforeach; }?>
         </table>
         
         <?php

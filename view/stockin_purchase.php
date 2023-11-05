@@ -31,17 +31,11 @@
                     </select>
                 </div>
                 <div class="data" style="width:100%; margin:10px 0">
-                    <label for="item"> Search Item</label>
-                    <input type="text" name="item" id="item" list="suggestions" required placeholder="Input item name" oninput="displayStockinForm()">
-                    <datalist id="suggestions">
-                        <?php
-                            $get_item = new selects();
-                            $rows = $get_item->fetch_details_cond('items', 'department', 'Bar');
-                            foreach($rows as $row){
-                        ?>
-                        <option value="<?php echo $row->item_name?>"><?php echo $row->item_name?></option>
-                        <?php } ?>
-                    </datalist>
+                    <input type="text" name="item" id="item" required placeholder="Input item name or barcode" onkeyup="getItemStockin(this.value)">
+                        <div id="sales_item">
+                            
+                        </div>
+                    
                 </div>
             </div>
         </section>

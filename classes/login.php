@@ -20,7 +20,7 @@
                         $_SESSION['error'] = "Error! Wrong Password";
                         header("Location: ../index.php");
                     }else{
-                        $get_user = $this->connectdb()->prepare("SELECT * FROM users WHERE username = :username AND user_password = :user_password");
+                        $get_user = $this->connectdb()->prepare("SELECT * FROM users WHERE username = :username AND user_password = :user_password AND status = 0");
                         $get_user->bindValue("username", $username);
                         $get_user->bindValue("user_password", $hashedPwd);
                         $get_user->execute();
@@ -29,7 +29,7 @@
                             $_SESSION['user'] = $username;
                             header("Location: ../view/users.php");
                         }else{
-                            $_SESSION['error'] = "Error! Invalid username or password";
+                            $_SESSION['error'] = "User Deactivated";
                             header("Location: ../index.php");
                         }
                     }

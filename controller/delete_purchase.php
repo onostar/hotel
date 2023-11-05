@@ -1,5 +1,6 @@
 <?php
-    
+    session_start();
+    $store = $_SESSION['store_id'];
     // if(isset($_GET['id'])){
     //     $id = $_GET['id'];
         $purchase = $_GET['purchase_id'];
@@ -22,7 +23,7 @@
 
         //update quantity on items table
         $update_qty = new Update_table();
-        $update_qty->subtract_quantity($qty, $item);
+        $update_qty->subtract_quantity($qty, $item, $store);
         if($update_qty){
             //delete purcahse
             $delete = new deletes();

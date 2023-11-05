@@ -6,13 +6,14 @@
 
 ?>
     <div class="info"></div>
-<div class="displays allResults" id="room_list">
+<div class="displays allResults" id="room_list" style="width:50%!important; margin:10px 50px!important;">
     <h2>List of Banks and Account Number</h2>
     <hr>
     <div class="search">
         <input type="search" id="searchRoom" placeholder="Enter keyword" onkeyup="searchData(this.value)">
+        <a class="download_excel" href="javascript:void(0)" onclick="convertToExcel('bank_list_table', 'Bank list')"title="Download to excel"><i class="fas fa-file-excel"></i></a>
     </div>
-    <table id="room_list_table" class="searchTable">
+    <table id="bank_list_table" class="searchTable">
         <thead>
             <tr style="background:var(--moreColor)">
                 <td>S/N</td>

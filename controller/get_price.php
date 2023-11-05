@@ -12,7 +12,9 @@
     
     $prices = $get_category->fetch_details_group('categories', 'price', 'category_id', $category);
 ?>
-    <input type="text" name="room_fee" id="room_fee" value="<?php echo $prices->price?>" style="color:green; font-weight:bold;">
+    <label for='amount_due' style='color:red' >Amount per Night (NGN): </label>
+    <input type="hidden" name="room_fee" id="room_fee" value="<?php echo $prices->price?>">
+    <input type="text" value="<?php echo number_format($prices->price)?>" readonly style="color:green; border:none; font-size:1rem">
 <?php
         
 ?>

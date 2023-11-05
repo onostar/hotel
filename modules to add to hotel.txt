@@ -1,0 +1,26 @@
+modules to add to hotel
+a. front desk
+1. check in guest - done
+2. check out guest
+3. cancel check in
+4. extend stay
+5. change room
+
+b. admin
+1. manage room price - done
+
+c.bills & payment
+1. create new bill
+2. add to bill
+3. new guest payments
+4. make payment
+
+d. reports
+1. rom list
+2. bar items
+3. restaurant items
+4. current guest list
+5. check in report
+6. check out report
+7. room reports
+8. check in report by guest

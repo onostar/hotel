@@ -11,28 +11,32 @@
         <section class="addUserForm">
             <div class="inputs">
                 <div class="data" style="width:100%; margin:10px 0;">
-                    <label for="department">Department</label>
+                    <label for="department">Category</label>
                     <select name="department" id="department" onchange="getCategory(this.value)">
-                        <option value=""selected required>Select item department</option>
+                        <option value=""selected required>Select item category</option>
                         <?php
                             $get_dep = new selects();
                             $rows = $get_dep->fetch_details('departments');
                             foreach($rows as $row){
                         ?>
-                        <option value="<?php echo $row->department?>"><?php echo $row->department?></option>
+                        <option value="<?php echo $row->department_id?>"><?php echo $row->department?></option>
                         <?php } ?>
                     </select>
                 </div>
                 <div class="data" style="width:100%; margin:10px 0">
-                    <label for="item_category"> Category</label>
+                    <label for="item_category"> Sub-Category</label>
                     <select name="item_category" id="item_category">
-                        <option value=""selected required>Select item category</option>
+                        <option value=""selected required>Select item sub-category</option>
                         
                     </select>
                 </div>
                 <div class="data" style="width:100%; margin:10px 0">
                     <label for="item"> Item Name</label>
                     <input type="text" name="item" id="item" required placeholder="Input item name">
+                </div>
+                <div class="data" style="width:100%; margin:10px 0">
+                    <label for="barcode"> Barcode</label>
+                    <input type="text" name="barcode" id="barcode" required placeholder="Input item barcode">
                 </div>
             </div>
             <div class="inputs">

@@ -15,11 +15,11 @@
                     <option value=""selected>Select room</option>
                     <?php
                         $get_rooms = new selects();
-                        $rows = $get_rooms->fetch_details('rooms');
+                        $rows = $get_rooms->fetch_details_cond('items', 'department', 'Accomodation');
                         foreach($rows as $row){
 
                     ?>
-                    <option value="<?php echo $row->room_id?>"><?php echo $row->room?></option>
+                    <option value="<?php echo $row->item_id?>"><?php echo $row->item_name?></option>
                     <?php }?>
                 </select>
             </div>
@@ -58,7 +58,7 @@
                 <td>
                     <?php 
                         $get_cat = new selects();
-                        $categories = $get_cat->fetch_details_group('rooms', 'category', 'room_id', $detail->room);
+                        $categories = $get_cat->fetch_details_group('items', 'category', 'item_id', $detail->room);
                         $category_id = $categories->category;
                         //get category name
                         $get_cat_name = new selects();
@@ -71,8 +71,8 @@
                 <td>
                     <?php 
                         $get_room = new selects();
-                        $rooms = $get_room->fetch_details_group('rooms', 'room', 'room_id', $detail->room);
-                        echo $rooms->room;
+                        $rooms = $get_room->fetch_details_group('items', 'item_name', 'item_id', $detail->room);
+                        echo $rooms->item_name;
                     ?>
                 </td>
                 <td><?php echo date("jS M, Y", strtotime($detail->check_in_date));?></td>

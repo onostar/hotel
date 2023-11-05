@@ -1,8 +1,8 @@
 <?php
-
+    session_start();
     include "../classes/dbh.php";
     include "../classes/select.php";
-
+    $store = $_SESSION['store_id'];
 
 ?>
 <div id="purchaseReport" class="displays management">
@@ -11,13 +11,13 @@
         <section>    
             <div class="from_to_date">
                 <label>Select From Date</label><br>
-                <input type="date" name="purchase_from" id="purchase_from"><br>
+                <input type="date" name="from_date" id="from_date"><br>
             </div>
             <div class="from_to_date">
                 <label>Select to Date</label><br>
-                <input type="date" name="purchase_to" id="purchase_to"><br>
+                <input type="date" name="to_date" id="to_date"><br>
             </div>
-            <button type="submit" name="search_date" id="search_date" onclick="searchPurchase()">Search <i class="fas fa-search"></i></button>
+            <button type="submit" name="search_date" id="search_date" onclick="search('search_purchase.php')">Search <i class="fas fa-search"></i></button>
 </section>
     </div>
 <div class="displays allResults new_data">
@@ -25,8 +25,9 @@
     <hr>
     <div class="search">
         <input type="search" id="searchCheckout" placeholder="Enter keyword" onkeyup="searchData(this.value)">
+        <a class="download_excel" href="javascript:void(0)" onclick="convertToExcel('data_table', 'Purchase report')"title="Download to excel"><i class="fas fa-file-excel"></i></a>
     </div>
-    <table id="revenue_table" class="searchTable">
+    <table id="data_table" class="searchTable">
         <thead>
             <tr style="background:var(--primaryColor)">
                 <td>S/N</td>
@@ -34,7 +35,7 @@
                 <td>Vendor</td>
                 <td>Item</td>
                 <td>Quantity</td>
-                <td>Cost</td>
+                <td>Unit Cost</td>
                 <td>Post Time</td>
                 <td>Received by</td>
                 
@@ -44,7 +45,7 @@
             <?php
                 $n = 1;
                 $get_users = new selects();
-                $details = $get_users->fetch_details_curdate('purchases', 'post_date');
+                $details = $get_users->fetch_details_curdateCon('purchases', 'post_date', 'store', $store);
                 if(gettype($details) === 'array'){
                 foreach($details as $detail):
             ?>
@@ -85,6 +86,11 @@
     <?php
         if(gettype($details) == "string"){
             echo "<p class='no_result'>'$details'</p>";
+        }
+        $get_total = new selects();
+        $amounts = $get_total->fetch_sum_2colCurDate1Con('purchases', 'cost_price', 'quantity', 'date(post_date)', 'store', $store);
+        foreach($amounts as $amount){
+            echo "<p class='total_amount' style='color:green; text-align:center;'>Total: ₦".number_format($amount->total, 2)."</p>";
         }
     ?>
 

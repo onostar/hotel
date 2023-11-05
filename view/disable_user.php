@@ -16,7 +16,7 @@
         <thead>
             <tr>
                 <td>S/N</td>
-                <td>FUll Name</td>
+                <td>Full Name</td>
                 <td>Username</td>
                 <td>User role</td>
                 <td>Date created</td>
@@ -27,12 +27,12 @@
             <?php
                 $n = 1;
                 $get_users = new selects();
-                $details = $get_users->fetch_details_cond('users', 'status', 0);
+                $details = $get_users->fetch_details_2cond1neg('users', 'status', 'user_role', 0, "Admin");
                 if(gettype($details) === 'array'){
                 foreach($details as $detail):
             ?>
             <tr>
-                <td style="text-align:center; color:red;"><a style="box-shadow:2px 2px 2px #c4c4c4; padding:5px 10px;" href="javascript:void(0)" title="Disable user account" onclick="disableUser('<?php echo $detail->user_id?>')"><?php echo $n?></a></td>
+                <td><a style="box-shadow:2px 2px 2px #c4c4c4; padding:5px 10px; text-align:center; color:red!important;" href="javascript:void(0)" title="Disable user account" onclick="disableUser('<?php echo $detail->user_id?>')"><?php echo $n?></a></td>
                 <td><?php echo $detail->full_name;?></td>
                 <td><?php echo $detail->username;?></td>
                 <td><?php echo $detail->user_role;?></td>
