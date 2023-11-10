@@ -26,7 +26,7 @@
                 $random_num = random_int(0, 9);
                 $ran_num .= $random_num;
             }
-        $invoice = "ACC".$detail->room.$todays_date.$ran_num.$detail->guest;
+        $invoice = "ACC".$checkin_id.$todays_date.$ran_num.$detail->guest;
 ?>
 <div id="post_payment" class="displays all_details">
     <!-- <div class="info"></div> -->

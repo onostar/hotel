@@ -1,8 +1,8 @@
 modules to add to hotel
 a. front desk
 1. check in guest - done
-2. check out guest
-3. cancel check in
+2. check out guest - done
+3. cancel check in - done
 4. extend stay
 5. change room
 

@@ -69,10 +69,13 @@
             if($checks->guest_status == 0){
                 echo "<div class='error_msg'><p>Guest already posted! Proceed to payment <i class='fas fa-cancel'></i></p></div>";
                 return;
-            }
-            if($checks->guest_status == 1){
+            }elseif($checks->guest_status == 1){
                 echo "<div class='error_msg'><p>This guest has not checked out! <i class='fas fa-cancel'></i></p></div>";
                 return;
+            }else{
+                //check in guest
+                $check_in = new add_data    ('check_ins', $checkin_data);
+                $check_in->create_data();
             }
         }
     }else{
@@ -80,15 +83,16 @@
         $check_in = new add_data('check_ins', $checkin_data);
         $check_in->create_data();
 
-        if($check_in){
-            //update guest details
-            $update_guest = new Update_table();
-            $update_guest->update_tripple('guests', 'contact_address', $contact_address, 'contact_phone', $contact_phone, 'emergency_contact', $emergency, 'guest_id', $guest_id);
-            //update room status
-            $update_room = new Update_table();
-            $update_room->update('items', 'item_status', 'item_id', 1, $room);
+        
+    }
+    if($check_in){
+        //update guest details
+        $update_guest = new Update_table();
+        $update_guest->update_tripple('guests', 'contact_address', $contact_address, 'contact_phone', $contact_phone, 'emergency_contact', $emergency, 'guest_id', $guest_id);
+        //update room status
+        $update_room = new Update_table();
+        $update_room->update('items', 'item_status', 'item_id', 1, $room);
 
-            echo "<div class='success'><p>Guest posted successfully! Proceed to payment. <i class='fas fa-thumbs-up'></i></p></div>";
-        }
+        echo "<div class='success'><p>Guest posted successfully! Proceed to payment. <i class='fas fa-thumbs-up'></i></p></div>";
     }
     

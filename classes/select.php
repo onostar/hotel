@@ -487,6 +487,32 @@
                 return $rows;
             }
         }
+        //fetch with date greater or equal to current date and condition
+        public function fetch_details_curdateGreCon($table, $column, $condition, $value){
+            $get_user = $this->connectdb()->prepare("SELECT * FROM $table WHERE $condition =:$condition AND date($column) <= CURDATE()");
+            $get_user->bindValue("$condition", $value);
+            $get_user->execute();
+            if($get_user->rowCount() > 0){
+                $rows = $get_user->fetchAll();
+                return $rows;
+            }else{
+                $rows = "No records found";
+                return $rows;
+            }
+        }
+        //fetch with date greater or equal to current date and condition
+        public function fetch_details_curdateLessCon($table, $column, $condition, $value){
+            $get_user = $this->connectdb()->prepare("SELECT * FROM $table WHERE $condition =:$condition AND date($column) >= CURDATE()");
+            $get_user->bindValue("$condition", $value);
+            $get_user->execute();
+            if($get_user->rowCount() > 0){
+                $rows = $get_user->fetchAll();
+                return $rows;
+            }else{
+                $rows = "No records found";
+                return $rows;
+            }
+        }
          //fetch all item grouped by a column
          public function fetch_single_grouped($table, $group){
             $get_details = $this->connectdb()->prepare("SELECT * FROM $table GROUP BY $group");

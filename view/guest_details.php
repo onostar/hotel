@@ -6,14 +6,22 @@
     include "../classes/update.php";
     if(isset($_SESSION['user_id'])){
         $user_id = $_SESSION['user_id'];
+        $store = $_SESSION['store'];
         // echo $user_id;
+        $date = date("Y-m-d H:i:m");
     
     if(isset($_GET['guest_id'])){
-        $guest = $_GET['guest_id'];
+        $check_id = $_GET['guest_id'];
         $get_user = new selects();
-        $details = $get_user->fetch_details_cond('check_ins', 'guest_id', $guest);
+        $details = $get_user->fetch_details_cond('check_ins', 'checkin_id', $check_id);
         foreach($details as $detail){
-
+        //get guest information
+        $get_guest = new selects();
+        $results = $get_guest->fetch_details_cond('guests', 'guest_id', $detail->guest);
+        foreach($results as $result){
+            $fullname = $result->last_name." ".$result->other_names;
+            $gender = $result->gender;
+        }
 
 ?>
 
@@ -25,12 +33,12 @@
     <div class="guest_name">
         <h4>
             <?php 
-                if($detail->gender == "Male"){
-                    echo "Mr. ". $detail->last_name . " ". $detail->first_name . " | Guest00". $detail->guest_id;
-                }else if($detail->gender == "Female" && $detail->age <= 24){
-                    echo "Ms. ". $detail->last_name . " ". $detail->first_name . " | Guest00". $detail->guest_id;
+                if($gender == "Male"){
+                    echo "Mr. ".$fullname. " | Guest00". $detail->guest;
+                /* }else if($gender == "Female" && $detail->age <= 24){
+                    echo "Ms. ". $detail->last_name . " ". $detail->first_name . " | Guest00". $detail->guest_id; */
                 }else{
-                    echo "Mrs. ". $detail->last_name . " ". $detail->first_name . " | Guest00". $detail->guest_id;
+                    echo "Ms. ". $fullname . " | Guest00". $detail->guest;
                 }
             ?> 
         </h4>
@@ -103,7 +111,8 @@
                         <?php
                             $n = 1;
                             $get_payment = new selects();
-                            $rows = $get_payment->fetch_details_cond('payments', 'guest', $guest);
+                            $rows = $get_payment->fetch_details_cond('payments', 'customer', $check_id);
+                            if(gettype($rows) == 'array'){
                             foreach($rows as $row){
                         ?>
                         <tr>
@@ -123,33 +132,79 @@
                             </td>
                         </tr>
                         
-                        <?php $n++; }?>
+                        <?php $n++; } }?>
                     </tbody>
                 </table>
             </div>
-            <div class="amount_due">
-                <h2><?php echo "₦".number_format($detail->amount_due, 2)?></h2>
-
+            <div class="amount_due" style="align-items:center">
+                <h2><span style="color:#222; font-weight:bold; text-decoration:none!important">Amount due:</span> <?php echo "₦".number_format($detail->amount_due, 2)?></h2>
+            </div>
                 <!-- check out and payment mode options -->
                 <div class="payment_mode">
                     <?php
-                        if($detail->status == 2){
+                        if($detail->check_out_date > $date && $detail->guest_status != -1){
+                        ?>
+                        <div>
+                            <input type="hidden" name="check_id" id="check_id" value="<?php echo $check_id?>">
+                            <input type="hidden" name="user" id="user" value="<?php echo $user_id?>">
+                            <button type="submit" name="cancel_checkout" id="cancel_checkout" style="background:red" href="javascript:void(0)" class="modes" onclick="cancelCheckIn()">Cancel check in <i class="fas fa-cancel"></i></button>
+                        </div>
+                        <?php
+                        }
+                        if($detail->guest_status == 2){
                             echo "<p style='color:green; font-size:1.1rem;'>Guest has checked out <i class='fas fa-thumbs-up'></i></p>";
+                        }else if($detail->guest_status == 2){
+                            echo "<p style='color:red; font-size:1.1rem;'>Guest cancelled check in <i class='fas fa-thumbs-down'></i></p>";
                         }else if($detail->amount_due == 0){
                             
                     ?>
                     <div>
-                        <input type="hidden" name="guest_id" id="guest_id" value="<?php echo $guest?>">
+                        <input type="hidden" name="guest_id" id="guest_id" value="<?php echo $check_id?>">
                         <input type="hidden" name="user_id" id="user_id" value="<?php echo $user_id?>">
                         <button type="submit" name="check_out" id="check_out" style="background:green" href="javascript:void(0)" class="modes" onclick="checkOut()">Check out <i class="fas fa-check-double"></i></button>
                     </div>
                     <?php
                         }else{
                     ?>
-                    <h3>mode of payment</h3>
-                    <a href="javascript:void(0)" class="modes" onclick="showCash()">Cash <i class="fas fa-money-check"></i></a>
-                    <a href="javascript:void(0)" class="modes"onclick="showPos()">POS <i class="fas fa-coins"></i></a>
-                    <a href="javascript:void(0)" class="modes"onclick="showTransfer()">Transfer <i class="fas fa-wifi"></i></a>
+                    <h3>Post Payment</h3>
+                    <div class="payment_mode">
+                    <div class="close_stockin add_user_form" style="width:100%; margin:0;">
+                        <section class="addUserForm">
+                            <div class="inputs" style="display:flex;flex-wrap:wrap">
+                                <input type="hidden" name="total_amount" id="total_amount" value="<?php echo $detail->amount_due?>">
+                                <input type="hidden" name="check_in_id" id="check_in_id" value="<?php echo $check_id?>">
+                                <div class="data" style="width:auto">
+                                    <label for="payment_type">Payment mode</label>
+                                    <select name="payment_type" id="payment_type" onchange="checkOtherMode(this.value)">
+                                        <option value="" selected>Select payment type</option>
+                                        <option value="Cash">CASH</option>
+                                        <option value="POS">POS</option>
+                                        <option value="Transfer">TRANSFER</option>
+                                    </select>
+                                </div>
+                                <div class="data" id="amount_deposit" style="width:auto">
+                                    <label id="amount_label" for="deposit">Amount paid (NGN)</label>
+                                    <input type="text" name="deposits" id="deposits" value="0">
+                                </div>
+                                <div class="data" id="selectBank" style="width:auto">
+                                    <select name="bank" id="bank">
+                                        <option value=""selected>Select Bank</option>
+                                        <?php
+                                            $get_bank = new selects();
+                                            $rows = $get_bank->fetch_details('banks', 10, 10);
+                                            foreach($rows as $row):
+                                        ?>
+                                        <option value="<?php echo $row->bank_id?>"><?php echo $row->bank?>(<?php echo $row->account_number?>)</option>
+                                        <?php endforeach?>
+                                    </select>
+                                </div>
+                                <div class="data" style="width:auto">
+                                    <button onclick="addPayment()" style="background:green; padding:8px; border-radius:5px;font-size:.8rem;">post payment <i class="fas fa-paper-plane"></i></button>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+            <!-- </div> -->
                     <?php
                         }
                     ?>
@@ -158,108 +213,7 @@
                 
             </div>
             <!-- paymend mode forms -->
-            <!-- cash payment form -->
-            <div class="add_user_form payment_form" id="cash" style="width:100%">
-                <h3 style="text-align:left; background:var(--moreColor)">Post Cash payment for <?php echo $detail->last_name. " ". $detail->first_name?></h3>
-                <section class="addUserForm">
-                    <div class="inputs">
-                        <input type="hidden" name="posted_by" id="posted_by" value="<?php echo $user_id?>">
-                        <input type="hidden" name="guest" id="guest" value="<?php echo $detail->guest_id?>">
-                        <input type="hidden" name="payment_mode" id="payment_mode" value="cash">
-                        <input type="hidden" name="bank_paid" id="bank_paid" value="0">
-                        <input type="hidden" name="sender" id="sender" value="self">
-                        <div class="data">
-                            <label for="guest_amount">Amount due</label>
-                            <input type="text" name="guest_amount" id="guest_amount" value="<?php echo $detail->amount_due?>" readonly>
-                        </div>
-                        <div class="data">
-                            <label for="amount_paid">Amount Paid</label>
-                            <input type="number" name="amount_paid" id="amount_paid" placeholder="₦50,000" required>
-                        </div>
-                    </div>
-                    <div class="inputs" style="justify-content:unset">
-                        <button type="submit" id="payment" name="payment" onclick="postOtherCash()" >Post <i class="fas fa-paper-plane"></i></button>
-
-                    </section>
-                </form>    
-            </div>
-            <!-- POS payment form -->
-            <div class="info"></div>
-            <div class="add_user_form payment_form" id="pos" style="width:100%">
-                <h3 style="text-align:left; background:var(--moreColor)">Post POS payment for <?php echo $detail->last_name. " ". $detail->first_name?></h3>
-                <section class="addUserForm">
-                    <div class="inputs">
-                        <input type="hidden" name="guest" id="guest" value="<?php echo $guest?>">
-                        <input type="hidden" name="posted_by" id="posted_by" value="<?php echo $user_id?>">
-                        <input type="hidden" name="pos_mode" id="pos_mode" value="pos">
-                        <input type="hidden" name="sender" id="sender" value="Self">
-                        <div class="data">
-                            <label for="bank">Bank</label>
-                            <select name="pos_bank_paid" id="pos_bank_paid" required>
-                                <option value=""selected>Select Bank</option>
-                                <?php
-                                    $get_bank = new selects();
-                                    $rows = $get_bank->fetch_details('banks');
-                                    foreach($rows as $row):
-                                ?>
-                                <option value="<?php echo $row->bank_id?>"><?php echo $row->bank." (".$row->account_number.")"?></option>
-                                <?php endforeach?>
-                            </select>
-                        </div>
-                        <div class="data" >
-                            <label for="guest_amount">Amount due</label>
-                            <input type="text" name="guest_amount" id="guest_amount" value="<?php echo $detail->amount_due?>" readonly>
-                        </div>
-                        <div class="data">
-                            <label for="amount_paid">Amount Paid</label>
-                            <input type="number" name="pos_amount_paid" id="pos_amount_paid" placeholder="₦50,000" required>
-                        </div>
-                    </div>
-                    <div class="inputs" style="justify-content:unset">
-                        <button type="submit" id="payment" name="payment" onclick="postOtherPos()">Post <i class="fas fa-paper-plane"></i></button>
-
-                    </div>
-                </section>    
-            </div>
-            <!-- transfer payment form -->
-            <div class="add_user_form payment_form" id="transfer" style="width:100%">
-                <h3 style="text-align:left; background:var(--moreColor)">Post Transfer payment for <?php echo $detail->last_name. " ". $detail->first_name?></h3>
-                <section class="addUserForm">
-                    <div class="inputs">
-                        <input type="hidden" name="posted_by" id="posted_by" value="<?php echo $user_id?>">
-                        <input type="hidden" name="guest" id="guest" value="<?php echo $guest?>">
-                        <input type="hidden" name="transfer_mode" id="transfer_mode" value="transfer">
-                        <div class="data">
-                            <label for="bank">Bank</label>
-                            <select name="transfer_bank_paid" id="transfer_bank_paid" required>
-                                <option value=""selected>Select Bank</option>
-                                <?php
-                                    $get_bank = new selects();
-                                    $rows = $get_bank->fetch_details('banks');
-                                    foreach($rows as $row):
-                                ?>
-                                <option value="<?php echo $row->bank_id?>"><?php echo $row->bank." (".$row->account_number.")"?></option>
-                                <?php endforeach?>
-                            </select>
-                        </div>
-                        <div class="data">
-                            <label for="sender">Sender Name</label>
-                            <input type="text" name="transfer_sender" id="transfer_sender" placeholder="Jacob Murphy" required>
-                        </div>
-                        <div class="data">
-                            <label for="guest_amount">Amount due</label>
-                            <input type="text" name="guest_amount" id="guest_amount" value="<?php echo $detail->amount_due?>" readonly>
-                        </div>
-                        <div class="data">
-                            <label for="amount_paid">Amount Paid</label>
-                            <input type="number" name="transfer_amount" id="transfer_amount" placeholder="₦50,000" required>
-                        </div>
-                        <div class="data">
-                            <button type="submit" id="payment" name="payment" onclick="postOtherTransfer()">Post <i class="fas fa-paper-plane"></i></button>
-                        </div>
-                    </div>
-                </section>        
-            </div>
+            
             <?php
                 if(gettype($details) == "string"){
                     echo "<p class='no_result'>'$details'</p>";

@@ -16,18 +16,7 @@ date_default_timezone_set("Africa/Lagos");
             $update->execute();
         }
         //update with date
-        public function checkOut($column1, $column2, $condition, $value1, $value2, $condition_value){
-            $update = $this->connectdb()->prepare("UPDATE check_ins SET $column1 = :$column1, $column2 = :$column2, checked_out = CURDATE() WHERE $condition = :$condition");
-            $update->bindValue("$column1", $value1);
-            $update->bindValue("$column2", $value2);
-            $update->bindValue("$condition", $condition_value);
-            $update->execute();
-            /* if($update){
-                echo "<div class='info'><p>Updated successfully! <i class='fas fa-check'></i></p></div>";
-            }else{
-                echo "<div class='info'><p class='exist'>Update failed! <i class='fas fa-ban'></i></p></div>";
-            } */
-        }
+        
         //update double
         public function update_double($table, $column1, $value1, $column2, $value2, $condition, $condition_value){
             $update = $this->connectdb()->prepare("UPDATE $table SET $column1 = :$column1, $column2 = :$column2 WHERE $condition = :$condition");

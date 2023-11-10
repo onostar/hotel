@@ -508,7 +508,7 @@ function calculateDays(){
      let num_days = document.getElementById("days");
      firstDay = new Date(check_in_date);
      secondDay = new Date(check_out_date);
-     days = secondDay.getTime() - firstDay.getTime();
+     let days = secondDay.getTime() - firstDay.getTime();
      totalDays = days / (1000 * 60 * 60 * 24);
      let newAmount = totalDays * parseInt(room_fee);
      amount.innerHTML = "<label for='amount_due' style='color:red'>Amount Due (NGN): </label><br><input type='text' name='amount_due' id='amount_due' value='"+newAmount+"' readonly style='color:var(--otherColor)'>";
@@ -871,6 +871,27 @@ function checkOut(){
           })
           setTimeout(function(){
                $("#guest_details").load("guest_details.php?guest_id="+guest_id+ "#guest_details");
+          }, 3000);
+     }
+     return false;
+}
+//cancel guest check in
+function cancelCheckIn(){
+     let cancel = confirm("Do you want to cancel guest check in?", "");
+     if(cancel){
+          // alert(user_id);
+          let user = document.getElementById("user").value;
+          let check_id = document.getElementById("check_id").value;
+          $.ajax({
+               type : "POST",
+               url : "../controller/cancel_checkin.php",
+               data : {user:user, check_id:check_id},
+               success : function(response){
+                    $("#guest_details").html(response);
+               }
+          })
+          setTimeout(function(){
+               $("#guest_details").load("guest_details.php?guest_id="+check_id+ "#guest_details");
           }, 3000);
      }
      return false;
@@ -2257,7 +2278,7 @@ function sellPackWholesale(){
      $(".show_more").html('');
      return false;
 }
-//check payment mode
+//check all payment mode
 function checkMode(mode){
      let pay_mode = mode;
      let bank_input = document.getElementById("selectBank");
@@ -2286,6 +2307,35 @@ function checkMode(mode){
      }else{
           bank_input.style.display = "none";
           multiples.style.display = "none";
+          // wallet.style.display = "none";
+          label.style.display = "block";
+          deposits.type = "text";
+     }
+}
+//check add payment mode
+function checkOtherMode(mode){
+     let pay_mode = mode;
+     let bank_input = document.getElementById("selectBank");
+     // let multiples = document.getElementById("multiples");
+     let wallet = document.getElementById("account_balance");
+     let label = document.getElementById("amount_label");
+     let deposits = document.getElementById("deposits");
+     if(pay_mode == "POS" || pay_mode == "Transfer"){
+          bank_input.style.display = "block";
+          // multiples.style.display = "none";
+          // wallet.style.display = "none";
+          label.style.display = "block";
+          deposits.type = "text";
+     
+     }else if(pay_mode == "Wallet"){
+          wallet.style.display = "block";
+          // multiples.style.display = "none";
+          bank_input.style.display = "none";
+          label.style.display = "block";
+          deposits.type = "text";
+     }else{
+          bank_input.style.display = "none";
+          // multiples.style.display = "none";
           // wallet.style.display = "none";
           label.style.display = "block";
           deposits.type = "text";
@@ -2414,50 +2464,55 @@ function printSalesOrder(){
 }
 //post guest payments
 function postPayment(){
-     let confirmPost = confirm("Are you sure you want to post this sales?", "");
-     if(confirmPost){
-          let total_amount = document.getElementById("total_amount").value;
-          let deposits = document.getElementById("deposits").value;
-          let sales_invoice = document.getElementById("sales_invoice").value;
-          let discount = document.getElementById("discount").value;
-          let store = document.getElementById("store").value;
-          let check_in_id = document.getElementById("check_in_id").value;
-          let payment_type = document.getElementById("payment_type").value;
-          let bank = document.getElementById("bank").value;
-          let multi_cash = document.getElementById("multi_cash").value;
-          let multi_pos = document.getElementById("multi_pos").value;
-          let multi_transfer = document.getElementById("multi_transfer").value;
-          let sum_amount = parseInt(multi_cash) + parseInt(multi_pos) + parseInt(multi_transfer);
-          if(document.getElementById("multiples").style.display == "block"){
-               if(sum_amount < (parseInt(total_amount) - parseInt(discount))){
-                    alert("Amount entered is greater than total amount");
-                    $("#multi_cash").focus();
-                    return;
-               }
+     let total_amount = document.getElementById("total_amount").value;
+     let deposits = document.getElementById("deposits").value;
+     let sales_invoice = document.getElementById("sales_invoice").value;
+     let discount = document.getElementById("discount").value;
+     let store = document.getElementById("store").value;
+     let check_in_id = document.getElementById("check_in_id").value;
+     let payment_type = document.getElementById("payment_type").value;
+     let bank = document.getElementById("bank").value;
+     let multi_cash = document.getElementById("multi_cash").value;
+     let multi_pos = document.getElementById("multi_pos").value;
+     let multi_transfer = document.getElementById("multi_transfer").value;
+     let sum_amount = parseInt(multi_cash) + parseInt(multi_pos) + parseInt(multi_transfer);
+     if(payment_type == "Transfer" || payment_type == "POS"){
+          if(bank.length == 0 || bank.replace(/^\s+|\s+$/g, "").length == 0){
+               alert("Please select bank!");
+               $("#bank").focus();
+               return;
           }
-          if(payment_type.length == 0 || payment_type.replace(/^\s+|\s+$/g, "").length == 0){
-               alert("Please select a payment option!");
-               $("#payment_type").focus();
+     }
+     if(document.getElementById("multiples").style.display == "block"){
+          if(sum_amount < (parseInt(total_amount) - parseInt(discount))){
+               alert("Please enter a valid amount");
+               $("#multi_cash").focus();
                return;
-          }else if(payment_type == "Transfer" || payment_type == "POS"){
-               if(bank.length == 0 || bank.replace(/^\s+|\s+$/g, "").length == 0){
-                    alert("Please select bank!");
-                    $("#bank").focus();
-                    return;
-               }
-          }else if(deposits.length == 0 || deposits.replace(/^\s+|\s+$/g, "").length == 0){
+          }
+     }else{
+          if(parseInt(deposits) == 0){
                alert("Please input amount deposited!");
                $("#deposits").focus();
-               return;
-          }else if(parseInt(deposits) == 0){
-               alert("Please input amount deposited!");
-               $("#deposits").focus();
-               return;
-          }else if(discount.length == 0 || discount.replace(/^\s+|\s+$/g, "").length == 0){
-               alert("Please enter discount value or 0!");
-               $("#discount").focus();
-               return;
-          }else{
+          return;
+          }
+     }
+     if(payment_type.length == 0 || payment_type.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please select a payment option!");
+          $("#payment_type").focus();
+          return;
+     }else if(deposits.length == 0 || deposits.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please input amount deposited!");
+          $("#deposits").focus();
+          return;
+     
+     }else if(discount.length == 0 || discount.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please enter discount value or 0!");
+          $("#discount").focus();
+          return;
+          
+     }else{
+          let confirmPost = confirm("Are you sure you want to post this transaction?", "");
+          if(confirmPost){
                $.ajax({
                     type : "POST",
                     url : "../controller/post_payments.php",
@@ -2466,16 +2521,62 @@ function postPayment(){
                          $("#all_payments").html(response);
                     }
                })
-               /* setTimeout(function(){
-                    $("#guest_payment").load("guest_payment.php #guest_payment");
-               }, 2000); */
-               return false;
+          }else{
+               return;
           }
-     // }
-     }else{
-          return;
+          /* setTimeout(function(){
+               $("#guest_payment").load("guest_payment.php #guest_payment");
+          }, 2000); */
+          return false;
      }
+     
 }
+//add guest payment
+function addPayment(){
+     let total_amount = document.getElementById("total_amount").value;
+     let deposits = document.getElementById("deposits").value;
+     let check_in_id = document.getElementById("check_in_id").value;
+     let payment_type = document.getElementById("payment_type").value;
+     let bank = document.getElementById("bank").value;
+     // alert(bank);
+     if(payment_type == "Transfer" || payment_type == "POS"){
+          if(bank.length == 0 || bank.replace(/^\s+|\s+$/g, "").length == 0){
+               alert("Please select bank!");
+               $("#bank").focus();
+               return;
+          }
+     }
+     if(payment_type.length == 0 || payment_type.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please select a payment option!");
+          $("#payment_type").focus();
+          return;
+     }else if(deposits.length == 0 || deposits.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please input amount deposited!");
+          $("#deposits").focus();
+          return;
+          
+     }else{
+          let confirmPost = confirm("Are you sure you want to post this transaction?", "");
+          if(confirmPost){
+               $.ajax({
+                    type : "POST",
+                    url : "../controller/add_payments.php",
+                    data : {payment_type:payment_type, bank:bank, total_amount:total_amount, deposits:deposits, check_in_id:check_in_id},
+                    success : function(response){
+                         $("#guest_details").html(response);
+                    }
+               })
+          }else{
+               return;
+          }
+          /* setTimeout(function(){
+               $("#guest_payment").load("guest_payment.php #guest_payment");
+          }, 2000); */
+          return false;
+     }
+     
+}
+
 // prinit transfer receipt
 function printTransferReceipt(invoice){
      window.open("../controller/transfer_receipt.php?receipt="+invoice);

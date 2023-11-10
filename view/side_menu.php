@@ -43,6 +43,9 @@
                 </ul>
             </li>
                 <?php } }?>
+            <li>
+                <a href="javascript:void(0);" title="" class="page_navs"><i class="fas fa-anchor"></i></a>
+            </li>
         </ul>
         <?php
             }else{
@@ -87,6 +90,10 @@
                 </ul>
             </li>
                 <?php } }?>
+            <li>
+                <a href="javascript:void(0);" title="" class="page_navs"><i class="fas fa-anchor"></i></a>
+            </li>
+
         </ul>
         <?php }?>
     </nav>

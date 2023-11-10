@@ -941,7 +941,7 @@ main hr{
     font-size: 1rem;
     padding: 5px;
 }
-/* .succeed{
+.succeed{
     background:#fff;
     border-radius: 10px;
     box-shadow: 2px 2px 2px var(--moreColor);
@@ -955,7 +955,7 @@ main hr{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-} */
+}
 .succeed i{
     font-size:4rem;
     border:2px solid green;
