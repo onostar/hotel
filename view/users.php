@@ -238,14 +238,14 @@ date_default_timezone_set("Africa/Lagos");
             } ); */
             var ctx = document.getElementById("chartjs_bar2").getContext('2d');
                 var myChart = new Chart(ctx, {
-                    type: 'bar',
+                    type: 'line',
                     data: {
                         labels:<?php echo json_encode($month); ?>,
                         datasets: [{
                             backgroundColor: [
+                               "#ffffff",
                                "#0f8ca1",
                                "rgb(3, 69, 75)",
-                               "#ffffff",
                             ],
                             data:<?php echo json_encode($revenue); ?>,
                         }]

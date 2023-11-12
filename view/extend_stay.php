@@ -32,7 +32,8 @@
                 foreach($details as $detail):
             ?>
             <tr>
-            <td>
+                <td><?php echo $n?></td>
+                <td>
                     <?php
                         //get guest details
                         $get_name = new selects();

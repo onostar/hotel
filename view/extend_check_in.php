@@ -1,3 +1,4 @@
+<div id="extend_stay">
 <?php
     session_start();
     include "../classes/dbh.php";
@@ -6,10 +7,24 @@
         $user_id = $_SESSION['user_id'];
         // echo $user_id;
         if(isset($_GET['guest_id'])){
-            $guest = $_GET['guest_id'];
+            $check_id = $_GET['guest_id'];
             $get_user = new selects();
-            $details = $get_user->fetch_details_cond('check_ins', 'guest_id', $guest);
+            $details = $get_user->fetch_details_cond('check_ins', 'checkin_id', $check_id);
             foreach($details as $detail){
+                //get room details
+                $get_room = new selects();
+                $results = $get_room->fetch_details_cond('items', 'item_id', $detail->room);
+                foreach($results as $result){
+                    $room = $result->item_name;
+                    $category = $result->category;
+                }
+                //get room category
+                $get_room_cat = new selects();
+                $rows = $get_room_cat->fetch_details_cond('categories', 'category_id', $category);
+                foreach($rows as $row){
+                    $room_category = $row->category;
+                    $cat_price = $row->price;
+                }
 ?>
 
 <div id="check_in" class="displays">
@@ -18,10 +33,20 @@
     <div class="add_user_form">
         <h3>Extend guest stay</h3>
         <!-- <form method="POST" id="addUserForm"> -->
-        <form class="addUserForm" method="POST" action="../controller/extend_stay.php">
+        <section class="addUserForm">
                 <input type="hidden" name="posted_by" id="posted_by" value="<?php echo $user_id?>">
-                <input type="hidden" name="guest" id="guest" value="<?php echo $guest?>">
-            
+                <input type="hidden" name="guest" id="guest" value="<?php echo $check_id?>">
+            <div class="inputs" style="align-items:center">
+                <div class="data">
+                    <h3 style="background:var(--otherColor)"><?php echo $room_category?></h3>
+                </div>
+                <div class="data">
+                    <p style="color:green;font-weight:bold; font-size:1rem"><?php echo $room?></p>
+                </div>
+                <div class="data">
+                    <p style="color:red; font-size:1rem">₦<?php echo number_format($cat_price, 2)?> per Night</p>
+                </div>
+            </div>
             <div class="inputs">
                 <div class="data" style="width:48%">
                     <label for="check_in_date">Check in date</label>
@@ -36,7 +61,6 @@
             </div>
             <div class="inputs">
                 <div class="data">
-                    <label for="amount_due" style="color:red" >Amount due(NGN): </label>
                     <div id="amount">
 
                     </div>
@@ -44,7 +68,7 @@
                         <?php
                             //get room price
                             $get_cat = new selects();
-                            $categories = $get_cat->fetch_details_group('rooms', 'category', 'room_id', $detail->room);
+                            $categories = $get_cat->fetch_details_group('items', 'category', 'item_id', $detail->room);
                             $category_id = $categories->category;
                             //get category price
                             $get_price = new selects();
@@ -60,11 +84,11 @@
 
                 </div>
                 <div class="data">
-                    <button type="submit" id="extend" name="extend" onclick="checkIn()">Extend stay <i class="fas fa-gauge"></i></button>
+                    <button type="submit" id="extend" name="extend" onclick="extendStay()">Extend stay <i class="fas fa-gauge"></i></button>
                 </div>
                 
             </div>
-        </form>    
+        </section>    
     </div>
 </div>
 <?php
@@ -75,3 +99,4 @@
 
     }
 ?>
+</div>

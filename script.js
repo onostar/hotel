@@ -641,6 +641,63 @@ function checkIn(){
      }
         
 }
+//extend stay
+function extendStay(){
+     let posted_by = document.getElementById("posted_by").value;
+     let guest = document.getElementById("guest").value;
+     
+     let check_in_date = document.getElementById("check_in_date").value;
+     let check_out_date = document.getElementById("check_out_date").value;
+     let amount_due = document.getElementById("amount_due").value;
+     let todayDate = new Date();
+     let today = todayDate.toLocaleDateString();
+     // alert(today);
+     if(check_in_date.length == 0 || check_in_date.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please Input Check in date");
+          $("#check_in_date").focus();
+          return;
+     }else if(check_out_date.length == 0 || check_out_date.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please Input Check out date");
+          $("#check_out_date").focus();
+          return;
+    /*  }else if(new Date(today).getTime() > new Date(check_in_date).getTime()){
+          alert("Check in date cannot be lesser than todays date");
+          $("#check_in_date").focus();
+          return; */
+     }else if((new Date(check_in_date )).getTime() > (new Date(check_out_date)).getTime()){
+          alert("Check in date cannot be greater than check out date");
+          $("#check_in_date").focus();
+          return;
+    
+     }else{
+          $.ajax({
+               type : "POST",
+               url : "../controller/extend_stay.php",
+               data : {posted_by:posted_by, guest:guest, /* check_in_date:check_in_date, */ check_out_date:check_out_date, amount_due:amount_due},
+               success : function(response){
+               $("#extend_stay").html(response);
+               }
+          })
+          setTimeout(() => {
+               $("#check_in").load("check_in.php #check_in");
+          }, 2000);
+          /* $("#check_in_category").val('');
+          $("#check_in_room").val('');
+          $("#last_name").val('');
+          $("#first_name").val('');
+          $("#amount_due").val('');
+          $("#check_in_date").val('');
+          $("#check_out_date").val('');
+          $("#age").val('');
+          $("#gender").val('');
+          $("#days").html('');
+          $("#contact_address").val('');
+          $("#contact_phone").val('');
+          $("#check_in_category").focus(); */
+          return false; 
+     }
+        
+}
 //post guest cash payment
 function postCash(){
      let posted_by = document.getElementById("posted_by").value;
@@ -1245,7 +1302,30 @@ function roomPriceForm(item_id){
          $(".priceForm").hide();
      
  }
-
+ function changeRoom(){
+     let posted_by = document.getElementById("posted_by").value;
+     let guest = document.getElementById("guest").value;
+     let current_room = document.getElementById("current_room").value;
+     let new_room = document.getElementById("new_room").value;
+     if(new_room.length == 0 || new_room.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please select room!");
+          $("#new_room").focus();
+          return;
+     }else{
+          $.ajax({
+               type : "POST",
+               url : "../controller/change_room.php",
+               data : {posted_by:posted_by, guest:guest, current_room:current_room, new_room:new_room},
+               success : function(response){
+                    $("#guest_room_details").html(response);
+               }
+          })
+          setTimeout(function(){
+               $("#guest_room_details").load("change_room_form.php?guest_id="+guest+" #guest_room_details");
+          }, 2000);
+          return false;
+     }
+}
  //change room price
  function changeRoomPrice(){
      let item_id = document.getElementById("item_id").value;

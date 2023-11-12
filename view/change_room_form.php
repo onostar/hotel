@@ -11,14 +11,21 @@
     if(isset($_GET['guest_id'])){
         $guest = $_GET['guest_id'];
         $get_user = new selects();
-        $details = $get_user->fetch_details_cond('check_ins', 'guest_id', $guest);
+        $details = $get_user->fetch_details_cond('check_ins', 'checkin_id', $guest);
         foreach($details as $detail){
-        
+        //get guest information
+        $get_guest = new selects();
+        $results = $get_guest->fetch_details_cond('guests', 'guest_id', $detail->guest);
+        foreach($results as $result){
+            $fullname = $result->last_name." ".$result->other_names;
+            $gender = $result->gender;
+        }
             //get room details
             $get_room_name = new selects();
             $rows = $get_room_name->fetch_details_cond('items', 'item_id', $detail->room);
             foreach ($rows as $row){
-                $room = $row->item_name;
+                $room_name = $row->item_name;
+                $room = $row->item_id;
                 $category = $row->category;
             }
             //get room category
@@ -35,22 +42,22 @@
             <div class="add_user_form">
             <!-- <form method="POST" id="addUserForm"> -->
                 <h3><?php 
-                if($detail->gender == "Male"){
-                    echo "Mr. ". $detail->last_name . " ". $detail->first_name . " | Guest00". $detail->guest_id;
-                }else if($detail->gender == "Female" && $detail->age <= 24){
-                    echo "Ms. ". $detail->last_name . " ". $detail->first_name . " | Guest00". $detail->guest_id;
+                if($gender == "Male"){
+                    echo "Mr. ".$fullname. " | Guest00". $detail->guest;
+                /* }else if($gender == "Female" && $detail->age <= 24){
+                    echo "Ms. ". $detail->last_name . " ". $detail->first_name . " | Guest00". $detail->guest_id; */
                 }else{
-                    echo "Mrs. ". $detail->last_name . " ". $detail->first_name . " | Guest00". $detail->guest_id;
+                    echo "Ms. ". $fullname . " | Guest00". $detail->guest;
                 }
             ?> </h3>
             <section class="addUserForm">
                 <div class="inputs">
                     <div class="data" style="width:100%; margin:10px 0;">
                         <label for="current_room">Current room</label>
-                        <input type="hidden" name="guest" id="guest" value="<?php echo $detail->guest_id?>">
+                        <input type="hidden" name="guest" id="guest" value="<?php echo $detail->checkin_id?>">
                         <input type="hidden" name="posted_by" id="posted_by" value="<?php echo $user_id?>">
                         <input type="hidden" name="current_room" id="current_room" value="<?php echo $detail->room?>">
-                        <input type="text" value="<?php echo $room?>" readonly>
+                        <input type="text" value="<?php echo $room_name?>" readonly>
                     </div>
                     <div class="data" style="width:100%; margin:10px 0">
                         <label for="new_room"> New room</label>
