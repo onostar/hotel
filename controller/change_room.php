@@ -6,7 +6,7 @@
         include "../classes/update.php";
         include "../classes/select.php";
         include "../classes/inserts.php";
-        $date = date("Y-m-d H:i:m");
+        $date = date("Y-m-d H:i:s");
         $new_room = htmlspecialchars(stripslashes($_POST['new_room']));
         $current_room = htmlspecialchars(stripslashes($_POST['current_room']));
         $guest = htmlspecialchars(stripslashes($_POST['guest']));
@@ -29,7 +29,7 @@
             "changed_by" => $posted,
             "changed_date" =>$date
         );
-        $insert_change = new add_data('change_rooms', $data);
+        $insert_change = new add_data('change_room', $data);
         $insert_change->create_data();
         if($insert_change){
             echo "<div class='succeed'><p><i class='fas fa-thumbs-up'></i></p><p>Room changed successfully!</p></div>";

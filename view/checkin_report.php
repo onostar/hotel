@@ -43,7 +43,7 @@
             <?php
                 $n = 1;
                 $get_users = new selects();
-                $details = $get_users->fetch_checkIn('check_ins', 'status', 'check_in_date', 1);
+                $details = $get_users->fetch_checkIn('check_ins', 'guest_status', 'check_in_date', 1);
                 if(gettype($details) === 'array'){
                 foreach($details as $detail):
             ?>
