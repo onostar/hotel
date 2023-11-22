@@ -59,7 +59,7 @@ session_start();
             <?php
                 $n = 1;
                 $get_items = new selects();
-                $details = $get_items->fetch_details('items', $limit, $offset);
+                $details = $get_items->fetch_details_negCond1('items', 'department', 1);
                 if(gettype($details) === 'array'){
                 foreach($details as $detail):
             ?>

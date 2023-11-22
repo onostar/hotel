@@ -1522,7 +1522,7 @@ table tr:nth-child(even){
 }
 .quick_links .links i{
     color:var(--moreColor);
-    font-size:1.5rem;
+    font-size:1.3rem;
 }
 .quick_links .links p{
     /* display:none; */
@@ -1539,7 +1539,7 @@ table tr:nth-child(even){
     padding:5px 10px;
 }
 .dashboard_all{
-    margin:40px 0 0;
+    margin:20px 0 0;
 }
 #dashboard{
     display:flex;
@@ -1627,7 +1627,7 @@ table tr:nth-child(even){
     display:flex;
     align-items: center;
     justify-content:space-between!important;
-    gap:1rem;
+    gap:.9rem;
 }
 .cards .infos i{
     font-size:1rem;
@@ -1651,8 +1651,8 @@ table tr:nth-child(even){
     background:linear-gradient(45deg, hsla(202, 81%, 42%, .9),hsla(202, 81%, 22%, .9));
 }
 .check_out_due{
-    width:95%;
-    margin:40px auto;
+    width:100%;
+    margin:20px auto;
 }
 .check_out_due h3{
     width:100%;
@@ -1663,6 +1663,9 @@ table tr:nth-child(even){
     margin:0;
     font-family: "Pacifico";
     font-size: 1.1rem;
+}
+.check_out_due hr{
+    width:90%;
 }
 .options{
     display:flex;

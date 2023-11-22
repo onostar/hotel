@@ -30,9 +30,9 @@
         
     }
     if($payment_type == "Multiple"){
-        $new_amount = $amount_due - ($cash + $pos + $transfer);
+        $new_amount = $amount_due - ($cash + $pos + $transfer) - $discount;
     }else{
-        $new_amount = $amount_due - $amount_paid;
+        $new_amount = $amount_due - $amount_paid - $discount;
     }
     //insert payments
     if($payment_type == "Multiple"){
@@ -68,6 +68,6 @@
     
 ?>
     <div id="printBtn">
-        <button onclick="printSalesReceipt('<?php echo $invoice?>')">Print Receipt <i class="fas fa-print"></i></button>
+        <button onclick="printGuestReceipt('<?php echo $invoice?>')">Print Receipt <i class="fas fa-print"></i></button>
     </div>
 <?php }?>

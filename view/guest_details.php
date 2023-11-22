@@ -126,7 +126,7 @@
                             <td><?php echo number_format($row->amount_paid, 2)?></td>
                             <td>
                                 <?php 
-                                    $balance = $row->amount_due - $row->amount_paid;
+                                    $balance = $row->amount_due - $row->amount_paid - $row->discount;
                                     echo number_format($balance, 2);
                                 ?>
                             </td>

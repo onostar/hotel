@@ -15,7 +15,7 @@
                     <option value=""selected>Select room</option>
                     <?php
                         $get_rooms = new selects();
-                        $rows = $get_rooms->fetch_details_cond('items', 'department', 'Accomodation');
+                        $rows = $get_rooms->fetch_details_cond('items', 'department', '1');
                         foreach($rows as $row){
 
                     ?>
@@ -48,13 +48,19 @@
             <?php
                 $n = 1;
                 $get_users = new selects();
-                $details = $get_users->fetch_checkIn('check_ins', 'status', 'check_in_date', 1);
+                $details = $get_users->fetch_checkIn('check_ins', 'guest_status', 'check_in_date', 1);
                 if(gettype($details) === 'array'){
                 foreach($details as $detail):
+                    //get guest details
+                    $get_details = new selects();
+                    $rows = $get_details->fetch_details_cond('guests', 'guest_id', $detail->guest);
+                    foreach($rows as $row){
+                        $fullname = $row->last_name . " ". $row->other_names;
+                    }
             ?>
             <tr>
                 <td style="text-align:center; color:red;"><?php echo $n?></td>
-                <td><a style="color:green" href="javascript:void(0)" title="View guest details" onclick="showPage('guest_details.php?guest_id=<?php echo $detail->guest_id?>')"><?php echo $detail->last_name . " ". $detail->first_name;?></a></td>
+                <td><a style="color:green" href="javascript:void(0)" title="View guest details" onclick="showPage('guest_details.php?guest_id=<?php echo $detail->checkin_id?>')"><?php echo $fullname;?></a></td>
                 <td>
                     <?php 
                         $get_cat = new selects();

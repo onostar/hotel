@@ -46,10 +46,10 @@ include "../classes/inserts.php";
                 echo "<script>
                     alert('$name has zero quantity! Cannot proceed');
                     </script>";
-    include "sales_details.php";
+                    include "sales_details.php";
             }else if($price == 0){
                 echo "<div class='notify'><p><span>$name</span> does not have selling price! Cannot proceed</p></div>";
-    include "sales_details.php";
+                include "sales_details.php";
 
             }else{
                 //insert into sales order

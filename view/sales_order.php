@@ -20,7 +20,7 @@
             $ran_num .= $random_num;
         }
         $invoice = "RT".$store.$todays_date.$ran_num.$user_id;
-        $_SESSION['invoice'] = $invoice;
+        // $_SESSION['invoice'] = $invoice;
     ?>
     
     <div class="add_user_form" style="width:50%; margin:10px 0; box-shadow:none">
@@ -33,7 +33,7 @@
                     <!-- bar items form -->
                     <div class="data" id="bar_items" style="width:100%; margin:2px 0">
                         <label for="item"> Search Items</label>
-                        <input type="hidden" name="sales_invoice" id="sales_invoice" value="<?php echo $invoice?>">
+                        <input type="hidden" name="invoice" id="invoice" value="<?php echo $invoice?>">
                         <input type="hidden" name="staff" id="staff" value="<?php echo $staff?>">
                         <input type="text" name="item" id="item" required placeholder="Input item name or barcode" onkeyup="getItemsOrder(this.value)">
                         <div id="sales_item">

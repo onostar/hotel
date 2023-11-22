@@ -36,8 +36,8 @@
                     <span style="font-size:1.2rem; margin:0 2px"><?php echo $detail->quantity?></span>
                     <a style="color:#fff; background:green;border-radius:4px;padding:5px 8px;" href="javascript:void(0)" title="increase quantity" onclick="increaseQtyOrder('<?php echo $detail->sales_id?>', '<?php echo $detail->item?>')"><i class="fas fa-arrow-up"></i></a>
                     <a style="color:#fff; background:var(--primaryColor);border-radius:4px;padding:5px 8px;" href="javascript:void(0)" title="decrease quantity" onclick="reduceQtyOrder('<?php echo $detail->sales_id?>')"><i class="fas fa-arrow-down"></i></a>
-                    <a style="color:#fff; background:var(--otherColor);border-radius:4px;padding:5px 8px;" href="javascript:void(0)" title="show more options" onclick="showMoreOrder('<?php echo $detail->sales_id?>')"><i class="fas fa-chevron-up"></i></a>
-                    <a style="color:#fff; background:var(--secondaryColor);border-radius:4px;padding:5px 8px;" href="javascript:void(0)" title="sell item in pack" onclick="getPackSo('<?php echo $detail->sales_id?>')"><i class="fas fa-box"></i> pack</a>
+                    <a style="color:#fff; background:var(--otherColor);border-radius:4px;padding:5px 8px;" href="javascript:void(0)" title="show more options" onclick="showMoreOrder('<?php echo $detail->sales_id?>')"><i class="fas fa-pen"></i></a>
+                    <!-- <a style="color:#fff; background:var(--secondaryColor);border-radius:4px;padding:5px 8px;" href="javascript:void(0)" title="sell item in pack" onclick="getPackSo('<?php echo $detail->sales_id?>')"><i class="fas fa-box"></i> pack</a> -->
                 </td>
                 <td>
                     <?php 
@@ -50,7 +50,7 @@
                     ?>
                 </td>
                 <td>
-                    <a style="color:red; font-size:1rem" href="javascript:void(0) "title="delete purchase" onclick="deleteSalesOrder('<?php echo $detail->sales_id?>', '<?php echo $detail->item?>')"><i class="fas fa-trash"></i></a>
+                    <a style="color:red; font-size:1rem" href="javascript:void(0) "title="delete item" onclick="deleteSalesOrder('<?php echo $detail->sales_id?>', '<?php echo $detail->item?>')"><i class="fas fa-trash"></i></a>
                 </td>
                 
             </tr>
@@ -83,7 +83,7 @@
                 <input type="hidden" name="sales_invoice" id="sales_invoice" value="<?php echo $invoice?>">
                 
                 <div class="data" style="width:100%">
-                    <button onclick="printSalesOrder()" style="background:green; padding:10px; border-radius:5px;font-size:.9rem; box-shadow:2px 2px 2px #c4c4c4;">Post to cashier <i class="fas fa-print"></i></button>
+                    <button onclick="printSalesOrder()" style="background:green; padding:10px; border-radius:5px;font-size:.9rem; box-shadow:2px 2px 2px #c4c4c4;">Print docket <i class="fas fa-print"></i></button>
                 </div>
             </div>
         </section>

@@ -20,7 +20,7 @@
             $ran_num .= $random_num;
         }
         $invoice = "RT".$store.$todays_date.$ran_num.$user_id;
-        $_SESSION['invoice'] = $invoice;
+        // $_SESSION['invoice'] = $invoice;
     ?>
     
     <div class="add_user_form" style="width:50%; margin:10px 0; box-shadow:none">

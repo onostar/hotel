@@ -26,7 +26,7 @@
             <?php
                 $n = 1;
                 $get_rooms = new selects();
-                $details = $get_rooms->fetch_details_cond('items', 'department', 'Accomodation');
+                $details = $get_rooms->fetch_details_cond('items', 'department', '1');
                 if(gettype($details) === 'array'){
                 foreach($details as $detail):
             ?>

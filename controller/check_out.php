@@ -3,7 +3,7 @@
     
         $guest = $_POST['guest_id'];
         $user = $_POST['user_id'];
-        $date = date("Y-m-d H:i:m");
+        $date = date("Y-m-d H:i:s");
         // instantiate classes
         include "../classes/dbh.php";
         include "../classes/update.php";

@@ -101,6 +101,29 @@ date_default_timezone_set("Africa/Lagos");
                 
                 <!-- quick links -->
                 <div id="quickLinks">
+                    <?php
+                        if($role == "Front Desk"){
+                    ?>
+                    <div class="quick_links">
+                        <div class="links page_navs" onclick="showPage('check_in.php')" title="Check in Guest">
+                            <i class="fas fa-pen-alt" style="color:green"></i>
+                            <!-- <p>Direct sales</p> -->
+                        </div>
+                        <div class="links page_navs" onclick="showPage('check_out.php')" title="Check out Guest">
+                            <i class="fas fa-sign-out" style="color:red"></i>
+                            <!-- <p>Direct sales</p> -->
+                        </div>
+                        
+                        <div class="links page_navs" onclick="showPage('customer_statement.php')" title="View guest report">
+                            <i class="fas fa-house-user"></i>
+                            <!-- <p>Direct sales</p> -->
+                        </div>
+                        <div class="links page_navs" onclick="showPage('guest_payment.php')" title="New guest payment">
+                            <i class="fas fa-hand-holding-dollar" style="color:brown"></i>
+                            <!-- <p>Direct sales</p> -->
+                        </div>
+                    </div>
+                    <?php }else{?>
                     <div class="quick_links">
                         <!-- check if sales right exist -->
                         <?php 
@@ -164,6 +187,7 @@ date_default_timezone_set("Africa/Lagos");
                             </p>
                         </div>
                     </div>
+                    <?php }?>
                     <?php
                         if($role == "Admin"){
                     ?>
@@ -238,7 +262,7 @@ date_default_timezone_set("Africa/Lagos");
             } ); */
             var ctx = document.getElementById("chartjs_bar2").getContext('2d');
                 var myChart = new Chart(ctx, {
-                    type: 'line',
+                    type: 'bar',
                     data: {
                         labels:<?php echo json_encode($month); ?>,
                         datasets: [{

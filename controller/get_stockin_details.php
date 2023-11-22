@@ -37,29 +37,29 @@
                     <input type="text" name="cost_price" id="cost_price" value="<?php echo $row->cost_price?>">
                 </div>
                 <div class="data" style="width:20%; margin:5px;">
-                    <label for="sales_price">Retail price (NGN)</label>
+                    <label for="sales_price">Regular price (NGN)</label>
                     <input type="text" name="sales_price" id="sales_price" value="<?php echo $row->sales_price?>">
                 </div>
-                <div class="data" style="width:20%; margin:5px;">
+                <!-- <div class="data" style="width:20%; margin:5px;">
                     <label for="sales_price">Retail Pack price (NGN)</label>
                     <input type="text" name="pack_price" id="pack_price" value="<?php echo $row->pack_price?>">
-                </div>
+                </div> -->
                 <div class="data" style="width:20%; margin:5px;">
-                    <label for="sales_price">Wholesale price (NGN)</label>
+                    <label for="sales_price">V.I.P. price (NGN)</label>
                     <input type="text" name="wholesale_price" id="wholesale_price" value="<?php echo $row->wholesale?>">
                 </div>
-                <div class="data" style="width:20%; margin:5px;">
+                <!-- <div class="data" style="width:20%; margin:5px;">
                     <label for="pack_price">Wholesale Pack (NGN)</label>
                     <input type="text" name="wholesale_pack" id="wholesale_pack" value="<?php echo $row->wholesale_pack?>">
                 </div>
                 <div class="data" style="width:20%; margin:5px;">
                     <label for="sales_price">Pack size</label>
                     <input type="text" name="pack_size" id="pack_size" value="<?php echo $row->pack_size?>">
-                </div>
-                <div class="data" style="width:20%; margin:5px;">
+                </div> -->
+                <!-- <div class="data" style="width:20%; margin:5px;">
                     <label for="expiration_date">Expiration date</label>
                     <input type="date" name="expiration_date" id="expiration_date" required>
-                </div>
+                </div> -->
                 <div class="data" style="width:auto; margin:5px;">
                     <button type="submit" id="stockin" name="stockin" title="stockin item" onclick="stockin()"><i class="fas fa-check"></i></button>
                 </div>

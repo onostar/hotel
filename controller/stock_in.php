@@ -9,12 +9,13 @@
     $quantity = htmlspecialchars(stripslashes($_POST['quantity']));
     $cost_price = htmlspecialchars(stripslashes($_POST['cost_price']));
     $sales_price = htmlspecialchars(stripslashes($_POST['sales_price']));
-    $pack_price = htmlspecialchars(stripslashes($_POST['pack_price']));
+    // $pack_price = htmlspecialchars(stripslashes($_POST['pack_price']));
     $wholesale = htmlspecialchars(stripslashes($_POST['wholesale_price']));
-    $wholesale_pack = htmlspecialchars(stripslashes($_POST['wholesale_pack']));
-    $pack_size = htmlspecialchars(stripslashes($_POST['pack_size']));
-    $expiration = htmlspecialchars(stripslashes($_POST['expiration_date']));
+    // $wholesale_pack = htmlspecialchars(stripslashes($_POST['wholesale_pack']));
+    // $pack_size = htmlspecialchars(stripslashes($_POST['pack_size']));
+    // $expiration = htmlspecialchars(stripslashes($_POST['expiration_date']));
     // $guest_id = str_pad(mt_rand(0, 999999), 6, '0', STR_PAD_LEFT);
+    $date = date("Y-m-d H:i:m");
 
     //instantiate classes
     include "../classes/dbh.php";
@@ -44,7 +45,8 @@
         'previous_qty' => $inv_qty,
         'quantity' => $quantity,
         'posted_by' => $posted,
-        'store' => $store
+        'store' => $store,
+        'post_date' => $date
     );
     //insert into audit trail
     $inser_trail = new add_data('audit_trail', $audit_data);
@@ -55,7 +57,7 @@
         //update current quantity in inventory
         $new_qty = $inv_qty + $quantity;
         $update_inventory = new Update_table();
-        $update_inventory->update_tripple2Cond('inventory', 'quantity', $new_qty, 'cost_price', $cost_price, 'expiration_date', $expiration, 'item', $item, 'store', $store);
+        $update_inventory->update_double2Cond('inventory', 'quantity', $new_qty, 'cost_price', $cost_price, 'item', $item, 'store', $store);
     }
     //add to inventory if not found
     if(gettype($prev_qtys) === 'string'){
@@ -63,7 +65,7 @@
         $inventory_data = array(
             'item' => $item,
             'cost_price' => $cost_price,
-            'expiration_date' => $expiration,
+            // 'expiration_date' => $expiration,
             'quantity' => $quantity,
             'reorder_level' => $reorder_level,
             'store' => $store
@@ -79,10 +81,11 @@
         'cost_price' => $cost_price,
         'vendor' => $supplier,
         'sales_price' => $sales_price,
-        'expiration_date' => $expiration,
+        // 'expiration_date' => $expiration,
         'quantity' => $quantity,
         'posted_by' => $posted,
-        'store' => $store
+        'store' => $store,
+        'post_date' => $date
     );
     $stock_in = new add_data('purchases', $purchase_data);
     $stock_in->create_data();
@@ -91,7 +94,7 @@
         
         //update all prices and pack size
         $update_item = new Update_table();
-        $update_item->update_six('items', 'cost_price', $cost_price, 'sales_price', $sales_price, 'pack_price', $pack_price, 'wholesale', $wholesale, 'wholesale_pack', $wholesale_pack, 'pack_size', $pack_size, 'item_id', $item);
+        $update_item->update_tripple('items', 'cost_price', $cost_price, 'sales_price', $sales_price, 'wholesale', $wholesale, 'item_id', $item);
         if($update_item){
         //update expiration
         /* $update_exp = new Update_table();
@@ -110,7 +113,7 @@
                 <td>Quantity</td>
                 <td>Unit cost</td>
                 <td>Unit sales</td>
-                <td>Expiration</td>
+                <!-- <td>Expiration</td> -->
                 <td></td>
             </tr>
         </thead>
@@ -143,7 +146,7 @@
                         echo "₦".number_format($detail->sales_price, 2);
                     ?>
                 </td>
-                <td><?php echo $detail->expiration_date?></td>
+                <!-- <td><?php echo $detail->expiration_date?></td> -->
                 <td>
                     <a style="color:red; font-size:1rem" href="javascript:void(0) "title="delete purchase" onclick="deletePurchase('<?php echo $detail->purchase_id?>', <?php echo $detail->item?>)"><i class="fas fa-trash"></i></a>
                 </td>

@@ -17,11 +17,11 @@
                 <label>Select to Date</label><br>
                 <input type="date" name="to_date" id="to_date"><br>
             </div>
-            <button type="submit" name="search_date" id="search_date" onclick="search('search_checkins.php')">Search <i class="fas fa-search"></i></button>
+            <button type="submit" name="search_date" id="search_date" onclick="search('change_room_reports.php')">Search <i class="fas fa-search"></i></button>
 </section>
     </div>
 <div class="displays allResults new_data" id="check_in_report">
-    <h2>Check in Report for today</h2>
+    <h2>Changed room reports for today</h2>
     <hr>
     <div class="search">
         <input type="search" id="searchCheckout" placeholder="Enter keyword" onkeyup="searchData(this.value)">
@@ -30,12 +30,12 @@
         <thead>
             <tr style="background:var(--moreColor)">
                 <td>S/N</td>
-                <td>Full Name</td>
-                <td>Room Category</td>
-                <td>Room</td>
+                <td>Guest</td>
+                <td>Old room</td>
+                <td>New room</td>
                 <td>Checked In</td>
                 <td>Post Time</td>
-                <td>Checked in by</td>
+                <td>changed by</td>
                 
             </tr>
         </thead>
@@ -43,46 +43,48 @@
             <?php
                 $n = 1;
                 $get_users = new selects();
-                $details = $get_users->fetch_checkIn('check_ins', 'guest_status', 'check_in_date', 1);
+                $details = $get_users->fetch_details_curdate('change_room', 'date(changed_date)');
                 if(gettype($details) === 'array'){
                 foreach($details as $detail):
+                    //get checkin details details
+                    $get_guest = new selects();
+                    $rows = $get_guest->fetch_details_cond('check_ins', 'checkin_id', $detail->checkin_id);
+                    foreach($rows as $row){
+                        $guest = $row->guest;
+                        $checkin_date = $row->check_in_date;
+                    }
                     //get guest details
                     $get_details = new selects();
-                    $rows = $get_details->fetch_details_cond('guests', 'guest_id', $detail->guest);
-                    foreach($rows as $row){
-                        $fullname = $row->last_name . " ". $row->other_names;
+                    $results = $get_details->fetch_details_cond('guests', 'guest_id', $guest);
+                    foreach($results as $result){
+                        $fullname = $result->last_name." ".$result->other_names;
                     }
+
             ?>
             <tr>
                 <td style="text-align:center; color:red;"><?php echo $n?></td>
-                <td><a style="color:green" href="javascript:void(0)" title="View guest details" onclick="showPage('guest_details.php?guest_id=<?php echo $detail->checkin_id?>')"><?php echo $fullname;?></a></td>
+                <td><?php echo $fullname?></td>
                 <td>
                     <?php 
-                        $get_cat = new selects();
-                        $categories = $get_cat->fetch_details_group('items', 'category', 'item_id', $detail->room);
-                        $category_id = $categories->category;
-                        //get category name
-                        $get_cat_name = new selects();
-                        $cat_name = $get_cat_name->fetch_details_group('categories', 'category', 'category_id', $category_id);
-                        echo $cat_name->category;
-
-
+                        $get_old = new selects();
+                        $olds = $get_old->fetch_details_group('items', 'item_name', 'item_id', $detail->old_room);
+                        echo $olds->item_name;
                     ?>
                 </td>
                 <td>
                     <?php 
-                        $get_room = new selects();
-                        $rooms = $get_room->fetch_details_group('items', 'item_name', 'item_id', $detail->room);
-                        echo $rooms->item_name;
+                        $get_new = new selects();
+                        $new = $get_new->fetch_details_group('items', 'item_name', 'item_id', $detail->new_room);
+                        echo $new->item_name;
                     ?>
                 </td>
-                <td><?php echo date("jS M, Y", strtotime($detail->check_in_date));?></td>
-                <td><?php echo date("h:i:sa", strtotime($detail->post_date));?></td>
+                <td><?php echo date("jS M, Y", strtotime($checkin_date));?></td>
+                <td><?php echo date("h:i:sa", strtotime($detail->changed_date));?></td>
                 <td>
                     <?php
                         //get posted by
                         $get_posted_by = new selects();
-                        $checkedin_by = $get_posted_by->fetch_details_group('users', 'full_name', 'user_id', $detail->posted_by);
+                        $checkedin_by = $get_posted_by->fetch_details_group('users', 'full_name', 'user_id', $detail->changed_by);
                         echo $checkedin_by->full_name;
                     ?>
                 </td>

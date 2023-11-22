@@ -49,6 +49,16 @@ date_default_timezone_set("Africa/Lagos");
             $update->bindValue("$condition2", $condition_value2);
             $update->execute();
         }
+        //update double with 2 condition
+        public function update_double2Cond($table, $column1, $value1, $column2, $value2, $condition1, $condition_value1, $condition2, $condition_value2){
+            $update = $this->connectdb()->prepare("UPDATE $table SET $column1 = :$column1, $column2 = :$column2 WHERE $condition1 = :$condition1 AND $condition2 =:$condition2");
+            $update->bindValue("$column1", $value1);
+            $update->bindValue("$column2", $value2);
+            // $update->bindValue("$column3", $value3);
+            $update->bindValue("$condition1", $condition_value1);
+            $update->bindValue("$condition2", $condition_value2);
+            $update->execute();
+        }
         //update quadruple
         public function update_quadruple($table, $column1, $value1, $column2, $value2, $column3, $value3, $column4, $value4, $condition, $condition_value){
             $update = $this->connectdb()->prepare("UPDATE $table SET $column1 = :$column1, $column2 = :$column2, $column3 = :$column3, $column4 = :$column4 WHERE $condition = :$condition");

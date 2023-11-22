@@ -110,7 +110,7 @@
                 
                 ?>
                 <div id="foot">
-                    <p >&copy;<?php echo Date("Y");?> Dorthpro digitals. All Rights Reserved.</p>
+                    <!-- <p >&copy;<?php echo Date("Y");?> Dorthpro digitals. All Rights Reserved.</p> -->
 
                 </div>
 

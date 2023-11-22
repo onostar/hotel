@@ -4,19 +4,19 @@
     // instantiate class
     include "../classes/dbh.php";
     include "../classes/select.php";
-    $toDate = htmlspecialchars(stripslashes($_POST['toDate']));
-    $fromDate = htmlspecialchars(stripslashes($_POST['fromDate']));
-    $_SESSION['toDate'] = $toDate;
-    $_SESSION['fromDate'] = $fromDate;
+    /* $toDate = htmlspecialchars(stripslashes($_POST['toDate']));
+    $fromDate = htmlspecialchars(stripslashes($_POST['fromDate'])); */
+    /* $_SESSION['toDate'] = $toDate;
+    $_SESSION['fromDate'] = $fromDate; */
     $get_item = new selects();
-    $rows = $get_item->fetch_details_likeCond('customers', 'customer', $customer);
+    $rows = $get_item->fetch_details_like2Cond('guests', 'last_name', 'other_names', $customer);
      if(gettype($rows) == 'array'){
         foreach($rows as $row):
         
     ?>
 
-    <option onclick="getCustomerStatement('<?php echo $row->customer_id?>')">
-        <?php echo $row->customer?>
+    <option onclick="getCustomerStatement('<?php echo $row->guest_id?>')">
+        <?php echo $row->other_names." ".$row->last_name?>
     </option>
     
 <?php

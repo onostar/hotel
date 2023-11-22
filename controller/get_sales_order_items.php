@@ -7,7 +7,7 @@
     include "../classes/select.php";
 
     $get_item = new selects();
-    $rows = $get_item->fetch_details_like2Cond('items', 'item_name', 'barcode', $item);
+    $rows = $get_item->fetch_details_like2Cond1Neg('items', 'item_name', 'barcode', $item, 'department', 1);
      if(gettype($rows) == 'array'){
         foreach($rows as $row):
             //get item quantity from inventory

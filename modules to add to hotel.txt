@@ -16,12 +16,15 @@ c.bills & payment
 4. make payment
 
 d. reports
-1. rom list
+1. room list - done
 2. bar items
 3. restaurant items
 4. current guest list - done
-5. check in report
-6. check out report
-7. room reports
-8. check in report by guest
-9. change room report
+5. check in report - done
+6. check out report - done
+7. room reports - done
+8. check in report by guest - done
+9. change room report - done
+
+e. financial report
+1. sales report by store

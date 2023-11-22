@@ -8,7 +8,7 @@
     include "../classes/select.php";
 
     $get_checkIns = new selects();
-    $details = $get_checkIns->fetch_details_date('check_ins', 'checked_out', $from, $to);
+    $details = $get_checkIns->fetch_details_date('check_ins', 'date(checked_out)', $from, $to);
     $n = 1;  
 ?>
 <h2>Check out Report between '<?php echo date("jS M, Y", strtotime($from)) . "' and '" . date("jS M, Y", strtotime($to))?>'</h2>
@@ -23,6 +23,7 @@
                 <td>Full Name</td>
                 <td>Room Category</td>
                 <td>Room</td>
+                <td>Checked in</td>
                 <td>Checked out</td>
                 <td>Checked out by</td>
                 
@@ -32,11 +33,16 @@
 <?php
     if(gettype($details) === 'array'){
     foreach($details as $detail){
-
+        //get guest details
+        $get_details = new selects();
+        $rows = $get_details->fetch_details_cond('guests', 'guest_id', $detail->guest);
+        foreach($rows as $row){
+            $fullname = $row->last_name . " ". $row->other_names;
+        }
 ?>
     <tr>
                 <td style="text-align:center; color:red;"><?php echo $n?></td>
-                <td><a style="color:green" href="javascript:void(0)" title="View guest details" onclick="showPage('guest_details.php?guest_id=<?php echo $detail->guest_id?>')"><?php echo $detail->last_name . " ". $detail->first_name;?></a></td>
+                <td><a style="color:green" href="javascript:void(0)" title="View guest details" onclick="showPage('guest_details.php?guest_id=<?php echo $detail->checkin_id?>')"><?php echo $fullname;?></a></td>
                 <td>
                     <?php 
                         $get_cat = new selects();
@@ -58,6 +64,7 @@
                     ?>
                 </td>
                 <td><?php echo date("jS M, Y", strtotime($detail->check_in_date));?></td>
+                <td style="color:var(moreColor)"><?php echo date("jS M, Y", strtotime($detail->checked_out));?></td>
                 <td>
                     <?php
                         //get posted by

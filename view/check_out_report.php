@@ -17,7 +17,7 @@
                 <label>Select to Date</label><br>
                 <input type="date" name="to_date" id="to_date"><br>
             </div>
-            <button type="submit" name="search_date" id="search_date" onclick="searchCheckOuts()">Search <i class="fas fa-search"></i></button>
+            <button type="submit" name="search_date" id="search_date" onclick="search('search_checkouts.php')">Search <i class="fas fa-search"></i></button>
 </section>
     </div>
 <div class="displays allResults new_data" id="check_in_report">
@@ -33,6 +33,7 @@
                 <td>Full Name</td>
                 <td>Room Category</td>
                 <td>Room</td>
+                <td>Checked in</td>
                 <td>Checked out</td>
                 <td>Checked out by</td>
                 
@@ -42,13 +43,19 @@
             <?php
                 $n = 1;
                 $get_users = new selects();
-                $details = $get_users->fetch_checkIn('check_ins', 'status', 'checked_out', 2);
+                $details = $get_users->fetch_checkIn('check_ins', 'guest_status', 'date(checked_out)', 2);
                 if(gettype($details) === 'array'){
                 foreach($details as $detail):
+                    //get guest details
+                    $get_details = new selects();
+                    $rows = $get_details->fetch_details_cond('guests', 'guest_id', $detail->guest);
+                    foreach($rows as $row){
+                        $fullname = $row->last_name . " ". $row->other_names;
+                    }
             ?>
             <tr>
                 <td style="text-align:center; color:red;"><?php echo $n?></td>
-                <td><a style="color:green" href="javascript:void(0)" title="View guest details" onclick="showPage('guest_details.php?guest_id=<?php echo $detail->guest_id?>')"><?php echo $detail->last_name . " ". $detail->first_name;?></a></td>
+                <td><a style="color:green" href="javascript:void(0)" title="View guest details" onclick="showPage('guest_details.php?guest_id=<?php echo $detail->checkin_id?>')"><?php echo $fullname?></a></td>
                 <td>
                     <?php 
                         $get_cat = new selects();
@@ -70,6 +77,7 @@
                     ?>
                 </td>
                 <td><?php echo date("jS M, Y", strtotime($detail->check_in_date));?></td>
+                <td style="color:var(--moreColor)"><?php echo date("h:i:sa", strtotime($detail->checked_out));?></td>
                 <td>
                     <?php
                         //get posted by

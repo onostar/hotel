@@ -10,7 +10,7 @@
         include "../classes/select.php";
 
         $cancel = new Update_table();
-        $cancel->update_tripple('check_ins', 'guest_status', -1, 'cancel_check', $date, 'cancelled_by', $user, 'checkin_id', $guest);
+        $cancel->update_multiple('check_ins', 'guest_status', -1, 'cancel_check', $date, 'cancelled_by', $user, 'checked_out', $date, 'amount_due', 0, 'checkin_id', $guest);
         if($cancel){
         // update room
         //get room

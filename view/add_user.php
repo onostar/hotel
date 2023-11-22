@@ -16,6 +16,7 @@
                     <option value="Admin">Admin</option>
                     <option value="cashier">Cashier</option>
                     <option value="sales rep">Sales Rep</option>
+                    <option value="Front desk">Front Desk Officer</option>
                 </select>
                 <select name="store_id" id="store_id" style="padding:10px; border-radius:10px">
                     <option value=""selected required>select store</option>

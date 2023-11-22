@@ -997,6 +997,7 @@ function addTransfer(item_id){
                }
           })
           $("#sales_item").html("");
+          $("#item").val("");
           return false;
      // }
      
@@ -1033,6 +1034,7 @@ function getCustomerStatement(customer_id){
                }
           })
           $("#sales_item").html("");
+          $("#customer").val("")
           return false;
      // }
      
@@ -1082,19 +1084,19 @@ function stockin(){
      let quantity = document.getElementById("quantity").value;
      let cost_price = document.getElementById("cost_price").value;
      let sales_price = document.getElementById("sales_price").value;
-     let pack_price = document.getElementById("pack_price").value;
-     let pack_size = document.getElementById("pack_size").value;
+     /* let pack_price = document.getElementById("pack_price").value;
+     let pack_size = document.getElementById("pack_size").value; */
      let wholesale_price = document.getElementById("wholesale_price").value;
-     let wholesale_pack = document.getElementById("wholesale_pack").value;
+    /*  let wholesale_pack = document.getElementById("wholesale_pack").value;
      let expiration_date = document.getElementById("expiration_date").value;
      let todayDate = new Date();
-     let today = todayDate.toLocaleDateString();
+     let today = todayDate.toLocaleDateString(); */
      // alert(today);
      if(quantity.length == 0 || quantity.replace(/^\s+|\s+$/g, "").length == 0){
           alert("Please input quantity purchased!");
           $("#quantity").focus();
           return;
-     }else if(quantity == "0"){
+     }else if(quantity <= 0){
           alert("Please input quantity purchased!");
           $("#quantity").focus();
           return;
@@ -1106,27 +1108,27 @@ function stockin(){
           alert("Please input selling price");
           $("#sales_price").focus();
           return;
-     }else if(expiration_date.length == 0 || expiration_date.replace(/^\s+|\s+$/g, "").length == 0){
+     /* }else if(expiration_date.length == 0 || expiration_date.replace(/^\s+|\s+$/g, "").length == 0){
           alert("Please input item expiration date");
           $("#expiration_date").focus();
           return;
      }else if(new Date(today).getTime() > new Date(expiration_date).getTime()){
           alert("You can not stock in expired items!");
           $("#expiration_date").focus();
-          return;
+          return; */
      }else if(parseInt(cost_price) >= parseInt(sales_price)){
           alert("Cost price cannot be greater than selling price!");
           $("#sales_price").focus();
           return;
-     }else if(parseInt(cost_price) >= parseInt(wholesale_price)){
+     /* }else if(parseInt(cost_price) >= parseInt(wholesale_price)){
           alert("Cost price cannot be greater than wholesale price!");
           $("#wholesale_price").focus();
-          return;
+          return; */
      }else{
           $.ajax({
                type : "POST",
                url : "../controller/stock_in.php",
-               data : {posted_by:posted_by, store:store, supplier:supplier, invoice_number:invoice_number, item_id:item_id, quantity:quantity, cost_price:cost_price, sales_price:sales_price, pack_price:pack_price, pack_size:pack_size, wholesale_price:wholesale_price, wholesale_pack:wholesale_pack, expiration_date:expiration_date},
+               data : {posted_by:posted_by, store:store, supplier:supplier, invoice_number:invoice_number, item_id:item_id, quantity:quantity, cost_price:cost_price, sales_price:sales_price, /* pack_price:pack_price, pack_size:pack_size, */ wholesale_price:wholesale_price, /* wholesale_pack:wholesale_pack, expiration_date:expiration_date */},
                success : function(response){
                $(".stocked_in").html(response);
                }
@@ -1728,7 +1730,7 @@ function getCustomer(customer_id){
      let customer = customer_id;
      // alert(check_room);
      // return;
-     let fromDate = document.getElementById("fromDate").value;
+     /* let fromDate = document.getElementById("fromDate").value;
      let toDate = document.getElementById("toDate").value;
      if(fromDate.length == 0 || fromDate.replace(/^\s+|\s+$/g, "").length == 0){
           alert("Please select a date range!");
@@ -1738,13 +1740,13 @@ function getCustomer(customer_id){
           alert("Please select a date range!");
           $("#toDate").focus();
           return;
-     }else{
+     }else{ */
      if(customer.length >= 3){
           if(customer){
                $.ajax({
                     type : "POST",
                     url :"../controller/get_customer.php",
-                    data : {customer:customer, fromDate:fromDate, toDate:toDate},
+                    data : {customer:customer/* , fromDate:fromDate, toDate:toDate */},
                     success : function(response){
                          $("#sales_item").html(response);
                     }
@@ -1755,7 +1757,8 @@ function getCustomer(customer_id){
           }else{
                $("#sales_item").html("<p>Please enter atleast 3 letters</p>");
           }
-     }
+     // }
+
 }
      
 }
@@ -1849,9 +1852,10 @@ function addSales(item_id){
 //add sales order
 function addSalesOrder(item_id){
      let item = item_id;
+     let invoice = document.getElementById("invoice").value;
      $.ajax({
           type : "GET",
-          url : "../controller/add_sales_order.php?sales_item="+item,
+          url : "../controller/add_sales_order.php?sales_item="+item+"&invoice="+invoice,
           success : function(response){
                $(".sales_order").html(response);
           }
@@ -2644,9 +2648,9 @@ function addPayment(){
           }else{
                return;
           }
-          /* setTimeout(function(){
-               $("#guest_payment").load("guest_payment.php #guest_payment");
-          }, 2000); */
+          setTimeout(function(){
+               $("#guest_details").load("guest_details.php?guest_id="+check_in_id+ "#guest_details");;
+          }, 2000);
           return false;
      }
      
@@ -3624,3 +3628,20 @@ function getPrice(check_room){
      }
      
 }
+// prinit sales receipt for direct sales
+function printGuestReceipt(invoice){
+     window.open("../controller/guest_receipt.php?receipt="+invoice);
+     // alert(item_id);
+     /* $.ajax({
+          type : "GET",
+          url : "../controller/sales_receipt.php?receipt="+invoice,
+          success : function(response){
+               $("#direct_sales").html(response);
+          }
+     }) */
+     /* setTimeout(function(){
+          $("#direct_sales").load("direct_sales.php #direct_sales");
+     }, 100); */
+     return false;
+ 
+ }

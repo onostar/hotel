@@ -19,7 +19,7 @@
         $update_old_room->update('items', 'item_status', 'item_id', 0, $current_room);
         //update new room status
         $update_new_room = new Update_table();
-        $update_new_room->update('items', 'item_status', 'item_id', 1, $new_room);
+        $update_new_room->update('items', 'item_status', 'item_id', 2, $new_room);
         //update guest room details
         //insert into change room table
         $data = array(

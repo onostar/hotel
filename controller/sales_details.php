@@ -50,7 +50,7 @@
                     ?>
                 </td>
                 <td>
-                    <a style="color:red; font-size:1rem" href="javascript:void(0) "title="delete purchase" onclick="deleteSales('<?php echo $detail->sales_id?>', '<?php echo $detail->item?>')"><i class="fas fa-trash"></i></a>
+                    <a style="color:red; font-size:1rem" href="javascript:void(0) "title="delete item" onclick="deleteSales('<?php echo $detail->sales_id?>', '<?php echo $detail->item?>')"><i class="fas fa-trash"></i></a>
                 </td>
                 
             </tr>

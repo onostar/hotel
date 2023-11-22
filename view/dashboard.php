@@ -1,6 +1,12 @@
 <div id="general_dashboard">
 <div class="dashboard_all">
+    <?php
+        if($role == "Front Desk"){
+    ?>
+    <h3><i class="fas fa-home"></i> Front desk  <span style="color:var(--secondaryColor);font-size:1rem">Dashboard</span></h3>
+    <?php }else{?>
     <h3><i class="fas fa-home"></i> Dashboard for <span style="color:var(--secondaryColor);font-size:1rem"><?php echo $store?></span></h3>
+    <?php }?>
     <?php 
         if($role === "Admin"){
     ?>
@@ -41,11 +47,11 @@
         <div class="cards" id="card1">
             <a href="javascript:void(0)" class="page_navs">
                 <div class="infos">
-                    <p><i class="fas fa-users"></i> Cost of sales</p>
+                    <p><i class="fas fa-users"></i> Accomodation</p>
                     <p>
                     <?php
                         $get_cost = new selects();
-                        $costs = $get_cost->fetch_sum_curdate2Con('sales', 'cost', 'date(post_date)', 'sales_status', 2, 'store', $store_id);
+                        $costs = $get_cost->fetch_sum_curdateCon('payments', 'amount_paid', 'date(post_date)', 'sales_type', 'Accomodation');
                         foreach($costs as $cost){
                             echo "₦".number_format($cost->total, 2);
                         }
@@ -54,16 +60,16 @@
                 </div>
             </a>
         </div> 
-        <div class="cards" id="card2" style="background: var(--moreColor)">
+        <div class="cards" id="card5">
             <a href="javascript:void(0)" class="page_navs" onclick="showPage('expense_report.php')">
                 <div class="infos">
-                    <p><i class="fas fa-hand-holding-dollar"></i> Daily Expense</p>
+                    <p><i class="fas fa-hand-holding-dollar"></i> Bar & restauant</p>
                     <p>
                     <?php
-                        $get_exp = new selects();
-                        $exps = $get_exp->fetch_sum_curdateCon('expenses', 'amount', 'date(expense_date)', 'store', $store_id);
-                        foreach($exps as $exp){
-                            echo "₦".number_format($exp->total, 2);
+                        $get_cost = new selects();
+                        $costs = $get_cost->fetch_sum_curdateCon('payments', 'amount_paid', 'date(post_date)', 'sales_type', 'retail');
+                        foreach($costs as $cost){
+                            echo "₦".number_format($cost->total, 2);
                         }
                     ?>
                     </p>
@@ -107,10 +113,76 @@
         
     </div>
     <?php
+        }else if($role == "Front Desk"){
+    ?>
+    <div id="dashboard">
+        <div class="cards" id="card0">
+            <a href="javascript:void(0)" onclick="showPage('guest_list.php')"class="page_navs">
+                <div class="infos">
+                    <p><i class="fas fa-users"></i> Current guests</p>
+                    <p>
+                    <?php
+                        //get total guests
+                       $get_cus = new selects();
+                       $customers =  $get_cus->fetch_count_cond('check_ins', 'guest_status', 1);
+                       echo $customers;
+                    ?>
+                    </p>
+                </div>
+            </a>
+        </div> 
+        <div class="cards" id="card4">
+            <a href="javascript:void(0)" onclick="showPage('check_out.php')">
+                <div class="infos">
+                    <p><i class="fas fa-sign-out-alt"></i> Due for checkout</p>
+                    <p>
+                    <?php
+                        $get_sales = new selects();
+                        $rows = $get_sales->fetch_count_curDateCon('check_ins', 'date(check_out_date)', 'guest_status', 1);
+                        echo $rows;
+                    ?>
+                    </p>
+                </div>
+            </a>
+        </div>
+        <div class="cards" id="card3">
+            <a href="javascript:void(0)" class="page_navs" onclick="showPage('room_list.php')">
+                <div class="infos">
+                    <p><i class="fas fa-home"></i> Available room(s)</p>
+                    <p>
+                    <?php
+                        //get available rooms
+                       $get_rooms = new selects();
+                       $rooms =  $get_rooms->fetch_count_2cond('items', 'department', 1, 'item_status', 0);
+                       echo $rooms;
+                    ?>
+                    </p>
+                </div>
+            </a>
+        </div> 
+        <div class="cards" id="card5">
+            <a href="javascript:void(0)" class="page_navs" onclick="showPage('guest_list.php')">
+                <div class="infos">
+                    <p><i class="fas fa-coins"></i> Amount due</p>
+                    <p>
+                    <?php
+                        $get_sales = new selects();
+                        $rows = $get_sales->fetch_sum('check_ins', 'amount_due');
+                        foreach($rows as $row){
+                            echo "₦".number_format($row->total, 2);
+                        }
+                    ?>
+                    </p>
+                </div>
+            </a>
+        </div> 
+            
+    </div>
+    <?php
         }else{
     ?>
     <div id="dashboard">
-    <div class="cards" id="card0">
+        <div class="cards" id="card0">
             <a href="javascript:void(0)" class="page_navs">
                 <div class="infos">
                     <p><i class="fas fa-users"></i> Customers</p>
@@ -289,16 +361,97 @@
 </div>
 
 <?php 
+    }elseif($role == "Front Desk"){
+?>
+<div class="check_out_due">
+    <hr>
+    <div class="displays allResults" id="check_out_guest">
+       
+        <h3 style="background:var(--primaryColor)">My Daily Check ins</h3>
+        <table id="check_out_table" class="searchTable" style="width:100%;">
+            <thead>
+                <tr style="background:var(--otherColor)">
+                    <td>S/N</td>
+                    <td>Guest</td>
+                    <td>Room Category</td>
+                    <td>Room</td>
+                    <td>Amount due</td>
+                    <td>Amount paid</td>
+                    <td>Checked in</td>
+                    <td>Time</td>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                    $n = 1;
+                    $get_users = new selects();
+                    $details = $get_users->fetch_checkIn('check_ins', 'guest_status', 'check_in_date', 1);
+                    if(gettype($details) === 'array'){
+                    foreach($details as $detail):
+                        //get guest details
+                        $get_details = new selects();
+                        $rows = $get_details->fetch_details_cond('guests', 'guest_id', $detail->guest);
+                        foreach($rows as $row){
+                            $fullname = $row->last_name . " ". $row->other_names;
+                        }
+                        //get payments
+                        $get_payments = new selects();
+                        $results = $get_payments->fetch_details_cond('payments', 'customer', $detail->checkin_id);
+                        foreach($results as $result){
+                            $amount_due = $result->amount_due;
+                            $amount_paid = $result->amount_paid;
+                        }
+                ?>
+                <tr>
+                    <td style="text-align:center; color:red;"><?php echo $n?></td>
+                    <td><a style="color:green" href="javascript:void(0)" title="View guest details" onclick="showPage('guest_details.php?guest_id=<?php echo $detail->checkin_id?>')"><?php echo $fullname;?></a></td>
+                    <td>
+                        <?php 
+                            $get_cat = new selects();
+                            $categories = $get_cat->fetch_details_group('items', 'category', 'item_id', $detail->room);
+                            $category_id = $categories->category;
+                            //get category name
+                            $get_cat_name = new selects();
+                            $cat_name = $get_cat_name->fetch_details_group('categories', 'category', 'category_id', $category_id);
+                            echo $cat_name->category;
+
+
+                        ?>
+                    </td>
+                    <td>
+                        <?php 
+                            $get_room = new selects();
+                            $rooms = $get_room->fetch_details_group('items', 'item_name', 'item_id', $detail->room);
+                            echo $rooms->item_name;
+                        ?>
+                    </td>
+                    <td style="color:var(--moreColor)"><?php echo number_format($amount_due, 2)?></td>
+                    <td style="color:green"><?php echo number_format($amount_paid, 2)?></td>
+                    <td><?php echo date("jS M, Y", strtotime($detail->check_in_date));?></td>
+                    <td><?php echo date("h:i:ma", strtotime($detail->post_date));?></td>
+                </tr>
+                <?php $n++; endforeach;}?>
+            </tbody>
+        </table>
+        
+        <?php
+            if(gettype($details) == "string"){
+                echo "<p class='no_result'>'$details'</p>";
+            }
+        ?>
+    </div>
+</div>
+<?php
     }else{
 ?>
 <div class="check_out_due">
     <hr>
     <div class="displays allResults" id="check_out_guest">
        
-        <h3 style="background:var(--otherColor)">My Daily transactions</h3>
+        <h3 style="background:var(--primaryColor)">My Daily transactions</h3>
         <table id="check_out_table" class="searchTable" style="width:100%;">
             <thead>
-                <tr style="background:var(--moreColor)">
+                <tr style="background:var(--otherColor)">
                     <td>S/N</td>
                     <td>Invoice</td>
                     <td>Item</td>
@@ -360,7 +513,5 @@
         ?>
     </div>
 </div>
-<?php
-    }
-?>
+<?php }?>
 </div>

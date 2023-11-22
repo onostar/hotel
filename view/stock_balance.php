@@ -18,12 +18,12 @@
         <thead>
             <tr style="background:var(--moreColor)">
                 <td>S/N</td>
-                <td>Category</td>
                 <td>Item name</td>
                 <td>Quantity</td>
                 <td>Unit cost</td>
+                <td>Retail price</td>
                 <td>Total cost</td>
-                <td>Expiry date</td>
+                <!-- <td>Expiry date</td> -->
             </tr>
         </thead>
         <tbody>
@@ -36,7 +36,7 @@
             ?>
             <tr>
                 <td style="text-align:center; color:red;"><?php echo $n?></td>
-                <td style="color:var(--moreClor);">
+                <!-- <td style="color:var(--moreClor);">
                     <?php
                         //get item category first
                         $get_cat = new selects();
@@ -46,7 +46,7 @@
                         $cat_name = $get_cat_name->fetch_details_group('departments', 'department', 'department_id', $item_cat->department);
                         echo $cat_name->department;
                     ?>
-                </td>
+                </td> -->
                 <td style="color:var(--otherColor)"><?php 
                     //get item name
                     $get_name = new selects();
@@ -63,16 +63,23 @@
                     ?>
                 </td>
                 <td>
+                    <?php
+                        $get_retail = new selects();
+                        $rows = $get_retail->fetch_details_group('items', 'sales_price', 'item_id', $detail->item);
+                        echo "₦".number_format($rows->sales_price, 2);
+                    ?>
+                </td>
+                <td>
                     <?php 
                         $total_cost = $cost_prices->cost_price * $detail->quantity;
                         echo "₦".number_format($total_cost, 2);
                     ?>
                 </td>
-                <td>
+                <!-- <td>
                     <?php
                         echo date("d-m-Y", strtotime($detail->expiration_date));
                     ?>
-                </td>
+                </td> -->
                 
             </tr>
             
