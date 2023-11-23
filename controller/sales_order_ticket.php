@@ -5,6 +5,7 @@
 // instantiate class
 include "../classes/dbh.php";
 include "../classes/select.php";
+include "../classes/update.php";
     session_start();
     if(isset($_GET['receipt'])){
         $user = $_SESSION['user_id'];
@@ -37,7 +38,7 @@ include "../classes/select.php";
 
     <div class="receipt_head">
         <p><?php echo $invoice?></p>
-    <p><strong>ORDER TICKET</strong> (<?php $store_name?>)</p>
+    <p><strong>ORDER TICKET</strong> (<?php echo $store_name?>)</p>
     </div>
     <table id="postsales_table" class="searchTable" style="border-collapse:collapse;">
         <thead>
@@ -51,7 +52,7 @@ include "../classes/select.php";
         <?php
                 $n = 1;
                 $get_items = new selects();
-                $details = $get_items->fetch_details_cond('sales','invoice', $invoice);
+                $details = $get_items->fetch_details_2cond('sales','invoice', 'add_order', $invoice, 1);
                 if(gettype($details) === 'array'){
                 foreach($details as $detail):
             ?>
@@ -91,4 +92,7 @@ include "../classes/select.php";
             // }
         
     // }
+    //update add_order status
+    $update_invoice = new Update_table();
+    $update_invoice->update('sales', 'add_order', 'invoice', 0, $invoice);
 ?>

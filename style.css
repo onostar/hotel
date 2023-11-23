@@ -2805,9 +2805,9 @@ x
 }
 #printBtn button{
     background:green!important;
-    padding:10px 20px;
+    padding:8px 5px;
     border-radius: 5px;
-    font-size:1rem;
+    font-size:.8rem;
 }
 #change_price{
     background:var(--otherColor);

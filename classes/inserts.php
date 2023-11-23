@@ -98,14 +98,14 @@ date_default_timezone_set("Africa/Lagos");
         
         
         //add item to sales
-        protected function post_sales($posted, $item, $invoice, $quantity, $price, $amount, $cost, $store, $type, $customer, $date){
+        protected function post_sales($posted, $item, $invoice, $quantity, $price, $amount, $cost, $store, $type, $customer, $date, $add_order){
             // check if item already exist
             $confirm_check  = $this->connectdb()->prepare("SELECT * FROM sales WHERE invoice = :invoice AND item = :item AND sales_status = 0");
             $confirm_check->bindValue("invoice", $invoice);
             $confirm_check->bindValue("item", $item);
             $confirm_check->execute();
             if(!$confirm_check->rowCount() > 0){
-                $add_sales = $this->connectdb()->prepare("INSERT INTO sales (item, invoice, price, total_amount, quantity, posted_by, cost, store, sales_type, customer, post_date) VALUES (:item, :invoice, :price, :total_amount, :quantity, :posted_by, :cost, :store, :sales_type, :customer, :post_date)");
+                $add_sales = $this->connectdb()->prepare("INSERT INTO sales (item, invoice, price, total_amount, quantity, posted_by, cost, store, sales_type, customer, post_date, add_order) VALUES (:item, :invoice, :price, :total_amount, :quantity, :posted_by, :cost, :store, :sales_type, :customer, :post_date, :add_order)");
                 $add_sales->bindvalue("item", $item);
                 $add_sales->bindvalue("invoice", $invoice);
                 $add_sales->bindvalue("price", $price);
@@ -117,6 +117,7 @@ date_default_timezone_set("Africa/Lagos");
                 $add_sales->bindvalue("sales_type", $type);
                 $add_sales->bindvalue("customer", $customer);
                 $add_sales->bindvalue("post_date", $date);
+                $add_sales->bindvalue("add_order", $add_order);
                 $add_sales->execute();
             }else{
                 echo "<div class='notify'><p>Item already exists in sales order</p></div>";
@@ -304,8 +305,9 @@ date_default_timezone_set("Africa/Lagos");
         private $type;
         private $customer;
         private $date;
+        private $add_order;
 
-        public function __construct($item, $invoice, $quantity, $price, $amount, $posted, $cost, $store, $type, $customer, $date)
+        public function __construct($item, $invoice, $quantity, $price, $amount, $posted, $cost, $store, $type, $customer, $date, $add_order)
         {
             $this->item = $item;
             // $this->staff = $staff;
@@ -319,10 +321,11 @@ date_default_timezone_set("Africa/Lagos");
             $this->type = $type;
             $this->customer = $customer;
             $this->date = $date;
+            $this->add_order = $add_order;
         }
 
         public function add_sales(){
-            $this->post_sales($this->posted, $this->item, $this->invoice, $this->quantity, $this->price, $this->amount, $this->cost, $this->store, $this->type, $this->customer, $this->date);
+            $this->post_sales($this->posted, $this->item, $this->invoice, $this->quantity, $this->price, $this->amount, $this->cost, $this->store, $this->type, $this->customer, $this->date, $this->add_order);
         }
     }
 
