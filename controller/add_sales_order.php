@@ -7,7 +7,7 @@ include "../classes/inserts.php";
     $store = $_SESSION['store_id'];
     $sales_type = "Retail";
     $customer = 0;
-    $date = date("Y-m-d H:i:m");
+    $date = date("Y-m-d H:i:s");
     if(isset($_SESSION['user_id'])){
         $user_id = $_SESSION['user_id'];
         if(isset($_GET['invoice'])){

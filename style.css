@@ -2195,11 +2195,11 @@ table tr:nth-child(even){
     width:30%;
 }
 .select_date section .from_to_date label{
-    font-size:1rem;
+    font-size:.9rem;
 }
 .select_date section input, .select_date section select{
     width:100%;
-    padding:10px;
+    padding:7px;
     border-radius: 5px;
     background:#fff;
 }
@@ -2207,10 +2207,10 @@ table tr:nth-child(even){
     width:30%;
     background:var(--secondaryColor);
     color:#fff;;
-    font-size:1rem;
+    font-size:.9rem;
     text-transform:capitalize;
     margin:0;
-    padding:10px;
+    padding:7px;
     border-radius: 5px;
 }
 .new_data{
@@ -3128,6 +3128,22 @@ x
     font-size:.8rem;
 }
 #fees_days button{
+    display:none;
+}
+#due_bill{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.add_bill a{
+    padding:5px 8px;
+    margin:5px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 2px #222;
+    color:#fff;
+    background:green;
+}
+#payment_form{
     display:none;
 }
 @media screen and (max-width: 800px){

@@ -18,7 +18,7 @@ include "../classes/inserts.php";
                 
 ?>
 <div id="printBtn">
-    <button onclick="printSalesTicket('<?php echo $invoice?>')">Print Ticket <i class="fas fa-print"></i></button>
+    <button onclick="printSalesTicket('<?php echo $invoice?>')">Print Docket <i class="fas fa-print"></i></button>
 </div>
 <!--  -->
    

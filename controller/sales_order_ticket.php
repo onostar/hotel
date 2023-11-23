@@ -33,50 +33,52 @@ include "../classes/select.php";
     <p><?php echo $address?></p>
     <p>Tel: <?php echo $phone?></p>
     <!-- get sales type -->
-        <p>Date: <?php echo date("d-m-Y", strtotime($posted_date))?>, <?php echo date("h:m:ia", strtotime($posted_date))?></p>
+        <p>Date: <?php echo date("d-m-Y", strtotime($posted_date))?>, <?php echo date("h:i:sa", strtotime($posted_date))?></p>
 
     <div class="receipt_head">
         <p><?php echo $invoice?></p>
-    <p><strong>ORDER TICKET</strong></p>
+    <p><strong>ORDER TICKET</strong> (<?php $store_name?>)</p>
     </div>
     <table id="postsales_table" class="searchTable" style="border-collapse:collapse;">
         <thead>
             <tr style="background:var(--moreColor)">
-                <td style="text-align:center">Items</td>
-                <td style="text-align:center">Amount</td>
+                <td style="text-align:center">S/N</td>
+                <td>Item</td>
+                <td style="text-align:center">Qty</td>
             </tr>
         </thead>
         <tbody>
-            <?php
+        <?php
                 $n = 1;
                 $get_items = new selects();
-                $details = $get_items->fetch_count_cond('sales', 'invoice', $invoice);
+                $details = $get_items->fetch_details_cond('sales','invoice', $invoice);
+                if(gettype($details) === 'array'){
+                foreach($details as $detail):
             ?>
-            <tr>
-                <td style="text-align:center; color:red;"><?php echo $details?></td>
-                
-                <td>
+            <tr style="font-size:.9rem">
+                <td style="text-align:center; color:red; font-size:.7rem"><?php echo $n?></td>
+                <td style="color:var(--moreClor); font-size:.7rem">
                     <?php
-                        $get_total = new selects(); 
-                        $amounts = $get_total->fetch_sum_single('sales', 'total_amount', 'invoice', $invoice);
-                        foreach($amounts as $amount){
-                            echo "<p class='total_amount' style='color:green; text-align:center;'>Total Due: ₦".number_format($amount->total, 2)."</p>";
-                        }
+                        //get category name
+                        $get_item_name = new selects();
+                        $item_name = $get_item_name->fetch_details_group('items', 'item_name', 'item_id', $detail->item);
+                        echo $item_name->item_name;
                     ?>
                 </td>
-                
+                <td style="text-align:center; color:red; font-size:.7rem"><?php echo $detail->quantity?>
+                    
+                </td>
                 
             </tr>
-            
+            <?php endforeach; }?>
         </tbody>
     </table>
 
     <?php
-    
         //sold by
         $get_seller = new selects();
         $row = $get_seller->fetch_details_group('users', 'full_name', 'user_id', $user);
-        echo ucwords("<p class='sold_by'>Sold by: <strong>$row->full_name</strong></p>");
+        echo ucwords("<p class='sold_by'>Ordered by: <strong>$row->full_name</strong></p>");
     ?>
     
 </div> 

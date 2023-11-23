@@ -7,8 +7,8 @@
 
 ?>
 <div id="postSales" class="displays management">
-    <div class="select_date" style="width:100%;">
-        <!-- <form method="POST"> -->
+    <!-- <div class="select_date" style="width:100%;">
+       
         <section>    
             <div class="from_to_date" style="width:20%;">
                 <label>Select From Date</label><br>
@@ -19,10 +19,10 @@
                 <input type="date" name="to_date" id="to_date"><br>
             </div>
             <button type="submit" name="search_date" style="width:25%;" id="search_date" onclick="search('search_sales_order.php')">Search <i class="fas fa-search"></i></button>
-</section>
-    </div>
+        </section>
+    </div> -->
 <div class="displays allResults new_data" id="revenue_report">
-    <h2>Todays Sales Order List Pending payment</h2>
+    <h2>Sales Order List Pending payment</h2>
     <hr>
     <div class="search">
         <input type="search" id="searchCheckout" placeholder="Enter keyword" onkeyup="searchData(this.value)">
@@ -33,6 +33,7 @@
             <tr style="background:var(--otherColor)">
                 <td>S/N</td>
                 <td>Invoice</td>
+                <td>Date</td>
                 <td>Post Time</td>
                 <td>Amount</td>
                 <td>Total Items</td>
@@ -52,8 +53,9 @@
             <tr>
                 <td style="text-align:center; color:red;"><?php echo $n?></td>
                 <td><a style="color:green" href="javascript:void(0)" title="View invoice details"><?php echo $detail->invoice?></a></td>
+                <td style="color:var(--otherColor)"><?php echo date("d-m-Y", strtotime($detail->post_date));?></td>
                 <td style="color:var(--moreColor)"><?php echo date("H:i:sa", strtotime($detail->post_date));?></td>
-                <td><?php echo "₦".number_format($detail->total, 2)?></td>
+                <td style="color:red"><?php echo "₦".number_format($detail->total, 2)?></td>
                 <td style="text-align:center">
                     <?php
                         //get items in invoice;

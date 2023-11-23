@@ -18,7 +18,7 @@
             <?php
                 $n = 1;
                 $get_items = new selects();
-                $details = $get_items->fetch_details_cond('sales','invoice', $invoice);
+                $details = $get_items->fetch_details_2cond('sales','invoice', 'sales_status', $invoice, 0);
                 if(gettype($details) === 'array'){
                 foreach($details as $detail):
             ?>
@@ -72,7 +72,7 @@
             $total_amount = $amount->total;
         }
         // $total_worth = $total_amount * $total_qty;
-        echo "<p class='total_amount' style='background:red; color:#fff; text-decoration:none; width:auto; float:right; padding:10px;'>Total Due: ₦".number_format($total_amount, 2)."</p>";
+        // echo "<p class='total_amount' style='background:red; color:#fff; text-decoration:none; width:auto; float:right; padding:10px;'>Total Due: ₦".number_format($total_amount, 2)."</p>";
     ?>
     <?php
         if(gettype($details) == "array"){
@@ -83,7 +83,7 @@
                 <input type="hidden" name="sales_invoice" id="sales_invoice" value="<?php echo $invoice?>">
                 
                 <div class="data" style="width:100%">
-                    <button onclick="printSalesOrder()" style="background:green; padding:10px; border-radius:5px;font-size:.9rem; box-shadow:2px 2px 2px #c4c4c4;">Print docket <i class="fas fa-print"></i></button>
+                    <button onclick="printSalesOrder()" style="background:green; padding:10px; border-radius:5px;font-size:.9rem; box-shadow:2px 2px 2px #c4c4c4;">Save Order <i class="fas fa-print"></i></button>
                 </div>
             </div>
         </section>

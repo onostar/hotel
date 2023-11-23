@@ -3645,3 +3645,23 @@ function printGuestReceipt(invoice){
      return false;
  
  }
+
+ //display payment form
+ function displayPayment(){
+     $("#payment_form").toggle();
+ }
+
+ //print customer bill
+function printBill(invoice){
+     window.open("../controller/print_bill.php?receipt="+invoice);
+     // alert(item_id);
+     /* $.ajax({
+          type : "GET",
+          url : "../controller/sales_receipt.php?receipt="+invoice,
+          success : function(response){
+               $("#direct_sales").html(response);
+          }
+     }) */
+     return false;
+ 
+ }

@@ -23,8 +23,8 @@
     <div class="guest_name">
         <div class="displays allResults" id="payment_det">
         
-            <div class="payment_details" style="width:70%;">
-                <h3 style="background:var(--otherColor); color:#fff; padding:10px;">Items on Invoice No. <?php echo $invoice?></h3>
+            <div class="payment_details" style="width:80%;">
+                <h3 style="background:var(--otherColor); color:#fff; padding:10px;font-size:.9rem">Items on Invoice No. <?php echo $invoice?></h3>
                 <table id="guest_payment_table" class="searchTable">
                     <thead>
                         <tr>
@@ -33,6 +33,7 @@
                             <td>Quantity</td>
                             <td>Unit price</td>
                             <td>Amount</td>
+                            <td>Time</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -55,17 +56,22 @@
                             <td style="text-align:center; color:var(--otherColor)"><?php echo $row->quantity?></td>
                             <td><?php echo number_format($row->price, 2);?></td>
                             <td><?php echo number_format($row->total_amount, 2)?></td>
-                            
+                            <td style="color:var(--otherColor)"><?php echo date("d-m-y H:ia", strtotime($row->post_date))?></td>
                         </tr>
                         
                         <?php $n++; }?>
                     </tbody>
                 </table>
             </div>
-            <div class="amount_due" style="width:70%;">
+            <div class="amount_due" id="due_bill" style="width:80%;">
+                <div class="add_bill">
+                    <a href="javascript:void(0)" title="Add order to bill" onclick="showPage('add_to_bill.php?invoice=<?php echo $invoice?>')" style="background:brown"><i class="fas fa-clipboard-check"></i> Add order</a>
+                    <a href="javascript:void(0)" title="Add order to bill" onclick="printBill('<?php echo $invoice?>')" style="background:var(--otherColor)"><i class="fas fa-print"></i> Print Bill</a>
+                    <a href="javascript:void(0)" title="Make payment" onclick="displayPayment()"><i class="fas fa-hand-holding-dollar"></i> Make payment</a>
+                </div>
                 <section>
-                    <label for="discount" style="color:red;">Discount</label><br>
-                    <input type="text" name="discount" id="discount" style="padding:5px;border-radius:5px;" value="0">
+                    <!-- <label for="discount" style="color:red;">Discount</label><br> -->
+                    <input type="hidden" name="discount" id="discount" style="padding:5px;border-radius:5px;" value="0">
                 </section>
                 <h2>Total Amount: 
                 <?php
@@ -80,7 +86,7 @@
 
                 
             </div>
-            <div class="close_stockin add_user_form" style="width:50%; margin:0;">
+            <div class="close_stockin add_user_form" style="width:50%; margin:0;" id="payment_form">
             <section class="addUserForm">
                 <div class="inputs" style="display:flex; flex-wrap:wrap">
                     <input type="hidden" name="total_amount" id="total_amount" value="<?php echo $detail->total?>">

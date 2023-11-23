@@ -100,7 +100,7 @@ date_default_timezone_set("Africa/Lagos");
         //add item to sales
         protected function post_sales($posted, $item, $invoice, $quantity, $price, $amount, $cost, $store, $type, $customer, $date){
             // check if item already exist
-            $confirm_check  = $this->connectdb()->prepare("SELECT * FROM sales WHERE invoice = :invoice AND item = :item");
+            $confirm_check  = $this->connectdb()->prepare("SELECT * FROM sales WHERE invoice = :invoice AND item = :item AND sales_status = 0");
             $confirm_check->bindValue("invoice", $invoice);
             $confirm_check->bindValue("item", $item);
             $confirm_check->execute();
