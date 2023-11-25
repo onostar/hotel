@@ -16,7 +16,7 @@
 
 ?>
 
-
+<div class="info"></div>
 <div class="displays all_details">
     <!-- <div class="info"></div> -->
     <button class="page_navs" id="back" onclick="showPage('post_sales_order.php')"><i class="fas fa-angle-double-left"></i> Back</button>
@@ -34,6 +34,7 @@
                             <td>Unit price</td>
                             <td>Amount</td>
                             <td>Time</td>
+                            <td></td>
                         </tr>
                     </thead>
                     <tbody>
@@ -57,6 +58,9 @@
                             <td><?php echo number_format($row->price, 2);?></td>
                             <td><?php echo number_format($row->total_amount, 2)?></td>
                             <td style="color:var(--otherColor)"><?php echo date("d-m-y H:ia", strtotime($row->post_date))?></td>
+                            <td>
+                                <a style="color:red; font-size:1rem" href="javascript:void(0) "title="return item" onclick="getReturnItem('<?php echo $row->sales_id?>')"><i class="fas fa-trash"></i></a>
+                            </td>
                         </tr>
                         
                         <?php $n++; }?>

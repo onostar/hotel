@@ -19,7 +19,7 @@ include "../classes/inserts.php";
             $store = htmlspecialchars(stripslashes($_POST['store']));
             $type = "Retail";
             $customer = 0;
-            $date = date("Y-m-d H:i:m");
+            $date = date("Y-m-d H:i:s");
             //insert into audit trail
             //get items and quantity sold in the invoice
             $get_item = new selects();

@@ -18,23 +18,8 @@ session_start();
             $discount = htmlspecialchars(stripslashes($_POST['discount']));
             $type = "Retail";
             $customer = 0;
-        //insert into audit trail
-            //get items and quantity sold in the invoice
-            $get_item = new selects();
-            $items = $get_item->fetch_details_cond('sales', 'invoice', $invoice);
-            foreach($items as $item){
-                $all_item = $item->item;
-                $sold_qty = $item->quantity;
-                //get item previous quantity in inventory
-                $get_qty = new selects();
-                $prev_qtys = $get_qty->fetch_details_2cond('inventory', 'store', 'item', $store, $all_item);
-                foreach($prev_qtys as $prev_qty){    
-                    //insert into audit trail
-                    $inser_trail = new audit_trail($all_item, $trans_type, $prev_qty->quantity, $sold_qty, $user, $store);
-                    $inser_trail->audit_trail();
-                
-                }
-            }
+            $date = date("Y-m-d H:i:s");
+        
             
         //update all items with this invoice
         $update_invoice = new Update_table();
@@ -52,41 +37,31 @@ session_start();
                 if($payment_type == "Multiple"){
                     //insert into payments
                     if($cash !== '0'){
-                        $insert_payment = new payments($user, 'Cash', $bank, $inv_amount, $cash, $discount, $invoice, $store, $type, $customer);
+                        $insert_payment = new payments($user, 'Cash', $bank, $inv_amount, $cash, $discount, $invoice, $store, $type, $customer, $date);
                         $insert_payment->payment();
                     }
                     if($pos !== '0'){
-                        $insert_payment = new payments($user, 'POS', $bank, $inv_amount, $pos, $discount, $invoice, $store, $type, $customer);
+                        $insert_payment = new payments($user, 'POS', $bank, $inv_amount, $pos, $discount, $invoice, $store, $type, $customer, $date);
                         $insert_payment->payment();
                     }
                     if($transfer !== '0'){
-                        $insert_payment = new payments($user, 'Transfer', $bank, $inv_amount, $transfer, $discount, $invoice, $store, $type, $customer);
+                        $insert_payment = new payments($user, 'Transfer', $bank, $inv_amount, $transfer, $discount, $invoice, $store, $type, $customer, $date);
                         $insert_payment->payment();
                     }
                     //
-                    $insert_multi = new multiple_payment($user, $invoice, $cash, $pos, $transfer, $bank, $store);
+                    $insert_multi = new multiple_payment($user, $invoice, $cash, $pos, $transfer, $bank, $store, $date);
                     $insert_multi->multi_pay();
                 }else{
-                    $insert_payment = new payments($user, $payment_type, $bank, $inv_amount, $amount_paid, $discount, $invoice, $store, $type, $customer);
+                    $insert_payment = new payments($user, $payment_type, $bank, $inv_amount, $amount_paid, $discount, $invoice, $store, $type, $customer, $date);
                     $insert_payment->payment();
                 }
                 
                 if($insert_payment){
                 
-                //update quantity of the items in inventory
-                //get all items first in the invoice
-                $get_items = new selects();
-                $rows = $get_items->fetch_details_cond('sales', 'invoice', $invoice);
                 
-                foreach($rows as $row){
-                    //update individual quantity in inventory
-                    $update_qty = new Update_table();
-                    $update_qty->update_inv_qty($row->quantity, $row->item, $store);
-                    
-                }
 ?>
 <div id="printBtn">
-    <button onclick="printSalesOrderReceipt('<?php echo $invoice?>')">Print Receipt <i class="fas fa-print"></i></button>
+    <button onclick="printSalesReceipt('<?php echo $invoice?>')">Print Receipt <i class="fas fa-print"></i></button>
 </div>
 <!--  -->
    

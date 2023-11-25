@@ -118,13 +118,13 @@ include "../classes/select.php";
             // $discount = $row->discount;
             $balance = $amount_due - $amount_paid;
             //amount due
-            echo "<p class='total_amount' style='color:green'>Amount due: ₦".number_format($amount_due, 2)."</p>";
+            // echo "<p class='total_amount' style='color:green'>Amount due: ₦".number_format($amount_due, 2)."</p>";
             //amount paid
             echo "<p class='total_amount' style='color:green'>Amount Paid: ₦".number_format($amount_paid, 2)."</p>";
             //discount
-            echo "<p class='total_amount' style='color:green'>Total Discount: ₦".number_format($discount, 2)."</p>";
+            // echo "<p class='total_amount' style='color:green'>Total Discount: ₦".number_format($discount, 2)."</p>";
             //balance
-            echo "<p class='total_amount' style='color:green'>Balance: ₦".number_format($balance, 2)."</p>";
+            // echo "<p class='total_amount' style='color:green'>Balance: ₦".number_format($balance, 2)."</p>";
         }
 
         

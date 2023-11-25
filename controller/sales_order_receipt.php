@@ -35,7 +35,7 @@ include "../classes/select.php";
 ?>
 <div class="displays allResults sales_receipt">
     <?php include "receipt_header.php"?>
-        <p><strong>(<?php echo strtoupper($pay_mode)?> Receipt)</strong></p>
+        <p><strong>(<?php echo strtoupper($pay_mode)?>)</strong></p>
     </div>
     <table id="postsales_table" class="searchTable">
         <thead>

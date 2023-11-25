@@ -1938,6 +1938,67 @@ function deleteSalesOrder(sales, item){
           return;
      }
 }
+//delete items from sales view sales order
+function getReturnItem(sales){
+     /* let confirmDel = confirm("Are you sure you want to remove this item?", "");
+     if(confirmDel){ */
+          
+          $.ajax({
+               type : "GET",
+               url : "../controller/get_item_order.php?sales_id="+sales,
+               success : function(response){
+                    $(".info").html(response);
+                    window.scrollTo(0, 0);
+               }
+               
+          })
+          return false;
+     /* }else{
+          return;
+     } */
+}
+//return item from sales order
+function returnItem(){
+     let return_sales = confirm("Are you sure you want to return this sales?", "");
+     if(return_sales){
+          let item = document.getElementById("item").value;
+          let sold_qty = document.getElementById("sold_qty").value;
+          let sales_id = document.getElementById("sales_id").value;
+          let user_id = document.getElementById("user_id").value;
+          let store = document.getElementById("store").value;
+          let invoice = document.getElementById("invoice").value;
+          let quantity = document.getElementById("quantity").value;
+          let reason = document.getElementById("reason").value;
+          if(quantity.length == 0 || quantity.replace(/^\s+|\s+$/g, "").length == 0){
+               alert("Please input quantity!");
+               $("#quantity").focus();
+               return;
+          }else if(quantity > sold_qty){
+               alert("You cannot return more than what was sold!");
+               $("#quantity").focus();
+               return;
+          }else if(reason.length == 0 || reason.replace(/^\s+|\s+$/g, "").length == 0){
+               alert("Please input reason for return!");
+               $("#reason").focus();
+               return;
+          }else{
+               $.ajax({
+                    type : "POST",
+                    url : "../controller/return_item_ordered.php",
+                    data: {item:item, sales_id:sales_id, user_id:user_id, quantity:quantity, reason:reason, store:store},
+                    success : function(response){
+                         $("#sales_details").html(response);
+                    }
+               })
+               setTimeout(function(){
+                    $("#sales_details").load("sales_details.php?invoice="+invoice+" #sales_details");
+               }, 1500);
+               return false
+          }
+     }else{
+          return;
+     }
+}
 //delete individual items from direct wholesale
 function deleteWholesale(sales, item){
      let confirmDel = confirm("Are you sure you want to remove this item?", "");
@@ -2763,6 +2824,8 @@ function displaySales(sales_id){
           url : "../controller/get_sales.php?sales_id="+sales_id,
           success : function(response){
                $(".select_date").html(response);
+               window.scrollTo(0, 0);
+
           }
      })
      return false;
