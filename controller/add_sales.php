@@ -7,6 +7,8 @@ include "../classes/inserts.php";
     $store = $_SESSION['store_id'];
     $sales_type = "Retail";
     $customer = 0;
+    $date = date("Y-m-d H:i:s");
+
     $date = date("Y-m-d H:i:m");
     if(isset($_SESSION['user_id'])){
         $user_id = $_SESSION['user_id'];
@@ -53,7 +55,7 @@ include "../classes/inserts.php";
 
             }else{
                 //insert into sales order
-                $sell_item = new post_sales($item, $invoice, $quantity, $price, $price, $user_id, $sales_cost, $store, $sales_type, $customer, $date);
+                $sell_item = new post_sales($item, $invoice, $quantity, $price, $price, $user_id, $sales_cost, $store, $sales_type, $customer, $date, 1);
                 $sell_item->add_sales();
                 if($sell_item){
 

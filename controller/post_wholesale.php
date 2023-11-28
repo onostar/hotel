@@ -8,35 +8,36 @@ include "../classes/inserts.php";
     session_start();
     if(isset($_SESSION['user_id'])){
         $trans_type = "sales";
-            $user = $_SESSION['user_id'];
-            $invoice = $_POST['sales_invoice'];
-            $payment_type = htmlspecialchars(stripslashes($_POST['payment_type']));
-            $bank = htmlspecialchars(stripslashes($_POST['bank']));
-            $cash = htmlspecialchars(stripslashes($_POST['multi_cash']));
-            $pos = htmlspecialchars(stripslashes($_POST['multi_pos']));
-            $transfer = htmlspecialchars(stripslashes($_POST['multi_transfer']));
-            $discount = htmlspecialchars(stripslashes($_POST['discount']));
-            $store = htmlspecialchars(stripslashes($_POST['store']));
-            $type = "Wholesale";
-            $wallet = htmlspecialchars(stripslashes($_POST['wallet']));
-            $customer = htmlspecialchars(stripslashes($_POST['customer_id']));
-            //insert into audit trail
-            //get items and quantity sold in the invoice
-            $get_item = new selects();
-            $items = $get_item->fetch_details_cond('sales', 'invoice', $invoice);
-            foreach($items as $item){
-                $all_item = $item->item;
-                $sold_qty = $item->quantity;
-                //get item previous quantity in inventory
-                $get_qty = new selects();
-                $prev_qtys = $get_qty->fetch_details_2cond('inventory', 'store', 'item', $store, $all_item);
-                foreach($prev_qtys as $prev_qty){    
-                    //insert into audit trail
-                    $inser_trail = new audit_trail($all_item, $trans_type, $prev_qty->quantity, $sold_qty, $user, $store);
-                    $inser_trail->audit_trail();
-                
-                }
+        $user = $_SESSION['user_id'];
+        $invoice = $_POST['sales_invoice'];
+        $payment_type = htmlspecialchars(stripslashes($_POST['payment_type']));
+       /*  $bank = htmlspecialchars(stripslashes($_POST['bank']));
+        $cash = htmlspecialchars(stripslashes($_POST['multi_cash']));
+        $pos = htmlspecialchars(stripslashes($_POST['multi_pos']));
+        $transfer = htmlspecialchars(stripslashes($_POST['multi_transfer']));
+        $discount = htmlspecialchars(stripslashes($_POST['discount'])); */
+        $store = htmlspecialchars(stripslashes($_POST['store']));
+        $type = "Guest";
+        // $wallet = htmlspecialchars(stripslashes($_POST['wallet']));
+        $customer = htmlspecialchars(stripslashes($_POST['customer_id']));
+        $date = date("Y-m-d H:i:s");
+        //insert into audit trail
+        //get items and quantity sold in the invoice
+        $get_item = new selects();
+        $items = $get_item->fetch_details_cond('sales', 'invoice', $invoice);
+        foreach($items as $item){
+            $all_item = $item->item;
+            $sold_qty = $item->quantity;
+            //get item previous quantity in inventory
+            $get_qty = new selects();
+            $prev_qtys = $get_qty->fetch_details_2cond('inventory', 'store', 'item', $store, $all_item);
+            foreach($prev_qtys as $prev_qty){    
+                //insert into audit trail
+                $inser_trail = new audit_trail($all_item, $trans_type, $prev_qty->quantity, $sold_qty, $user, $store);
+                $inser_trail->audit_trail();
+            
             }
+        }
             
         //check if mode is multiple payment
         /* $get_mode = new selects();
@@ -72,38 +73,43 @@ include "../classes/inserts.php";
                     $amount_paid = $inv_amount - $discount;
                 }
                 //insert payments
-                if($payment_type == "Multiple"){
+                /*if($payment_type == "Multiple"){
                     //insert into payments
-                    if($cash !== '0'){
-                        $insert_payment = new payments($user, 'Cash', $bank, $inv_amount, $cash, $discount, $invoice, $store, $type, $customer);
+                     if($cash !== '0'){
+                        $insert_payment = new payments($user, 'Cash', $bank, $inv_amount, $cash, $discount, $invoice, $store, $type, $customer, $date);
                         $insert_payment->payment();
                     }
                     if($pos !== '0'){
-                        $insert_payment = new payments($user, 'POS', $bank, $inv_amount, $pos, $discount, $invoice, $store, $type, $customer);
+                        $insert_payment = new payments($user, 'POS', $bank, $inv_amount, $pos, $discount, $invoice, $store, $type, $customer, $date);
                         $insert_payment->payment();
                     }
                     if($transfer !== '0'){
-                        $insert_payment = new payments($user, 'Transfer', $bank, $inv_amount, $transfer, $discount, $invoice, $store, $type, $customer);
+                        $insert_payment = new payments($user, 'Transfer', $bank, $inv_amount, $transfer, $discount, $invoice, $store, $type, $customer, $date);
                         $insert_payment->payment();
                     }
                     //
-                    $insert_multi = new multiple_payment($user, $invoice, $cash, $pos, $transfer, $bank, $store);
+                    $insert_multi = new multiple_payment($user, $invoice, $cash, $pos, $transfer, $bank, $store, $date);
                     $insert_multi->multi_pay();
-                }else{
-                    $insert_payment = new payments($user, $payment_type, $bank, $inv_amount, $amount_paid, $discount, $invoice, $store, $type, $customer);
+                }else{ */
+                    $insert_payment = new payments($user, $payment_type, $bank, $inv_amount, $amount_paid, $discount, $invoice, $store, $type, $customer, $date);
                     $insert_payment->payment();
-                }
+                /* }
                 if($payment_type == "Wallet"){
                     //update wallet balance
                     $new_balance = $wallet - $amount_paid;
                     $update_wallet = new Update_table();
                     $update_wallet->update('customers', 'wallet_balance', 'customer_id', $new_balance, $customer);
-                }
+                } */
                 if($insert_payment){
-                
                 
                 //check if payment is credit and insert into customer trail and debtors list
                 if($payment_type == "Credit"){
+                    //add money to amount due in checkins
+                    /* $get_balance = new selects();
+                    $details = $get_balance->fetch_details_group('check_ins', 'amount_due', 'checkin_id', $customer);
+                    $balance = $inv_amount + $details->amount_due;
+                    $update_balance = new Update_table(); */
+                    $update_balance->update('check_ins', 'amount_due', 'checkin_id', $balance, $customer);
                     //insert to customer_trail
                     $insert_credit = new customer_trail($customer, $store, 'Credit sales', $inv_amount, $user);
                     $insert_credit->add_trail();

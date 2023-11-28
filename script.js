@@ -2429,7 +2429,7 @@ function checkMode(mode){
      if(pay_mode == "POS" || pay_mode == "Transfer"){
           bank_input.style.display = "block";
           multiples.style.display = "none";
-          // wallet.style.display = "none";
+          wallet.style.display = "none";
           label.style.display = "block";
           deposits.type = "text";
      }else if(pay_mode == "Multiple"){
@@ -2442,12 +2442,12 @@ function checkMode(mode){
           wallet.style.display = "block";
           multiples.style.display = "none";
           bank_input.style.display = "none";
-          label.style.display = "block";
-          deposits.type = "text";
+          label.style.display = "none";
+          deposits.type = "hidden";
      }else{
           bank_input.style.display = "none";
           multiples.style.display = "none";
-          // wallet.style.display = "none";
+          wallet.style.display = "none";
           label.style.display = "block";
           deposits.type = "text";
      }
@@ -2615,6 +2615,7 @@ function postPayment(){
      let multi_cash = document.getElementById("multi_cash").value;
      let multi_pos = document.getElementById("multi_pos").value;
      let multi_transfer = document.getElementById("multi_transfer").value;
+     let wallet = document.getElementById("wallet").value;
      let sum_amount = parseInt(multi_cash) + parseInt(multi_pos) + parseInt(multi_transfer);
      if(payment_type == "Transfer" || payment_type == "POS"){
           if(bank.length == 0 || bank.replace(/^\s+|\s+$/g, "").length == 0){
@@ -2623,14 +2624,21 @@ function postPayment(){
                return;
           }
      }
-     if(document.getElementById("multiples").style.display == "block"){
+     if(payment_type == "Wallet"){
+          if(parseInt(wallet) <= 0){
+               alert("Insufficient balance! Kindly fund wallet");
+               $("#payment_type").focus();
+               return;
+          }
+     
+     }else if(document.getElementById("multiples").style.display == "block"){
           if(sum_amount < (parseInt(total_amount) - parseInt(discount))){
                alert("Please enter a valid amount");
                $("#multi_cash").focus();
                return;
           }
      }else{
-          if(parseInt(deposits) == 0){
+          if(parseInt(deposits) <= 0){
                alert("Please input amount deposited!");
                $("#deposits").focus();
           return;
@@ -2656,7 +2664,7 @@ function postPayment(){
                $.ajax({
                     type : "POST",
                     url : "../controller/post_payments.php",
-                    data : {sales_invoice:sales_invoice, payment_type:payment_type, bank:bank, multi_cash:multi_cash, multi_pos:multi_pos, multi_transfer:multi_transfer, discount:discount, store:store, total_amount:total_amount, deposits:deposits, check_in_id:check_in_id},
+                    data : {sales_invoice:sales_invoice, payment_type:payment_type, bank:bank, multi_cash:multi_cash, multi_pos:multi_pos, multi_transfer:multi_transfer, discount:discount, store:store, total_amount:total_amount, deposits:deposits, wallet:wallet, check_in_id:check_in_id},
                     success : function(response){
                          $("#all_payments").html(response);
                     }
@@ -2735,22 +2743,21 @@ function printTransferReceipt(invoice){
  
  }
 //post direct wholesale payment
-function postWholesale(){
-     let confirmPost = confirm("Are you sure you want to post this sales?", "");
-     if(confirmPost){
-          let total_amount = document.getElementById("total_amount").value;
+function postGuestOrder(){
+     
+          // let total_amount = document.getElementById("total_amount").value;
           let sales_invoice = document.getElementById("sales_invoice").value;
-          let discount = document.getElementById("discount").value;
+          // let discount = document.getElementById("discount").value;
           let store = document.getElementById("store").value;
           let customer_id = document.getElementById("customer_id").value;
           let payment_type = document.getElementById("payment_type").value;
-          let bank = document.getElementById("bank").value;
+          /* let bank = document.getElementById("bank").value;
           let multi_cash = document.getElementById("multi_cash").value;
           let multi_pos = document.getElementById("multi_pos").value;
           let multi_transfer = document.getElementById("multi_transfer").value;
           let wallet = document.getElementById("wallet").value;
-          let sum_amount = parseInt(multi_cash) + parseInt(multi_pos) + parseInt(multi_transfer);
-          if(document.getElementById("multiples").style.display == "block"){
+          let sum_amount = parseInt(multi_cash) + parseInt(multi_pos) + parseInt(multi_transfer); */
+          /* if(document.getElementById("multiples").style.display == "block"){
                if(sum_amount != (total_amount - discount)){
                     alert("Amount entered is not equal to total amount");
                     $("#multi_cash").focus();
@@ -2771,12 +2778,13 @@ function postWholesale(){
           }else if(discount.length == 0 || discount.replace(/^\s+|\s+$/g, "").length == 0){
                alert("Please enter discount value or 0!");
                $("#discount").focus();
-               return;
-          }else{
+               return; */
+               let confirmPost = confirm("Are you sure you want to post this sales?", "");
+               if(confirmPost){
                $.ajax({
                     type : "POST",
                     url : "../controller/post_wholesale.php",
-                    data : {sales_invoice:sales_invoice, payment_type:payment_type, bank:bank, multi_cash:multi_cash, multi_pos:multi_pos, multi_transfer:multi_transfer, discount:discount, wallet:wallet, store:store, customer_id:customer_id},
+                    data : {sales_invoice:sales_invoice, payment_type:payment_type, /* bank:bank, multi_cash:multi_cash, multi_pos:multi_pos, multi_transfer:multi_transfer, discount:discount, wallet:wallet, */ store:store, customer_id:customer_id},
                     success : function(response){
                          $("#direct_sales").html(response);
                     }
@@ -2786,11 +2794,10 @@ function postWholesale(){
                     $("#direct_sales").load("direct_sales.php #direct_sales");
                }, 200);
                return false; */
-          }
+          }else{
+                    return;
+               }
      // }
-     }else{
-          return;
-     }
 }
  //adjust item quantity
  function adjustReorderLevel(){

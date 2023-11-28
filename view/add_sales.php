@@ -1,3 +1,5 @@
+<div id="direct_sales">
+
 <?php
     session_start();
     $store = $_SESSION['store_id'];
@@ -9,29 +11,33 @@
         if(isset($_GET['customer'])){
             $customer = $_GET['customer'];
             //get customer name
+            //first get guest id from checkins
+            $get_guest = new selects();
+            $result = $get_guest->fetch_details_group('check_ins', 'guest', 'checkin_id', $customer);
             $get_customer = new selects();
-            $rows = $get_customer->fetch_details_group('customers', 'customer', 'customer_id', $customer);
-            $customer_name = $rows->customer;
+            $rows = $get_customer->fetch_details_cond('guests', 'guest_id', $result->guest);
+            foreach($rows as $row){
+                $customer_name = $row->last_name. " ".$row->other_names;
+
+            }
 
 ?>
-<div id="direct_sales">
 <div id="sales_form" class="displays all_details">
     <?php
-    
         //generate receipt invoice
         //get current date
         $todays_date = date("dmyh");
         $ran_num ="";
-        for($i = 0; $i < 5; $i++){
+        for($i = 0; $i < 3; $i++){
             $random_num = random_int(0, 9);
             $ran_num .= $random_num;
         }
-        $invoice = "WS".$store.$todays_date.$ran_num.$user_id;
-        $_SESSION['invoice'] = $invoice;
+        $invoice = "GU".$store.$user_id.$ran_num.$todays_date.$customer;
+        // $_SESSION['invoice'] = $invoice;
     ?>
     
     <div class="add_user_form" style="width:50%; margin:10px 0; box-shadow:none">
-        <h3 style="background:var(--primaryColor); color:#ff; text-align:left!important;" >Wholesale order for <?php echo $customer_name. " (".$invoice.")"?></h3>
+        <h3 style="background:var(--otherColor); color:#ff; text-align:left!important;" > Order items for <?php echo $customer_name. " (".$invoice.")"?></h3>
         
             <!-- search forms -->
         <!-- <form method="POST" id="addUserForm"> -->

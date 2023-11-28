@@ -116,6 +116,7 @@
                                     <option value="POS">POS</option>
                                     <option value="Transfer">TRANSFER</option>
                                     <option value="Multiple">MULTIPLE PAYMENT</option>
+                                    <option value="Wallet">WALLET</option>
                                 </select>
                             </div>
                             <div class="data" id="amount_deposit">
@@ -124,20 +125,20 @@
                             </div>
                         </div>
                         <div class="inputs" id="multiples">
-                                <div class="data">
-                                    <label for="">Cash paid</label>
-                                    <input type="text" name="multi_cash" id="multi_cash" value="0">
-                                </div>
-                                <div class="data">
-                                    <label for="">POS</label>
-                                    <input type="text" name="multi_pos" id="multi_pos" value="0">
-                                </div>
-                                <div class="data">
-                                    <label for="">Transfer</label>
-                                    <input type="text" name="multi_transfer" id="multi_transfer" value="0">
-                                </div>
+                            <div class="data">
+                                <label for="">Cash paid</label>
+                                <input type="text" name="multi_cash" id="multi_cash" value="0">
                             </div>
-                            <div class="inputs">
+                            <div class="data">
+                                <label for="">POS</label>
+                                <input type="text" name="multi_pos" id="multi_pos" value="0">
+                            </div>
+                            <div class="data">
+                                <label for="">Transfer</label>
+                                <input type="text" name="multi_transfer" id="multi_transfer" value="0">
+                            </div>
+                        </div>
+                        <div class="inputs">
                             <div class="data" id="selectBank">
                                 <select name="bank" id="bank">
                                     <option value=""selected>Select Bank</option>
@@ -150,8 +151,20 @@
                                     <?php endforeach?>
                                 </select>
                             </div>
+                            <div class="data" id="account_balance">
+                                <?php
+                                    //get wallet balance
+                                    $get_bal = new selects();
+                                    $bal = $get_bal->fetch_details_group('guests', 'wallet', 'guest_id', $detail->guest);
+                                    $wallet = $bal->wallet;
+                                ?>
+                                <input type="hidden" name="wallet" id="wallet" value="<?php echo $wallet?>">
+                                <label for="wallet">Wallet balance</label>
+                                <input type="text" value="<?php echo "₦".number_format($wallet, 2)?>" readonly>
+
+                            </div>
                             <div class="data">
-                                <button onclick="postPayment()" style="background:green; padding:8px; border-radius:5px;font-size:.9rem;">Save and Print <i class="fas fa-print"></i></button>
+                                <button onclick="postPayment()" style="background:green; padding:8px; border-radius:5px;font-size:.9rem; margin:10px">Save and Print <i class="fas fa-print"></i></button>
                             </div>
                         </div>
                     </section>

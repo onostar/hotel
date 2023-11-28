@@ -83,7 +83,7 @@
                 <input type="hidden" name="sales_invoice" id="sales_invoice" value="<?php echo $invoice?>">
                 
                 <div class="data" style="width:100%">
-                    <button onclick="printSalesOrder()" style="background:green; padding:10px; border-radius:5px;font-size:.9rem; box-shadow:2px 2px 2px #c4c4c4;">Save Order <i class="fas fa-print"></i></button>
+                    <button onclick="printSalesOrder()" style="background:green; padding:10px; border-radius:5px;font-size:.8rem; box-shadow:2px 2px 2px #c4c4c4;">Save Order <i class="fas fa-print"></i></button>
                 </div>
             </div>
         </section>

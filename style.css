@@ -1226,8 +1226,10 @@ table tr:nth-child(even){
     display:none;
 }
 #account_balance input{
-    font-size:1.1rem;
+    font-size:1rem;
     color:green;
+    /* padding:5px; */
+    /* width:50%; */
 }
 .payment_mode .add_user_form{
     box-shadow: none;
@@ -1690,8 +1692,9 @@ table tr:nth-child(even){
 .add_user_form{
     width:80%;
     margin:0 auto;
-    box-shadow:3px 3px 5px 3px #807d7d;
+    box-shadow:2px 2px 2px #717070;
     background:#fff;
+    border-radius: 10px 10px 0 0;
     /* transform:scale(0);
     animation:.2s show 1;
     animation-fill-mode: forwards;
@@ -1721,6 +1724,7 @@ table tr:nth-child(even){
     color:#fff;
     text-transform: capitalize;
     text-align:center;
+    border-radius: 10px 10px 0 0;
 }
 #check_in .add_user_form{
     border-radius: 20px!important;

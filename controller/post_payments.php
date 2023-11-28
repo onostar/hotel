@@ -8,14 +8,19 @@
     $cash = htmlspecialchars(stripslashes($_POST['multi_cash']));
     $pos = htmlspecialchars(stripslashes($_POST['multi_pos']));
     $transfer = htmlspecialchars(stripslashes($_POST['multi_transfer']));
+    $wallet = htmlspecialchars(stripslashes($_POST['wallet']));
     $discount = htmlspecialchars(stripslashes($_POST['discount']));
     $store = htmlspecialchars(stripslashes($_POST['store']));
     $id = htmlspecialchars(stripslashes($_POST['check_in_id']));
     $amount_due = htmlspecialchars(stripslashes($_POST['total_amount']));
-    $amount_paid = htmlspecialchars(stripslashes($_POST['deposits']));
+    $amount_deposit = htmlspecialchars(stripslashes($_POST['deposits']));
     $type = "Accomodation";
-    $date = date("Y-m-d H:i:m");
-
+    $date = date("Y-m-d H:i:s");
+    if($payment_type == "Wallet"){
+        $amount_paid = $wallet;
+    }else{
+        $amount_paid = $amount_deposit;
+    }
     //instantiate classes
     include "../classes/dbh.php";
     include "../classes/inserts.php";
@@ -27,7 +32,7 @@
     foreach($results as $result){
         // $customer = $result->guest;
         $room = $result->room;
-        
+        $guest = $result->guest;
     }
     if($payment_type == "Multiple"){
         $new_amount = $amount_due - ($cash + $pos + $transfer) - $discount;
@@ -55,6 +60,12 @@
     }else{
         $insert_payment = new payments($user, $payment_type, $bank, $amount_due, $amount_paid, $discount, $invoice, $store, $type, $id, $date);
         $insert_payment->payment();
+    }
+    if($payment_type == "Wallet"){
+        //update wallet balance
+        $new_balance = $wallet - $amount_paid;
+        $update_wallet = new Update_table();
+        $update_wallet->update('guests', 'wallet', 'guest_id', $new_balance, $guest);
     }
     if($insert_payment){
         //update room

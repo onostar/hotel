@@ -12,7 +12,7 @@
     $check_in_date = htmlspecialchars(stripslashes($_POST['check_in_date']));
     $check_out_date = htmlspecialchars(stripslashes($_POST['check_out_date']));
     $amount = htmlspecialchars(stripslashes($_POST['amount_due']));
-    $date = date("Y-m-d H:i:m");
+    $date = date("Y-m-d H:i:s");
     // $guest_id = str_pad(mt_rand(0, 999999), 6, '0', STR_PAD_LEFT);
 
     //instantiate classes
@@ -63,22 +63,25 @@
     );
     //check if user already checkin
     $check = new selects();
-    $checkss = $check->fetch_details_cond('check_ins', 'guest',  $guest_id);
+    $checkss = $check->fetch_details_cond('check_ins', 'guest', $guest_id);
     if(gettype($checkss) == 'array'){
         foreach($checkss as $checks){
-            if($checks->guest_status == 0){
-                echo "<div class='error_msg'><p>Guest already posted! Proceed to payment <i class='fas fa-cancel'></i></p></div>";
-                return;
-            }elseif($checks->guest_status == 1){
-                echo "<div class='error_msg'><p>This guest has not checked out! <i class='fas fa-cancel'></i></p></div>";
-                return;
-            }else{
-                //check in guest
-                $check_in = new add_data    ('check_ins', $checkin_data);
-                $check_in->create_data();
-            }
+            $guest_status = $checks->guest_status;
         }
-    }else{
+        if($guest_status == 0){
+            echo "<div class='error_msg'><p>Guest already posted! Proceed to payment <i class='fas fa-cancel'></i></p></div>";
+            return;
+        }elseif($checks->guest_status == 1){
+            echo "<div class='error_msg'><p>Guest is currently checked in! <i class='fas fa-cancel'></i></p></div>";
+            return;
+        }else{
+            //check in guest
+            $check_in = new add_data('check_ins', $checkin_data);
+            $check_in->create_data();
+        }
+        
+    }
+    if(gettype($checkss) == "string"){
         //check in guest
         $check_in = new add_data('check_ins', $checkin_data);
         $check_in->create_data();

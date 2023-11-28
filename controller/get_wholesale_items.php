@@ -24,7 +24,7 @@
         
     ?>
     <option onclick="addWholeSales('<?php echo $row->item_id?>')">
-        <?php echo $row->item_name." (Price => ₦".$row->wholesale.", Quantity => ".$quantity.")"?>
+        <?php echo $row->item_name." (Price => ₦".$row->sales_price.", Quantity => ".$quantity.")"?>
     </option>
     
 <?php
