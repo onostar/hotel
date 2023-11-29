@@ -11,13 +11,8 @@ include "../classes/inserts.php";
         $user = $_SESSION['user_id'];
         $invoice = $_POST['sales_invoice'];
         $payment_type = htmlspecialchars(stripslashes($_POST['payment_type']));
-       /*  $bank = htmlspecialchars(stripslashes($_POST['bank']));
-        $cash = htmlspecialchars(stripslashes($_POST['multi_cash']));
-        $pos = htmlspecialchars(stripslashes($_POST['multi_pos']));
-        $transfer = htmlspecialchars(stripslashes($_POST['multi_transfer']));
-        $discount = htmlspecialchars(stripslashes($_POST['discount'])); */
         $store = htmlspecialchars(stripslashes($_POST['store']));
-        $type = "Guest";
+        $type = "Guest_sales";
         // $wallet = htmlspecialchars(stripslashes($_POST['wallet']));
         $customer = htmlspecialchars(stripslashes($_POST['customer_id']));
         $date = date("Y-m-d H:i:s");
@@ -59,71 +54,8 @@ include "../classes/inserts.php";
             
         }
             if($update_invoice){
-                //insert payment details into payment table
-                //get invoice total amount
-                $get_inv_total = new selects();
-                $results = $get_inv_total->fetch_sum_single('sales', 'total_amount', 'invoice', $invoice);
-                foreach($results as $result){
-                    $inv_amount = $result->total;
-                }
-                //get amount paid
-                if($payment_type == "Credit"){
-                    $amount_paid = 0;
-                }else{
-                    $amount_paid = $inv_amount - $discount;
-                }
-                //insert payments
-                /*if($payment_type == "Multiple"){
-                    //insert into payments
-                     if($cash !== '0'){
-                        $insert_payment = new payments($user, 'Cash', $bank, $inv_amount, $cash, $discount, $invoice, $store, $type, $customer, $date);
-                        $insert_payment->payment();
-                    }
-                    if($pos !== '0'){
-                        $insert_payment = new payments($user, 'POS', $bank, $inv_amount, $pos, $discount, $invoice, $store, $type, $customer, $date);
-                        $insert_payment->payment();
-                    }
-                    if($transfer !== '0'){
-                        $insert_payment = new payments($user, 'Transfer', $bank, $inv_amount, $transfer, $discount, $invoice, $store, $type, $customer, $date);
-                        $insert_payment->payment();
-                    }
-                    //
-                    $insert_multi = new multiple_payment($user, $invoice, $cash, $pos, $transfer, $bank, $store, $date);
-                    $insert_multi->multi_pay();
-                }else{ */
-                    $insert_payment = new payments($user, $payment_type, $bank, $inv_amount, $amount_paid, $discount, $invoice, $store, $type, $customer, $date);
-                    $insert_payment->payment();
-                /* }
-                if($payment_type == "Wallet"){
-                    //update wallet balance
-                    $new_balance = $wallet - $amount_paid;
-                    $update_wallet = new Update_table();
-                    $update_wallet->update('customers', 'wallet_balance', 'customer_id', $new_balance, $customer);
-                } */
-                if($insert_payment){
                 
-                //check if payment is credit and insert into customer trail and debtors list
-                if($payment_type == "Credit"){
-                    //add money to amount due in checkins
-                    /* $get_balance = new selects();
-                    $details = $get_balance->fetch_details_group('check_ins', 'amount_due', 'checkin_id', $customer);
-                    $balance = $inv_amount + $details->amount_due;
-                    $update_balance = new Update_table(); */
-                    $update_balance->update('check_ins', 'amount_due', 'checkin_id', $balance, $customer);
-                    //insert to customer_trail
-                    $insert_credit = new customer_trail($customer, $store, 'Credit sales', $inv_amount, $user);
-                    $insert_credit->add_trail();
-                    //insert to debtors list
-                    $debt_data = array(
-                        'customer' => $customer,
-                        'invoice' => $invoice,
-                        'amount' => $inv_amount,
-                        'posted_by' => $user,
-                        'store' => $store
-                    );
-                    $add_debt = new add_data('debtors', $debt_data);
-                    $add_debt->create_data();
-                }
+                
                 
 ?>
 <div id="printBtn">
@@ -134,7 +66,7 @@ include "../classes/inserts.php";
 <?php
     // echo "<script>window.print();</script>";
                     // }
-                }
+                
             }
         
     }else{

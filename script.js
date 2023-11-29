@@ -1957,6 +1957,25 @@ function getReturnItem(sales){
           return;
      } */
 }
+//delete items from sales ordered for guest in hotel
+function getGuestReturnItem(sales, id){
+     /* let confirmDel = confirm("Are you sure you want to remove this item?", "");
+     if(confirmDel){ */
+          
+          $.ajax({
+               type : "GET",
+               url : "../controller/get_guest_item_order.php?sales_id="+sales+"&guest_id="+id,
+               success : function(response){
+                    $(".info").html(response);
+                    window.scrollTo(0, 0);
+               }
+               
+          })
+          return false;
+     /* }else{
+          return;
+     } */
+}
 //return item from sales order
 function returnItem(){
      let return_sales = confirm("Are you sure you want to return this sales?", "");
@@ -1993,6 +2012,48 @@ function returnItem(){
                setTimeout(function(){
                     $("#sales_details").load("sales_details.php?invoice="+invoice+" #sales_details");
                }, 1500);
+               return false
+          }
+     }else{
+          return;
+     }
+}
+//return item from sales order
+function returnGuestItem(id){
+     let return_sales = confirm("Are you sure you want to return this sales?", "");
+     if(return_sales){
+          let item = document.getElementById("item").value;
+          let sold_qty = document.getElementById("sold_qty").value;
+          let sales_id = document.getElementById("sales_id").value;
+          let user_id = document.getElementById("user_id").value;
+          let store = document.getElementById("store").value;
+          let invoice = document.getElementById("invoice").value;
+          let quantity = document.getElementById("quantity").value;
+          let reason = document.getElementById("reason").value;
+          if(quantity.length == 0 || quantity.replace(/^\s+|\s+$/g, "").length == 0){
+               alert("Please input quantity!");
+               $("#quantity").focus();
+               return;
+          }else if(quantity > sold_qty){
+               alert("You cannot return more than what was sold!");
+               $("#quantity").focus();
+               return;
+          }else if(reason.length == 0 || reason.replace(/^\s+|\s+$/g, "").length == 0){
+               alert("Please input reason for return!");
+               $("#reason").focus();
+               return;
+          }else{
+               $.ajax({
+                    type : "POST",
+                    url : "../controller/return_item_ordered.php",
+                    data: {item:item, sales_id:sales_id, user_id:user_id, quantity:quantity, reason:reason, store:store},
+                    success : function(response){
+                         $("#guest_details").html(response);
+                    }
+               })
+               setTimeout(function(){
+                    $("#guest_details").load("guest_details.php?guest_id="+id+" #guest_details");
+               }, 1000);
                return false
           }
      }else{
@@ -2909,9 +2970,9 @@ function printSalesReceipt(invoice){
                $("#direct_sales").html(response);
           }
      }) */
-     setTimeout(function(){
+/*      setTimeout(function(){
           $("#direct_sales").load("direct_sales.php #direct_sales");
-     }, 100);
+     }, 100); */
      return false;
  
  }

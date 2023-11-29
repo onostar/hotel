@@ -23,7 +23,7 @@
                 <td>Room Category</td>
                 <td>Room</td>
                 <td>Checked in</td>
-                <td>Amount due</td>
+                <!-- <td>Amount due</td> -->
                 <td></td>
             </tr>
         </thead>
@@ -67,11 +67,11 @@
                     ?>
                 </td>
                 <td><?php echo date("jS M, Y", strtotime($detail->check_in_date));?></td>
-                <td style="color:green">
+                <!-- <td style="color:green">
                     <?php 
                         echo number_format($detail->amount_due, 2);
                     ?>
-                </td>
+                </td> -->
                 <td><a style="background:var(--otherColor); color:#fff; padding:5px; border-radius:10px" href="javascript:void(0)" class="page_navs" title="View guest details" style="color:#fff" onclick="showPage('add_guest_bill.php?guest_id=<?php echo $detail->checkin_id?>')">Add Bill <i class="fas fa-eye"></i></a></td>
             </tr>
             

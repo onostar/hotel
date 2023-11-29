@@ -25,7 +25,7 @@
 
 ?>
 
-
+<div class="info"></div>
 <div class="displays all_details">
     <!-- <div class="info"></div> -->
     <button class="page_navs" id="back" onclick="showPage('cancel_checkin.php')"><i class="fas fa-angle-double-left"></i> Back</button>
@@ -95,6 +95,64 @@
                     <?php $n++; ?>
                 </tbody>
             </table>
+            <?php
+                //get ordered items by guest
+                $get_order = new selects();
+                $orders = $get_order->fetch_details_cond('sales', 'customer', $check_id);
+                if(gettype($orders) == 'array'){
+            ?>
+            <div class="ordered_items" id="ordered_items">
+                <h3>Ordered items</h3>
+                <table id="ordered_items" class="searchTable">
+                <thead>
+                        <tr>
+                            <td>S/N</td>
+                            <td>Item</td>
+                            <td>Quantity</td>
+                            <td>Unit price</td>
+                            <td>Amount</td>
+                            <td>Time</td>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                            $n = 1;
+                            foreach($orders as $order){
+                        ?>
+                        <tr>
+                            <td style="text-align:center; color:red;"><?php echo $n?></td>
+                            <td>
+                                <?php 
+                                    //get item name
+                                    $get_name = new selects();
+                                    $names = $get_name->fetch_details_group('items', 'item_name', 'item_id', $order->item);
+                                    echo strtoupper($names->item_name);
+                                ?>
+                            </td>
+                            <td style="text-align:center; color:var(--otherColor)"><?php echo $order->quantity?></td>
+                            <td><?php echo number_format($order->price, 2);?></td>
+                            <td><?php echo number_format($order->total_amount, 2)?></td>
+                            <td style="color:var(--otherColor)"><?php echo date("d-m-y H:ia", strtotime($order->post_date))?></td>
+                            <td>
+                                <a style="color:red; font-size:1rem" href="javascript:void(0) "title="return item" onclick="getGuestReturnItem('<?php echo $order->sales_id?>', <?php echo $check_id?>)"><i class="fas fa-trash"></i></a>
+                            </td>
+                        </tr>
+                        
+                        <?php $n++; }?>
+                    </tbody>
+                </table>
+                <?php
+                    //get total of items ordered
+                    $get_total = new selects();
+                    $totalss = $get_total->fetch_sum_single('sales', 'total_amount', 'customer', $check_id);
+                    foreach($totalss as $totals){
+                        $total_amount = $totals->total;
+                    }
+                ?>
+                <h2 style="text-align:right; font-size:1.1rem; margin:5px 0"><span style="color:#222; font-weight:bold; text-decoration:none!important">Total:</span> <?php echo "₦".number_format($total_amount, 2)?></h2>
+            </div>
+            <?php }?>
             <div class="payment_details">
                 <h3>Payment Details</h3>
                 <table id="guest_payment_table" class="searchTable">
@@ -137,7 +195,16 @@
                 </table>
             </div>
             <div class="amount_due" style="align-items:center">
-                <h2><span style="color:#222; font-weight:bold; text-decoration:none!important">Amount due:</span> <?php echo "₦".number_format($detail->amount_due, 2)?></h2>
+                <?php
+                    if(gettype($orders) == 'array'){
+                        $grand_total = $total_amount + $detail->amount_due;
+                    }
+                    if(gettype($orders) == 'string'){
+                        $grand_total = $detail->amount_due;
+                    }
+                    
+                ?>
+                <h2><span style="color:#222; font-weight:bold; text-decoration:none!important">Amount due:</span> <?php echo "₦".number_format($grand_total, 2)?></h2>
             </div>
                 <!-- check out and payment mode options -->
                 <div class="payment_mode">

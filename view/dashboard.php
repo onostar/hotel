@@ -63,11 +63,11 @@
         <div class="cards" id="card5">
             <a href="javascript:void(0)" class="page_navs" onclick="showPage('expense_report.php')">
                 <div class="infos">
-                    <p><i class="fas fa-hand-holding-dollar"></i> Bar & restauant</p>
+                    <p><i class="fas fa-hand-holding-dollar"></i> Bar & restaurant</p>
                     <p>
                     <?php
                         $get_cost = new selects();
-                        $costs = $get_cost->fetch_sum_curdateCon('payments', 'amount_paid', 'date(post_date)', 'sales_type', 'retail');
+                        $costs = $get_cost->fetch_sum_curdateNeg('payments', 'amount_paid', 'date(post_date)', 'sales_type', 'Accomodation');
                         foreach($costs as $cost){
                             echo "₦".number_format($cost->total, 2);
                         }
