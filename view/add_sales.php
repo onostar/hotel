@@ -26,13 +26,13 @@
     <?php
         //generate receipt invoice
         //get current date
-       /*  $todays_date = date("dmyh");
+        $todays_date = date("dmyhi");
         $ran_num ="";
         for($i = 0; $i < 3; $i++){
             $random_num = random_int(0, 9);
             $ran_num .= $random_num;
-        } */
-        $invoice = "GU00".$store.$customer;
+        }
+        $invoice = "GU".$customer.$ran_num.$todays_date.$user_id;
         // $_SESSION['invoice'] = $invoice;
     ?>
     

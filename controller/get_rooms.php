@@ -20,6 +20,6 @@
 <?php
         }   
     }else{
-        echo "<option value=''selected>Please select a category</option>";
+        echo "<option value=''selected>No available room</option>";
     }
 ?>

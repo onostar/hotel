@@ -54,11 +54,25 @@ include "../classes/inserts.php";
             
         }
             if($update_invoice){
-                
-                
-                
+                //add total amount to guest amount due
+                //get amount due
+                $get_prev_bal = new selects();
+                $prevs = $get_prev_bal->fetch_details_group('check_ins', 'amount_due', 'checkin_id', $customer);
+                $previous_due = $prevs->amount_due;
+
+                //get total in invoice
+                $get_invoice_total = new selects();
+                $total_invoices = $get_invoice_total->fetch_sum_single('sales', 'total_amount', 'invoice', $invoice);
+                foreach($total_invoices as $totals){
+                    $invoice_total = $totals->total;
+                }
+                $amount_due = $previous_due + $invoice_total;
+                //update amount due;
+                $update_amount_due = new Update_table();
+                $update_amount_due->update('check_ins', 'amount_due', 'checkin_id', $amount_due, $customer);
 ?>
 <div id="printBtn">
+    <!-- <p><?php echo $customer?></p> -->
     <button onclick="printSalesReceipt('<?php echo $invoice?>')">Print Receipt <i class="fas fa-print"></i></button>
 </div>
 <!--  -->

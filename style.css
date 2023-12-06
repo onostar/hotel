@@ -13,6 +13,7 @@
     --moreColor:rgba(11, 99, 134, 0.7);
     --background:linear-gradient(45deg, hsla(202, 81%, 22%, .9), hsl(189, 54%, 59%), rgb(3, 69, 75));
     --menuColor:#494848;
+    --tertiaryColor: rgb(4, 141, 118);
 }
 body{
     position:relative;
@@ -1164,7 +1165,7 @@ table tr:nth-child(even){
     color:var(--secondaryColor);
 }
 .ordered_items thead tr{
-    background-color: rgb(4, 141, 118);
+    background-color: var(--tertiaryColor);
 }
 .payment_details thead tr{
     background: var(--moreColor);
@@ -2539,6 +2540,19 @@ table tr:nth-child(even){
     width:auto;
     text-transform: capitalize;
     box-shadow:2px 2px 2px var(--primaryColor);
+}
+.close_btn{
+    width:80%;
+    margin:0 auto;
+}
+.close_form{
+    background:brown;
+    color:#fff;
+    border-radius:20px;
+    padding:5px 10px;
+    font-size:.9rem;
+    box-shadow:2px 2px 2px #222;
+
 }
 #close_box{
     border-radius: 20px;

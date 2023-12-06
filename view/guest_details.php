@@ -8,7 +8,7 @@
         $user_id = $_SESSION['user_id'];
         $store = $_SESSION['store'];
         // echo $user_id;
-        $date = date("Y-m-d H:i:m");
+        $date = date("Y-m-d H:i:s");
     
     if(isset($_GET['guest_id'])){
         $check_id = $_GET['guest_id'];
@@ -63,12 +63,15 @@
                         <td>
                             <?php 
                                 $get_cat = new selects();
-                                $categories = $get_cat->fetch_details_group('items', 'category', 'item_id', $detail->room);
-                                $category_id = $categories->category;
+                                $categories = $get_cat->fetch_details_cond('items', 'item_id', $detail->room);
+                                foreach($categories as $cats){
+                                    $category_id = $cats->category;
+                                    $item_name = $cats->item_name;
+                                }
                                 //get category name
                                 $get_cat_name = new selects();
                                 $cat_name = $get_cat_name->fetch_details_group('categories', 'category', 'category_id', $category_id);
-                                echo $cat_name->category;
+                                echo $cat_name->category." (".$item_name.")";
 
 
                             ?>
@@ -91,8 +94,50 @@
                         </td>
                         <td style="text-align:center"><?php echo number_format($detail->amount_due, 2)?></td>
                     </tr>
-                    
-                    <?php $n++; ?>
+                    <?php
+                        $n = 2;
+                        $get_checkins = new selects();
+                        $datas = $get_checkins->fetch_details_negCond('check_ins', 'checkin_id', $check_id, 'sponsor', $check_id);
+                        if(gettype($datas) == 'array'){
+                            foreach($datas as $data){
+                    ?>
+                    <tr>
+                        <td style="text-align:center; color:red;"><?php echo $n?></td>
+                        <td>
+                            <?php 
+                               $get_cat = new selects();
+                               $categories = $get_cat->fetch_details_cond('items', 'item_id', $data->room);
+                               foreach($categories as $cats){
+                                   $category_id = $cats->category;
+                                   $item_name = $cats->item_name;
+                               }
+                                //get category name
+                                $get_cat_name = new selects();
+                                $cat_name = $get_cat_name->fetch_details_group('categories', 'category', 'category_id', $category_id);
+                                echo $cat_name->category." (".$item_name.")";
+
+
+                            ?>
+                        </td>
+                        <td><?php echo date("jS M, Y", strtotime($data->check_in_date));?></td>
+                        <td><?php echo date("jS M, Y", strtotime($data->check_out_date));?></td>
+                        <td style="text-align:center">
+                            <?php 
+                                $in_date = strtotime($data->check_in_date);
+                                $today = date("Y-m-d");
+                                $today_date = strtotime($today);
+                                $date_diff = $today_date - $in_date;
+                                $days = round($date_diff / (60 * 60 * 24));
+                                if($days < 0){
+                                    echo "Yet to check in";
+                                }else{
+                                    echo $days;
+                                }
+                            ?>
+                        </td>
+                        <td style="text-align:center"><?php echo number_format($data->amount_due, 2)?></td>
+                    </tr>
+                    <?php $n++; } } $n++; ?>
                 </tbody>
             </table>
             <?php
@@ -195,16 +240,8 @@
                 </table>
             </div>
             <div class="amount_due" style="align-items:center">
-                <?php
-                    if(gettype($orders) == 'array'){
-                        $grand_total = $total_amount + $detail->amount_due;
-                    }
-                    if(gettype($orders) == 'string'){
-                        $grand_total = $detail->amount_due;
-                    }
-                    
-                ?>
-                <h2><span style="color:#222; font-weight:bold; text-decoration:none!important">Amount due:</span> <?php echo "₦".number_format($grand_total, 2)?></h2>
+                
+                <h2><span style="color:#222; font-weight:bold; text-decoration:none!important">Amount due:</span> <?php echo "₦".number_format($detail->amount_due, 2)?></h2>
             </div>
                 <!-- check out and payment mode options -->
                 <div class="payment_mode">
@@ -220,7 +257,7 @@
                         }
                         if($detail->guest_status == 2){
                             echo "<p style='color:green; font-size:1.1rem;'>Guest has checked out <i class='fas fa-thumbs-up'></i></p>";
-                        }else if($detail->guest_status == 2){
+                        }else if($detail->guest_status == -1){
                             echo "<p style='color:red; font-size:1.1rem;'>Guest cancelled check in <i class='fas fa-thumbs-down'></i></p>";
                         }else if($detail->amount_due == 0){
                             

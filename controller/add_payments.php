@@ -10,7 +10,7 @@
     $amount_due = htmlspecialchars(stripslashes($_POST['total_amount']));
     $amount_paid = htmlspecialchars(stripslashes($_POST['deposits']));
     $type = "Accomodation";
-    $date = date("Y-m-d H:i:m");
+    $date = date("Y-m-d H:i:s");
     $todays_date = date("dmyh");
     $ran_num ="";
     for($i = 0; $i < 4; $i++){

@@ -641,6 +641,108 @@ function checkIn(){
      }
         
 }
+//add checkin to guest accomodation
+function addCheckIn(){
+     let posted_by = document.getElementById("posted_by").value;
+     let check_in_category = document.getElementById("check_in_category").value;
+     let check_in_room = document.getElementById("check_in_room").value;
+     let last_name = document.getElementById("last_name").value;
+     let first_name = document.getElementById("first_name").value;
+     let emergency_contact = document.getElementById("emergency_contact").value;
+     let gender = document.getElementById("gender").value;
+    let guest = document.getElementById('guest').value;
+     let contact_address = document.getElementById("contact_address").value;
+     let contact_phone = document.getElementById("contact_phone").value;
+     
+     let check_in_date = document.getElementById("check_in_date").value;
+     let check_out_date = document.getElementById("check_out_date").value;
+     let amount_due = document.getElementById("amount_due").value;
+     let todayDate = new Date();
+     let today = todayDate.toLocaleDateString();
+     // alert(today);
+     if(check_in_category.length == 0 || check_in_category.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please select room category!");
+          $("#check_in_category").focus();
+          return;
+     }else if(check_in_room.length == 0 || check_in_room.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please select room");
+          $("#check_in_room").focus();
+          return;
+     }else if(last_name.length == 0 || last_name.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please Enter Last Name");
+          $("#last_name").focus();
+          return;
+     }else if(first_name.length == 0 || first_name.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please Enter First Name");
+          $("#first_name").focus();
+          return;
+     }else if(emergency_contact.length == 0 || emergency_contact.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please Enter emergency contact");
+          $("#emergency_contact").focus();
+          return;
+     }else if(gender.length == 0 || gender.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please Select Gender");
+          $("#gender").focus();
+          return;
+     
+     }else if(contact_address.length == 0 || contact_address.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please Enter contact person's Address");
+          $("#contact_address").focus();
+          return;
+     }else if(contact_phone.length == 0 || contact_phone.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please Enter Guest Phone number");
+          $("#contact_phone").focus();
+          return;
+     
+     }else if(check_in_date.length == 0 || check_in_date.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please Input Check in date");
+          $("#check_in_date").focus();
+          return;
+     }else if(check_out_date.length == 0 || check_out_date.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please Input Check out date");
+          $("#check_out_date").focus();
+          return;
+     }else if(new Date(today).getTime() > new Date(check_in_date).getTime()){
+          alert("Check in date cannot be lesser than todays date");
+          $("#check_in_date").focus();
+          return;
+     }else if((new Date(check_in_date )).getTime() > (new Date(check_out_date)).getTime()){
+          alert("Check in date cannot be greater than check out date");
+          $("#check_in_date").focus();
+          return;
+     }else if(amount_due.length == 0 || amount_due.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please select room to display amount");
+          $("#check_in_room").focus();
+          return;
+     }else{
+          $.ajax({
+               type : "POST",
+               url : "../controller/add_check_in.php",
+               data : {guest:guest, posted_by:posted_by,check_in_room:check_in_room, last_name:last_name, first_name:first_name, emergency_contact:emergency_contact, gender:gender,contact_address:contact_address, contact_phone:contact_phone, check_in_date:check_in_date, check_out_date:check_out_date, amount_due:amount_due},
+               success : function(response){
+               $("#check_in").html(response);
+               }
+          })
+          setTimeout(() => {
+               $("#check_in").load("add_accomodation.php?guest="+guest+" #check_in");
+          }, 2000);
+          /* $("#check_in_category").val('');
+          $("#check_in_room").val('');
+          $("#last_name").val('');
+          $("#first_name").val('');
+          $("#amount_due").val('');
+          $("#check_in_date").val('');
+          $("#check_out_date").val('');
+          $("#age").val('');
+          $("#gender").val('');
+          $("#days").html('');
+          $("#contact_address").val('');
+          $("#contact_phone").val('');
+          $("#check_in_category").focus(); */
+          return false; 
+     }
+        
+}
 //extend stay
 function extendStay(){
      let posted_by = document.getElementById("posted_by").value;
