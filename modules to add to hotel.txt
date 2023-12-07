@@ -17,8 +17,8 @@ c.bills & payment
 
 d. reports
 1. room list - done
-2. bar items
-3. restaurant items
+2. bar items - done
+3. restaurant items - done
 4. current guest list - done
 5. check in report - done
 6. check out report - done

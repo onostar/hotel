@@ -42,7 +42,7 @@
 ?>
             <tr>
                 <td style="text-align:center; color:red;"><?php echo $n?></td>
-                <td><a style="color:green" href="javascript:void(0)" title="View invoice details" onclick="showPage('invoice_details.php?payment_id=<?php echo $detail->payment_id?>')"><?php echo $detail->invoice?></a></td>
+                <td><a style="color:green" href="javascript:void(0)"><?php echo $detail->invoice?></a></td>
                 <td><?php echo $detail->sales_type?></td>
                 <td>
                     <?php echo "₦".number_format($detail->amount_due, 2);?>

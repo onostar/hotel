@@ -18,15 +18,16 @@
                 <td>S/N</td>
                 <td>Category</td>
                 <td>Item name</td>
-                <td>Price</td>
-                <td>Status</td>
+                <td>Regular Price(₦)</td>
+                <td>Vip Price(₦)</td>
+                <!-- <td>Status</td> -->
             </tr>
         </thead>
         <tbody>
             <?php
                 $n = 1;
                 $get_items = new selects();
-                $details = $get_items->fetch_details_cond('items', 'department', 'Bar');
+                $details = $get_items->fetch_details_cond('items', 'department', 3);
                 if(gettype($details) === 'array'){
                 foreach($details as $detail):
             ?>
@@ -43,18 +44,23 @@
                 <td><?php echo $detail->item_name?></td>
                 <td>
                     <?php 
-                        echo "₦".number_format($detail->sales_price, 2);
+                        echo number_format($detail->sales_price, 2);
                     ?>
                 </td>
                 <td>
+                    <?php 
+                        echo number_format($detail->wholesale, 2);
+                    ?>
+                </td>
+                <!-- <td>
                     <?php
-                        if($detail->item_status == 0){
+                        /* if($detail->item_status == 0){
                             echo "<span style='color:green'>Active <i class='fas fa-check'></i></span>";
                         }else{
                             echo "<span style='color:red'>Disabled <i class='fas fa-ban'></i></span>";
-                        }
+                        } */
                     ?>
-                </td>
+                </td> -->
                 
             </tr>
             

@@ -47,7 +47,7 @@
         <div class="cards" id="card1">
             <a href="javascript:void(0)" class="page_navs">
                 <div class="infos">
-                    <p><i class="fas fa-users"></i> Accomodation</p>
+                    <p><i class="fas fa-users"></i> Lodging</p>
                     <p>
                     <?php
                         $get_cost = new selects();

@@ -28,7 +28,7 @@
 <div class="info"></div>
 <div class="displays all_details">
     <!-- <div class="info"></div> -->
-    <button class="page_navs" id="back" onclick="showPage('cancel_checkin.php')"><i class="fas fa-angle-double-left"></i> Back</button>
+    <button class="page_navs" id="back" onclick="showPage('check_out.php')"><i class="fas fa-angle-double-left"></i> Back</button>
     <h2>Guest Details</h2>
     <div class="guest_name">
         <h4>
@@ -240,18 +240,28 @@
                 </table>
             </div>
             <div class="amount_due" style="align-items:center">
-                
+                <p><h2><span style="color:#222; font-weight:bold; text-decoration:none!important">Total paid:</span>
+                    <?php
+                        //get total paid
+                        $get_total_paid = new selects();
+                        $paids = $get_total_paid->fetch_sum_single('payments', 'amount_paid', 'customer', $check_id);
+                        foreach($paids as $paid){
+                            $total_paid = $paid->total;
+                        }
+                        echo  "₦".number_format($total_paid, 2);
+                    ?>
+                </h2>
                 <h2><span style="color:#222; font-weight:bold; text-decoration:none!important">Amount due:</span> <?php echo "₦".number_format($detail->amount_due, 2)?></h2>
             </div>
                 <!-- check out and payment mode options -->
-                <div class="payment_mode">
+                <div class="payment_mode" style="display:flex;">
                     <?php
                         if($detail->check_out_date > $date && $detail->guest_status != -1){
                         ?>
                         <div>
                             <input type="hidden" name="check_id" id="check_id" value="<?php echo $check_id?>">
                             <input type="hidden" name="user" id="user" value="<?php echo $user_id?>">
-                            <button type="submit" name="cancel_checkout" id="cancel_checkout" style="background:red" href="javascript:void(0)" class="modes" onclick="cancelCheckIn()">Cancel check in <i class="fas fa-cancel"></i></button>
+                            <button type="submit" name="cancel_checkout" id="cancel_checkout" style="background:brown; border-radius:20px" href="javascript:void(0)" class="modes" onclick="cancelCheckIn()">Cancel check in <i class="fas fa-cancel"></i></button>
                         </div>
                         <?php
                         }
@@ -265,7 +275,7 @@
                     <div>
                         <input type="hidden" name="guest_id" id="guest_id" value="<?php echo $check_id?>">
                         <input type="hidden" name="user_id" id="user_id" value="<?php echo $user_id?>">
-                        <button type="submit" name="check_out" id="check_out" style="background:green" href="javascript:void(0)" class="modes" onclick="checkOut()">Check out <i class="fas fa-check-double"></i></button>
+                        <button type="submit" name="check_out" id="check_out" style="background:green; border-radius:20px" href="javascript:void(0)" class="modes" onclick="checkOut()">Check out <i class="fas fa-check-double"></i></button>
                     </div>
                     <?php
                         }else{
