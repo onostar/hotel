@@ -25,9 +25,11 @@
     
 ?>
 <!-- customer info -->
-
+<div class="close_btn">
+    <a href="javascript:void(0)" title="Close form" onclick="showPage('../view/customer_statement.php');" class="close_form">Close <i class="fas fa-close"></i></a>
+</div>
 <div class="customer_info" class="allResults">
-    <h3>Checkin report for <?php echo $name?></h3>
+    <h3 style="background:var(--tertiaryColor)">Checkin report for <?php echo $name?></h3>
     <div class="demography">
         <div class="demo_block">
             <h4><i class="fas fa-id-card"></i> Name:</h4>
@@ -54,7 +56,7 @@
             <p><?php echo "₦".number_format($wallet, 2)?></p>
         </div>
     </div>
-    <h3 style="background:red; text-align:center; color:#fff; padding:10px;margin:0;">Check in details</h3>
+    <!-- <h3 style="background:red; text-align:center; color:#fff; padding:10px;margin:0;">Check in details</h3> -->
     <div class="transactions">
         <div class="all_credit allResults" style="width:100%">
             <h3 style="background:var(--otherColor); color:#fff"><i class="fas fa-house"></i> Check in report for <?php echo $name?></h3>

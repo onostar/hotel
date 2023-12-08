@@ -1,3 +1,4 @@
+<div id="guest_statement">
 <?php
     session_start();
     $store = $_SESSION['store_id'];
@@ -40,3 +41,4 @@
         header("Location: ../index.php");
     }
 ?>
+</div>

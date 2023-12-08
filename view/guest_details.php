@@ -48,6 +48,7 @@
                     <tr>
                         <td>S/N</td>
                         <td>Room Category</td>
+                        <td>Rate</td>
                         <td>Check in date</td>
                         <td>Check out date</td>
                         <td>Days stayed</td>
@@ -57,24 +58,32 @@
                 <tbody>
                     <?php
                         $n = 1;
+                        $get_cat = new selects();
+                        $categories = $get_cat->fetch_details_cond('items', 'item_id', $detail->room);
+                        foreach($categories as $cats){
+                            $category_id = $cats->category;
+                            $item_name = $cats->item_name;
+                        }
+                        //get category details
+                        $get_cat_name = new selects();
+                        $cat_name = $get_cat_name->fetch_details_cond('categories', 'category_id', $category_id);
+                        foreach($cat_name as $cate){
+                            $category = $cate->category;
+                            $price = $cate->price;
+                        }
                     ?>
                     <tr>
                         <td style="text-align:center; color:red;"><?php echo $n?></td>
                         <td>
                             <?php 
-                                $get_cat = new selects();
-                                $categories = $get_cat->fetch_details_cond('items', 'item_id', $detail->room);
-                                foreach($categories as $cats){
-                                    $category_id = $cats->category;
-                                    $item_name = $cats->item_name;
-                                }
-                                //get category name
-                                $get_cat_name = new selects();
-                                $cat_name = $get_cat_name->fetch_details_group('categories', 'category', 'category_id', $category_id);
-                                echo $cat_name->category." (".$item_name.")";
+                                
+                                echo $category." (".$item_name.")";
 
 
                             ?>
+                        </td>
+                        <td style="color:green">
+                            <?php echo number_format($price, 2)?>
                         </td>
                         <td><?php echo date("jS M, Y", strtotime($detail->check_in_date));?></td>
                         <td><?php echo date("jS M, Y", strtotime($detail->check_out_date));?></td>
@@ -100,24 +109,31 @@
                         $datas = $get_checkins->fetch_details_negCond('check_ins', 'checkin_id', $check_id, 'sponsor', $check_id);
                         if(gettype($datas) == 'array'){
                             foreach($datas as $data){
-                    ?>
-                    <tr>
-                        <td style="text-align:center; color:red;"><?php echo $n?></td>
-                        <td>
-                            <?php 
-                               $get_cat = new selects();
+                                $get_cat = new selects();
                                $categories = $get_cat->fetch_details_cond('items', 'item_id', $data->room);
                                foreach($categories as $cats){
                                    $category_id = $cats->category;
                                    $item_name = $cats->item_name;
                                }
-                                //get category name
-                                $get_cat_name = new selects();
-                                $cat_name = $get_cat_name->fetch_details_group('categories', 'category', 'category_id', $category_id);
-                                echo $cat_name->category." (".$item_name.")";
+                                //get category details
+                                $get_cat_names = new selects();
+                                $cat_names = $get_cat_name->fetch_details_cond('categories',  'category_id', $category_id);
+                                foreach($cat_names as $cates){
+                                    $other_category = $cates->category;
+                                    $other_price = $cates->price;
+                                }
+                    ?>
+                    <tr>
+                        <td style="text-align:center; color:red;"><?php echo $n?></td>
+                        <td>
+                            <?php 
+                                echo $category." (".$item_name.")";
 
 
                             ?>
+                        </td>
+                        <td style="color:green">
+                            <?php echo number_format($other_price, 2)?>
                         </td>
                         <td><?php echo date("jS M, Y", strtotime($data->check_in_date));?></td>
                         <td><?php echo date("jS M, Y", strtotime($data->check_out_date));?></td>
@@ -195,7 +211,7 @@
                         $total_amount = $totals->total;
                     }
                 ?>
-                <h2 style="text-align:right; font-size:1.1rem; margin:5px 0"><span style="color:#222; font-weight:bold; text-decoration:none!important">Total:</span> <?php echo "₦".number_format($total_amount, 2)?></h2>
+                <p class='due_amount' style="text-align:right"><span>Total:</span> <?php echo "₦".number_format($total_amount, 2)?></p>
             </div>
             <?php }?>
             <div class="payment_details">
@@ -239,8 +255,8 @@
                     </tbody>
                 </table>
             </div>
-            <div class="amount_due" style="align-items:center">
-                <p><h2><span style="color:#222; font-weight:bold; text-decoration:none!important">Total paid:</span>
+            <div class="amount_due" id="payments">
+                <p class="due_amount"><span>Total paid:</span>
                     <?php
                         //get total paid
                         $get_total_paid = new selects();
@@ -250,32 +266,34 @@
                         }
                         echo  "₦".number_format($total_paid, 2);
                     ?>
-                </h2>
-                <h2><span style="color:#222; font-weight:bold; text-decoration:none!important">Amount due:</span> <?php echo "₦".number_format($detail->amount_due, 2)?></h2>
+                </p>
+                <p class="due_amount"><span>Amount due:</span> <?php echo "₦".number_format($detail->amount_due, 2)?></p>
             </div>
                 <!-- check out and payment mode options -->
-                <div class="payment_mode" style="display:flex;">
+                <div class="payment_mode">
                     <?php
                         if($detail->check_out_date > $date && $detail->guest_status != -1){
                         ?>
+                        <div class="cancel_out">
+                            <div>
+                                <input type="hidden" name="check_id" id="check_id" value="<?php echo $check_id?>">
+                                <input type="hidden" name="user" id="user" value="<?php echo $user_id?>">
+                                <button type="submit" name="cancel_checkout" id="cancel_checkout" style="background:brown; border-radius:20px" href="javascript:void(0)" class="modes" onclick="cancelCheckIn()">Cancel check in <i class="fas fa-cancel"></i></button>
+                            </div>
+                            <?php
+                            }
+                            if($detail->guest_status == 2){
+                                echo "<p style='color:green; font-size:1.1rem;'>Guest has checked out <i class='fas fa-thumbs-up'></i></p>";
+                            }else if($detail->guest_status == -1){
+                                echo "<p style='color:red; font-size:1.1rem;'>Guest cancelled check in <i class='fas fa-thumbs-down'></i></p>";
+                            }else if($detail->amount_due == 0){
+                                
+                        ?>
                         <div>
-                            <input type="hidden" name="check_id" id="check_id" value="<?php echo $check_id?>">
-                            <input type="hidden" name="user" id="user" value="<?php echo $user_id?>">
-                            <button type="submit" name="cancel_checkout" id="cancel_checkout" style="background:brown; border-radius:20px" href="javascript:void(0)" class="modes" onclick="cancelCheckIn()">Cancel check in <i class="fas fa-cancel"></i></button>
+                            <input type="hidden" name="guest_id" id="guest_id" value="<?php echo $check_id?>">
+                            <input type="hidden" name="user_id" id="user_id" value="<?php echo $user_id?>">
+                            <button type="submit" name="check_out" id="check_out" style="background:green; border-radius:20px" href="javascript:void(0)" class="modes" onclick="checkOut()">Check out <i class="fas fa-check-double"></i></button>
                         </div>
-                        <?php
-                        }
-                        if($detail->guest_status == 2){
-                            echo "<p style='color:green; font-size:1.1rem;'>Guest has checked out <i class='fas fa-thumbs-up'></i></p>";
-                        }else if($detail->guest_status == -1){
-                            echo "<p style='color:red; font-size:1.1rem;'>Guest cancelled check in <i class='fas fa-thumbs-down'></i></p>";
-                        }else if($detail->amount_due == 0){
-                            
-                    ?>
-                    <div>
-                        <input type="hidden" name="guest_id" id="guest_id" value="<?php echo $check_id?>">
-                        <input type="hidden" name="user_id" id="user_id" value="<?php echo $user_id?>">
-                        <button type="submit" name="check_out" id="check_out" style="background:green; border-radius:20px" href="javascript:void(0)" class="modes" onclick="checkOut()">Check out <i class="fas fa-check-double"></i></button>
                     </div>
                     <?php
                         }else{
@@ -294,6 +312,7 @@
                                         <option value="Cash">CASH</option>
                                         <option value="POS">POS</option>
                                         <option value="Transfer">TRANSFER</option>
+                                        <option value="Wallet">WALLET</option>
                                     </select>
                                 </div>
                                 <div class="data" id="amount_deposit" style="width:auto">
@@ -312,6 +331,18 @@
                                         <?php endforeach?>
                                     </select>
                                 </div>
+                                <div class="data" id="account_balance">
+                                <?php
+                                    //get wallet balance
+                                    $get_bal = new selects();
+                                    $bal = $get_bal->fetch_details_group('guests', 'wallet', 'guest_id', $detail->guest);
+                                    $wallet = $bal->wallet;
+                                ?>
+                                <input type="hidden" name="wallet" id="wallet" value="<?php echo $wallet?>">
+                                <label for="wallet">Wallet balance</label>
+                                <p style="color:green; font-size:1rem"><?php echo "₦".number_format($wallet, 2)?></p>
+
+                            </div>
                                 <div class="data" style="width:auto">
                                     <button onclick="addPayment()" style="background:green; padding:8px; border-radius:5px;font-size:.8rem;">post payment <i class="fas fa-paper-plane"></i></button>
                                 </div>

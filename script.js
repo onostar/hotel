@@ -1132,7 +1132,7 @@ function getCustomerStatement(customer_id){
                type : "GET",
                url : "../controller/customer_statement.php?customer="+customer,
                success : function(response){
-                    $(".new_data").html(response);
+                    $("#guest_statement").html(response);
                }
           })
           $("#sales_item").html("");
@@ -2626,7 +2626,7 @@ function checkOtherMode(mode){
      if(pay_mode == "POS" || pay_mode == "Transfer"){
           bank_input.style.display = "block";
           // multiples.style.display = "none";
-          // wallet.style.display = "none";
+          wallet.style.display = "none";
           label.style.display = "block";
           deposits.type = "text";
      
@@ -2639,7 +2639,7 @@ function checkOtherMode(mode){
      }else{
           bank_input.style.display = "none";
           // multiples.style.display = "none";
-          // wallet.style.display = "none";
+          wallet.style.display = "none";
           label.style.display = "block";
           deposits.type = "text";
      }
