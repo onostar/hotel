@@ -794,112 +794,7 @@ function extendStay(){
      }
         
 }
-//post guest cash payment
-function postCash(){
-     let posted_by = document.getElementById("posted_by").value;
-     let guest = document.getElementById("guest").value;
-     let payment_mode = document.getElementById("payment_mode").value;
-     let bank_paid = document.getElementById("bank_paid").value;
-     let sender = document.getElementById("sender").value;
-     let guest_amount = document.getElementById("guest_amount").value;
-     let amount_paid = document.getElementById("amount_paid").value;
-     
-     if(amount_paid.length == 0 || amount_paid.replace(/^\s+|\s+$/g, "").length == 0){
-          alert("Please input amount paid!");
-          $("#amount_paid").focus();
-          return;
-     // }else if(parseInt(amount_paid) < parseInt(guest_amount)){
-     //      alert("Insufficient funds!");
-     //      $("#guest_amount").focus();
-     //      return;
-     }else{
-     $.ajax({
-          type : "POST",
-          url : "../controller/post_payments.php",
-          data : {posted_by:posted_by, guest:guest, payment_mode:payment_mode, bank_paid:bank_paid, sender:sender, guest_amount:guest_amount, amount_paid:amount_paid},
-          success : function(response){
-               $("#all_payments").html(response);
-          }
-     })
-          setTimeout(function(){
-               $('#all_payments').load("post_payment.php?guest_id=+"+guest + "#all_payments");
-          }, 3000);
-     }
-     return false;    
 
-}
-//post guest POS payment
-function postPos(){
-     let posted_by = document.getElementById("posted_by").value;
-     let guest = document.getElementById("guest").value;
-     let payment_mode = document.getElementById("pos_mode").value;
-     let bank_paid = document.getElementById("pos_bank_paid").value;
-     let sender = document.getElementById("sender").value;
-     let guest_amount = document.getElementById("guest_amount").value;
-     let amount_paid = document.getElementById("pos_amount_paid").value;
-     
-     if(amount_paid.length == 0 || amount_paid.replace(/^\s+|\s+$/g, "").length == 0){
-          alert("Please input amount paid!");
-          $("#pos_amount_paid").focus();
-          return;
-     }else if(bank_paid.length == 0 || bank_paid.replace(/^\s+|\s+$/g, "").length == 0){
-          alert("Please select POS Bank!");
-          $("#pos_bank_paid").focus();
-          return;
-     }else{
-     $.ajax({
-          type : "POST",
-          url : "../controller/post_payments.php",
-          data : {posted_by:posted_by, guest:guest, payment_mode:payment_mode, bank_paid:bank_paid, sender:sender, guest_amount:guest_amount, amount_paid:amount_paid},
-          success : function(response){
-               $("#all_payments").html(response);
-          }
-     })
-          setTimeout(function(){
-               $('#all_payments').load("post_payment.php?guest_id=+"+guest + "#all_payments");
-          }, 3000);
-     }
-     return false;    
-
-}
-//post guest Transfer payment
-function postTransfer(){
-     let posted_by = document.getElementById("posted_by").value;
-     let guest = document.getElementById("guest").value;
-     let payment_mode = document.getElementById("transfer_mode").value;
-     let bank_paid = document.getElementById("transfer_bank_paid").value;
-     let sender = document.getElementById("transfer_sender").value;
-     let guest_amount = document.getElementById("guest_amount").value;
-     let amount_paid = document.getElementById("transfer_amount").value;
-     
-     if(amount_paid.length == 0 || amount_paid.replace(/^\s+|\s+$/g, "").length == 0){
-          alert("Please input amount paid!");
-          $("#transfer_amount").focus();
-          return;
-     }else if(bank_paid.length == 0 || bank_paid.replace(/^\s+|\s+$/g, "").length == 0){
-          alert("Please select Bank Transferred to!");
-          $("#transfer_bank_paid").focus();
-          return;
-     }else if(sender.length == 0 || sender.replace(/^\s+|\s+$/g, "").length == 0){
-          alert("Please Input Name of sender!");
-          $("#transfer_sender").focus();
-          return;
-     }else{
-     $.ajax({
-          type : "POST",
-          url : "../controller/post_payments.php",
-          data : {posted_by:posted_by, guest:guest, payment_mode:payment_mode, bank_paid:bank_paid, sender:sender, guest_amount:guest_amount, amount_paid:amount_paid},
-          success : function(response){
-               $("#all_payments").html(response);
-          }
-     })
-          setTimeout(function(){
-               $('#all_payments').load("post_payment.php?guest_id=+"+guest + "#all_payments");
-          }, 3000);
-     }
-     return false;    
-
-}
 //post other cash payments for guest
 function postOtherCash(){
      let posted_by = document.getElementById("posted_by").value;
@@ -1160,7 +1055,7 @@ function viewCustomerInvoice(invoice_id){
      
  }
  //display payment form for credit payments
-function addPayment(invoice_id){
+/* function addPayment(invoice_id){
      let invoice = invoice_id;          
           $.ajax({
                type : "GET",
@@ -1175,7 +1070,7 @@ function addPayment(invoice_id){
           return false;
      // }
      
- }
+ } */
  //stockin in items
 function stockin(){
      let posted_by = document.getElementById("posted_by").value;
@@ -2849,6 +2744,7 @@ function addPayment(){
      let check_in_id = document.getElementById("check_in_id").value;
      let payment_type = document.getElementById("payment_type").value;
      let bank = document.getElementById("bank").value;
+     let wallet = document.getElementById("wallet").value;
      // alert(bank);
      if(payment_type == "Transfer" || payment_type == "POS"){
           if(bank.length == 0 || bank.replace(/^\s+|\s+$/g, "").length == 0){
@@ -2856,6 +2752,14 @@ function addPayment(){
                $("#bank").focus();
                return;
           }
+     }
+     if(payment_type == "Wallet"){
+          if(parseInt(wallet) < parseInt(deposits)){
+               alert("Insufficient balance! Kindly fund wallet");
+               $("#payment_type").focus();
+               return;
+          }
+     
      }
      if(payment_type.length == 0 || payment_type.replace(/^\s+|\s+$/g, "").length == 0){
           alert("Please select a payment option!");

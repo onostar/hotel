@@ -62,7 +62,20 @@
             $update_guest->update('check_ins', 'amount_due', 'checkin_id', $new_amount, $id);
         }
         
-        
+        //check if payment type is wallet
+        if($payment_type == "Wallet"){
+            //update wallet balance
+            //get guest id
+            $get_guestsid = new selects();
+            $guestss = $get_guestsid->fetch_details_group('check_ins', 'guest', 'checkin_id', $id);
+            //get old balance
+            $get_wal = new selects();
+            $old_balance = $get_wal->fetch_details_group('guests', 'wallet', 'guest_id', $guestss->guest);
+            $new_wallet = $old_balance->wallet - $amount_paid;
+            //update wallet
+            $update_new_bal = new Update_table();
+            $update_new_bal->update('guests', 'wallet', 'guest_id', $new_wallet, $guestss->guest);
+        }
         
         echo "<p style='color:green; padding:5px 10px;'>Payment posted successfully! <i class='fas fa-thumbs-up'></i></p>";
     
