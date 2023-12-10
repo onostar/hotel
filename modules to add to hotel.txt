@@ -27,4 +27,4 @@ d. reports
 9. change room report - done
 
 e. financial report
-1. sales report by store
+1. sales report by store - done

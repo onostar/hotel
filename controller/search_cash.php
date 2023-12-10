@@ -9,7 +9,7 @@
     include "../classes/select.php";
 
     $get_revenue = new selects();
-    $details = $get_revenue->fetch_details_2date2Con('payments', 'date(post_date)', $from, $to, 'payment_mode', 'Cash', 'store', $store);
+    $details = $get_revenue->fetch_details_2dateCon('payments', 'payment_mode', 'date(post_date)',  $from, $to, 'Cash');
     $n = 1;  
 ?>
 <h2>Cash Sales between '<?php echo date("jS M, Y", strtotime($from)) . "' and '" . date("jS M, Y", strtotime($to))?>'</h2>
@@ -61,7 +61,7 @@
     }
     // get sum
     $get_total = new selects();
-    $amounts = $get_total->fetch_sum_2date2Cond('payments', 'amount_paid', 'date(post_date)', 'store', 'payment_mode', $from, $to, $store, 'Cash');
+    $amounts = $get_total->fetch_sum_2dateCond('payments', 'amount_paid', 'payment_mode', 'date(post_date)', $from, $to, 'Cash');
     foreach($amounts as $amount){
         echo "<p class='total_amount' style='color:green'>Total: ₦".number_format($amount->total, 2)."</p>";
     }
