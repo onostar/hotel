@@ -293,7 +293,7 @@ function disableUser(user_id){
           })
           setTimeout(function(){
                $('#disable_user').load("disable_user.php #disable_user");
-          }, 3000);
+          }, 1000);
           return false;
      }
 }
@@ -3042,6 +3042,32 @@ function printSalesTicket(invoice){
      }
      return false;
 }
+ //perform revenue search on stores with two dates
+ function searchRevenueStore(){
+     let revenue_store = document.getElementById('revenue_store').value;
+     let from_date = document.getElementById('from_date').value;
+     let to_date = document.getElementById('to_date').value;
+     /* authentication */
+     if(from_date.length == 0 || from_date.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please select a date!");
+          $("#from_date").focus();
+          return;
+     }else if(to_date.length == 0 || to_date.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please select a date range!");
+          $("#to_date").focus();
+          return;
+     }else{
+          $.ajax({
+               type: "POST",
+               url: "../controller/search_revenue_store.php",
+               data: {from_date:from_date, to_date:to_date, revenue_store:revenue_store},
+               success: function(response){
+               $(".new_data").html(response);
+               }
+          });
+     }
+     return false;
+}
  //search dashboard reports
  function searchDashboard(board){
      let store = board;
@@ -3073,6 +3099,22 @@ function printSalesTicket(invoice){
 //change store
 function changeStore(store, user){
      window.open("../controller/change_store.php?store="+store+"&user="+user, "_self");
+}
+function changeStoreRevenue(store){
+     if(store.length == 0 || store.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please select a store");
+          return;
+     }else{
+          $.ajax({
+               type: "GET",
+               url: "../controller/get_store_revenue.php?store="+store,
+               success : function(response){
+                    $(".general_revenue").html(response);
+               }
+          })
+          return false;
+     }
+     
 }
 // Post daily expense 
 function postExpense(){
@@ -3591,40 +3633,49 @@ function getCustomerEdit(input){
      }
      
 }
-// update customer details
+// update guest details
 function updateCustomer(){
-     let customer_id = document.getElementById("customer_id").value;
-     let customer = document.getElementById("customer").value;
-     let phone_number = document.getElementById("phone_number").value;
-     let address = document.getElementById("address").value;
-     let email = document.getElementById("email").value;
-     if(customer.length == 0 || customer.replace(/^\s+|\s+$/g, "").length == 0){
-          alert("Please enter customer name!");
-          $("#customer").focus();
+     let guest_id = document.getElementById("guest_id").value;
+     let last_name = document.getElementById("last_name").value;
+     let other_names = document.getElementById("other_names").value;
+     let contact_phone = document.getElementById("contact_phone").value;
+     let contact_address = document.getElementById("contact_address").value;
+     let emergency_contact = document.getElementById("emergency_contact").value;
+     let gender = document.getElementById("gender").value;
+     if(other_names.length == 0 || other_names.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please enter Other name!");
+          $("#other_names").focus();
           return;
-     }else if(phone_number.length == 0 || phone_number.replace(/^\s+|\s+$/g, "").length == 0){
-          alert("Please enter customer phone number").focus();
-          $("#phone_number").focus();
+     }else if(last_name.length == 0 || last_name.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please enter last name!");
+          $("#last_name").focus();
           return;
-     }else if(address.length == 0 || address.replace(/^\s+|\s+$/g, "").length == 0){
-          alert("Please input customer address");
+     }else if(contact_phone.length == 0 || contact_phone.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please enter guest phone number").focus();
+          $("#contact_phone").focus();
+          return;
+     }else if(contact_address.length == 0 || contact_address.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please input guest address");
           $("#address").focus();
           return;
-     }else if(email.length == 0 || email.replace(/^\s+|\s+$/g, "").length == 0){
-          alert("Please enter customer email address");
-          $("#email").focus();
+     }else if(gender.length == 0 || gender.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please select guest gender");
+          $("#gender").focus();
           return;
      }else{
           $.ajax({
                type : "POST",
                url : "../controller/update_customer.php",
-               data : {customer_id:customer_id, customer:customer, phone_number:phone_number, email:email, address:address},
+               data : {guest_id:guest_id, last_name:last_name, other_names:other_names, contact_phone:contact_phone, gender:gender, contact_address:contact_address, emergency_contact:emergency_contact},
                success : function(response){
                $("#update_customer").html(response);
                }
           })
+          setTimeout(function(){
+               $("#edit_customer").load("edit_customer_info.php #edit_customer");
+          }, 1500);
      }
-     $("#customer").focus();
+     // $("#customer").focus();
      return false;    
 }
 

@@ -1,18 +1,21 @@
 <?php
-    session_start();
-    $store = $_SESSION['store_id'];
+    // session_start();
+    $store = htmlspecialchars(stripslashes($_POST['revenue_store']));
     $from = htmlspecialchars(stripslashes($_POST['from_date']));
     $to = htmlspecialchars(stripslashes($_POST['to_date']));
 
     // instantiate classes
     include "../classes/dbh.php";
     include "../classes/select.php";
-
+    //get store name
+    $get_name = new selects();
+    $str = $get_name->fetch_details_group('stores', 'store', 'store_id', $store);
+    $store_name = $str->store;
     $get_revenue = new selects();
-    $details = $get_revenue->fetch_details_dateGro('payments', 'date(post_date)', $from, $to, 'invoice');
+    $details = $get_revenue->fetch_details_dateGro1con('payments', 'date(post_date)', $from, $to, 'store', $store, 'invoice');
     $n = 1;
 ?>
-<h2>Sales Report between '<?php echo date("jS M, Y", strtotime($from)) . "' and '" . date("jS M, Y", strtotime($to))?>'</h2>
+<h2><span style="color:green"><?php echo $store_name;?></span> Revenue Report between '<?php echo date("jS M, Y", strtotime($from)) . "' and '" . date("jS M, Y", strtotime($to))?>'</h2>
     <hr>
     <div class="search">
         <input type="search" id="searchRevenue" placeholder="Enter keyword" onkeyup="searchData(this.value)">
@@ -42,7 +45,7 @@
 ?>
             <tr>
                 <td style="text-align:center; color:red;"><?php echo $n?></td>
-                <td><a style="color:green" href="javascript:void(0)"><?php echo $detail->invoice?></a></td>
+                <td><a style="color:green" href="javascript:void(0)" title="View invoice details" onclick="showPage('invoice_details.php?payment_id=<?php echo $detail->payment_id?>')"><?php echo $detail->invoice?></a></td>
                 <td><?php echo $detail->sales_type?></td>
                 <td>
                     <?php echo "₦".number_format($detail->amount_due, 2);?>
@@ -97,7 +100,7 @@
     <?php
     //get cash
     $get_cash = new selects();
-    $cashs = $get_cash->fetch_sum_2dateCond('payments', 'amount_paid', 'payment_mode', 'date(post_date)', $from, $to, 'Cash');
+    $cashs = $get_cash->fetch_sum_2date2Cond('payments', 'amount_paid', 'date(post_date)', 'payment_mode', 'store', $from, $to, 'Cash', $store);
     if(gettype($cashs) === "array"){
         foreach($cashs as $cash){
             echo "<p class='sum_amount' style='background:var(--otherColor)'><strong>Cash</strong>: ₦".number_format($cash->total, 2)."</p>";
@@ -105,7 +108,7 @@
     }
     //get POS
     $get_pos = new selects();
-    $poss = $get_pos->fetch_sum_2dateCond('payments', 'amount_paid', 'payment_mode', 'date(post_date)', $from, $to, 'POS');
+    $poss = $get_pos->fetch_sum_2date2Cond('payments', 'amount_paid', 'date(post_date)', 'payment_mode', 'store', $from, $to, 'POS', $store);
     if(gettype($poss) === "array"){
         foreach($poss as $pos){
             echo "<p class='sum_amount' style='background:var(--secondaryColor)'><strong>POS</strong>: ₦".number_format($pos->total, 2)."</p>";
@@ -113,7 +116,7 @@
     }
     //get transfer
     $get_transfer = new selects();
-    $trfs = $get_transfer->fetch_sum_2dateCond('payments', 'amount_paid', 'payment_mode','date(post_date)', $from, $to, 'Transfer');
+    $trfs = $get_transfer->fetch_sum_2date2Cond('payments', 'amount_paid', 'date(post_date)', 'payment_mode', 'store', $from, $to, 'Transfer', $store);
     if(gettype($trfs) === "array"){
         foreach($trfs as $trf){
             echo "<p class='sum_amount' style='background:var(--primaryColor)'><strong>Transfer</strong>: ₦".number_format($trf->total, 2)."</p>";
@@ -121,7 +124,7 @@
     }
     // get sum
     $get_total = new selects();
-    $amounts = $get_total->fetch_sum_2date('payments', 'amount_paid', 'date(post_date)', $from, $to);
+    $amounts = $get_total->fetch_sum_2dateCond('payments', 'amount_paid', 'store', 'date(post_date)', $from, $to, $store);
     foreach($amounts as $amount){
         $paid_amount = $amount->total;
     }

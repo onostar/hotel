@@ -2857,6 +2857,7 @@ x
     background:var(--otherColor);
     font-size: .9rem;
 }
+
 /* .sales_receipt{
     padding:10px;
 }
@@ -3191,6 +3192,15 @@ x
 }
 #payment_form{
     display:none;
+}
+#stores_change{
+    width:90%;
+    margin:0px auto;
+}
+#stores_change select{
+    padding:0 5px;
+    /* color:red; */
+
 }
 @media screen and (max-width: 800px){
     #topHeader{

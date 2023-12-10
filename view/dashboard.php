@@ -19,7 +19,7 @@
                     <p>
                     <?php
                         $get_sales = new selects();
-                        $rows = $get_sales->fetch_sum_curdatecon('payments', 'amount_paid', 'post_date', 'store', $store_id);
+                        $rows = $get_sales->fetch_sum_curdate('payments', 'amount_paid', 'post_date');
                         foreach($rows as $row){
                             $amount = $row->total;
                         }
@@ -84,18 +84,18 @@
                     <?php
                         //get total sales
                         $get_sales = new selects();
-                        $rows = $get_sales->fetch_sum_curdateCon('payments', 'amount_paid', 'post_date', 'store', $store_id);
+                        $rows = $get_sales->fetch_sum_curdate('payments', 'amount_paid', 'post_date');
                         foreach($rows as $row){
                             $sales = $row->total;
                         }
                         //get cost of sales
                         $get_cost = new selects();
-                        $costs = $get_cost->fetch_sum_curdate2Con('sales', 'cost', 'date(post_date)', 'sales_status', 2, 'store', $store_id);
+                        $costs = $get_cost->fetch_sum_curdateCon('sales', 'cost', 'date(post_date)', 'sales_status', 2);
                         foreach($costs as $cost){   $sales_cost = $cost->total;
                         }
                         //get expenses
                         $get_exp = new selects();
-                        $exps = $get_exp->fetch_sum_curdateCon('expenses', 'amount', 'date(expense_date)', 'store', $store_id);
+                        $exps = $get_exp->fetch_sum_curdate('expenses', 'amount', 'date(expense_date)');
                         foreach($exps as $exp){
                             $expense = $exp->total;
                         }

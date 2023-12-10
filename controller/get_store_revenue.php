@@ -1,28 +1,16 @@
 <?php
-    session_start();
-    $store = $_SESSION['store_id'];
     include "../classes/dbh.php";
     include "../classes/select.php";
 
-
+    if(isset($_GET['store'])){
+        $store = $_GET['store'];
+        //get store name
+        $get_name = new selects();
+        $str = $get_name->fetch_details_group('stores', 'store', 'store_id', $store);
+        $store_name = $str->store;
 ?>
-<div id="revenueReport" class="displays management">
-    <section id="stores_change">
-        <!-- <label>Select store</label><br> -->
-        <select name="store" id="store" required onchange="changeStoreRevenue(this.value)">
-            <option value="" selected>Select store</option>
-            <!-- get stores -->
-            <?php
-                $get_store = new selects();
-                $strs = $get_store->fetch_details('stores');
-                foreach($strs as $str){
-            ?>
-            <option value="<?php echo $str->store_id?>"><?php echo $str->store?></option>
-            <?php }?>
-        </select>
-    </section>
-<div class="general_revenue">
-    <div class="select_date">
+
+<div class="select_date">
         <!-- <form method="POST"> -->
         <section>    
             <div class="from_to_date">
@@ -33,11 +21,12 @@
                 <label>Select to Date</label><br>
                 <input type="date" name="to_date" id="to_date"><br>
             </div>
-            <button type="submit" name="search_date" id="search_date" onclick="search('search_revenue.php')">Search <i class="fas fa-search"></i></button>
+            <input type="hidden" name="revenue_store" id="revenue_store" value="<?php echo $store?>">
+            <button type="submit" name="search_date" id="search_date" onclick="searchRevenueStore()">Search <i class="fas fa-search"></i></button>
         </section>
     </div>
 <div class="displays allResults new_data" id="revenue_report">
-    <h2>Revenue Report for today</h2>
+    <h2><span style="color:green"><?php echo $store_name;?></span> Revenue Report for today</h2>
     <hr>
     <div class="search">
         <input type="search" id="searchCheckout" placeholder="Enter keyword" onkeyup="searchData(this.value)">
@@ -62,13 +51,13 @@
             <?php
                 $n = 1;
                 $get_users = new selects();
-                $details = $get_users->fetch_details_curdateGro('payments', 'date(post_date)', 'invoice');
+                $details = $get_users->fetch_details_curdateGro1con('payments', 'date(post_date)', 'store', $store, 'invoice');
                 if(gettype($details) === 'array'){
                 foreach($details as $detail):
             ?>
             <tr>
                 <td style="text-align:center; color:red;"><?php echo $n?></td>
-                <td><a style="color:green" href="javascript:void(0)"><?php echo $detail->invoice?></a></td>
+                <td><a style="color:green" href="javascript:void(0)" title="View invoice details" onclick="showPage('invoice_details.php?payment_id=<?php echo $detail->payment_id?>')"><?php echo $detail->invoice?></a></td>
                 <td><?php echo $detail->sales_type?></td>
                 <td>
                     <?php echo "₦".number_format($detail->amount_due, 2);?>
@@ -124,7 +113,7 @@
     <?php
         //get cash
         $get_cash = new selects();
-        $cashs = $get_cash->fetch_sum_curdateCon('payments', 'amount_due', 'post_date', 'payment_mode', 'Cash');
+        $cashs = $get_cash->fetch_sum_curdate2Con('payments', 'amount_due', 'post_date', 'payment_mode', 'Cash', 'store', $store);
         if(gettype($cashs) === "array"){
             foreach($cashs as $cash){
             ?>
@@ -135,7 +124,7 @@
         }
         //get pos
         $get_pos = new selects();
-        $poss = $get_pos->fetch_sum_curdateCon('payments', 'amount_due', 'post_date', 'payment_mode', 'POS');
+        $poss = $get_pos->fetch_sum_curdate2Con('payments', 'amount_due', 'post_date', 'payment_mode', 'POS', 'store', $store);
         if(gettype($poss) === "array"){
             foreach($poss as $pos){
                 ?>
@@ -146,7 +135,7 @@
         }
         //get transfer
         $get_transfer = new selects();
-        $trfs = $get_transfer->fetch_sum_curdateCon('payments', 'amount_due', 'post_date', 'payment_mode', 'Transfer');
+        $trfs = $get_transfer->fetch_sum_curdate2Con('payments', 'amount_due', 'post_date', 'payment_mode', 'Transfer', 'store', $store);
         if(gettype($trfs) === "array"){
             foreach($trfs as $trf){
                 ?>
@@ -161,14 +150,14 @@
         <?php
         // get sum
         $get_total = new selects();
-        $amounts = $get_total->fetch_sum_curdate('payments', 'amount_paid', 'post_date', 'store');
+        $amounts = $get_total->fetch_sum_curdateCon('payments', 'amount_paid', 'post_date', 'store', $store);
         foreach($amounts as $amount){
             $paid_amount = $amount->total;
             
         }
         //if credit was sold
         $get_credit = new selects();
-        $credits = $get_credit->fetch_sum_curdateCon('payments', 'amount_due', 'post_date', 'payment_mode', 'Credit');
+        $credits = $get_credit->fetch_sum_curdate2Con('payments', 'amount_due', 'post_date', 'payment_mode', 'Credit', 'store', $store);
         if(gettype($credits) === "array"){
             foreach($credits as $credit){
                 $owed_amount = $credit->total;
@@ -184,8 +173,6 @@
         }
     ?>
             <!-- </div> -->
-        </div>
 </div>
-</div>
-<script src="../jquery.js"></script>
-<script src="../script.js"></script>
+
+<?php }?>
