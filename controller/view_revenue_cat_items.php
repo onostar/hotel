@@ -10,7 +10,7 @@
     $get_dep = new selects();
     $deps = $get_dep->fetch_details_group('departments', 'department', 'department_id', $department);
     $get_revenue = new selects();
-    $details = $get_revenue->fetch_revenue_cat_items($department, $store);
+    $details = $get_revenue->fetch_revenue_cat_items($department);
     $n = 1;  
 ?>
 <h2>Items sold for  '<?php echo $deps->department?>'</h2>

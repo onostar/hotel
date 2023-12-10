@@ -45,7 +45,7 @@
             <?php
                 $n = 1;
                 $get_users = new selects();
-                $details = $get_users->fetch_details_curdateCon('expenses', 'date(post_date)', 'store', $store);
+                $details = $get_users->fetch_details_curdate('expenses', 'date(post_date)');
                 if(gettype($details) === 'array'){
                 foreach($details as $detail):
             ?>
@@ -83,7 +83,7 @@
 
         // get sum
         $get_total = new selects();
-        $amounts = $get_total->fetch_sum_curdateCon('expenses', 'amount', 'date(post_date)', 'store', $store);
+        $amounts = $get_total->fetch_sum_curdate('expenses', 'amount', 'date(post_date)');
         foreach($amounts as $amount){
             echo "<p class='total_amount' style='color:green'>Total: ₦".number_format($amount->total, 2)."</p>";
         }

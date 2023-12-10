@@ -6,6 +6,7 @@
     $head = htmlspecialchars(stripslashes(($_POST['exp_head'])));
     $amount = htmlspecialchars(stripslashes(($_POST['amount'])));
     $details = ucwords(htmlspecialchars(stripslashes(($_POST['details']))));
+    $date = date("Y-m-d H:i:s");
 
     $data = array(
         'posted_by' => $user,
@@ -13,7 +14,8 @@
         'expense_head' => $head,
         'amount' => $amount,
         'details' => $details,
-        'store' => $store
+        'store' => $store,
+        'post_date' => $date
     );
     // instantiate class
     include "../classes/dbh.php";

@@ -9,7 +9,7 @@
     include "../classes/select.php";
 
     $get_cashier = new selects();
-    $details = $get_cashier->fetch_details_dateGro1con('payments', 'date(post_date)', $from, $to, 'store', $store, 'posted_by');
+    $details = $get_cashier->fetch_details_dateGro('payments', 'date(post_date)', $from, $to, 'posted_by');
     $n = 1; 
 
 ?>
@@ -24,11 +24,12 @@
             <tr style="background:var(--primaryColor)">
                 <td>S/N</td>
                 <td>Cashier</td>
+                <td>Location</td>
                 <td>Cash</td>
                 <td>POS</td>
                 <td>Transfer</td>
                 <td>Wallet</td>
-                <td>Credit</td>
+                <!-- <td>Credit</td> -->
                 <td>Total</td>
                 
             </tr>
@@ -40,15 +41,26 @@
 
 ?>
             <tr>
+            <?php
+                    //get cashier details
+                    $get_posted_by = new selects();
+                    $cashierss= $get_posted_by->fetch_details_cond('users', 'user_id', $detail->posted_by);
+                    foreach($cashierss as $cashiers){
+                        $cashier = $cashiers->full_name;
+                        $loc_id = $cashiers->store;
+                    }
+                    //get cashier location name
+                    $get_loc = new selects();
+                    $locs = $get_loc->fetch_details_group('stores', 'store', 'store_id', $loc_id);
+                    $location = $locs->store;
+                ?>
                 <td style="text-align:center; color:red;"><?php echo $n?></td>
                 <td style="color:var(--otherColor)">
                     <?php
-                        //get posted by
-                        $get_posted_by = new selects();
-                        $checkedin_by = $get_posted_by->fetch_details_group('users', 'full_name', 'user_id', $detail->posted_by);
-                        echo $checkedin_by->full_name;
+                        echo $cashier;
                     ?>
                 </td>
+                <td><?php echo $location?></td>
                 <td>
                     <?php
                         $get_cash = new selects();
@@ -85,15 +97,15 @@
                         }
                     ?>
                 </td>
-                <td>
+                <!-- <td>
                     <?php
-                        $get_cash = new selects();
+                        /* $get_cash = new selects();
                         $cashs = $get_cash->fetch_sum_2dateCondGr('payments', 'amount_due', 'payment_mode', 'date(post_date)', 'posted_by', $from, $to, 'Credit', $detail->posted_by);
                         foreach($cashs as $cash){
                             echo "₦".number_format($cash->total, 2);
-                        }
+                        } */
                     ?>
-                </td>
+                </td> -->
                 <td style="color:red">
                     <?php
                         // get sum
@@ -127,10 +139,11 @@
             <tr>
                 <td></td>
                 <td style="color:green; font-size:1rem;">Total</td>
+                <td></td>
                 <td style="color:green; font-size:1rem">
                     <?php
                         $get_total = new selects();
-                        $totals = $get_total->fetch_sum_2date2Cond('payments', 'amount_paid', 'date(post_date)', 'payment_mode', 'store', $from, $to, 'Cash', $store);
+                        $totals = $get_total->fetch_sum_2dateCond('payments', 'amount_paid', 'payment_mode', 'date(post_date)', $from, $to, 'Cash');
                         foreach($totals as $total){
                             echo "₦".number_format($total->total, 2);
                         }
@@ -139,7 +152,7 @@
                 <td style="color:green; font-size:1rem">
                     <?php
                         $get_total = new selects();
-                        $totals = $get_total->fetch_sum_2date2Cond('payments', 'amount_paid', 'date(post_date)', 'payment_mode', 'store', $from, $to, 'POS', $store);
+                        $totals = $get_total->fetch_sum_2dateCond('payments', 'amount_paid', 'payment_mode', 'date(post_date)', $from, $to, 'POS');
                         foreach($totals as $total){
                             echo "₦".number_format($total->total, 2);
                         }
@@ -148,7 +161,7 @@
                 <td style="color:green; font-size:1rem">
                     <?php
                         $get_total = new selects();
-                        $totals = $get_total->fetch_sum_2date2Cond('payments', 'amount_paid', 'date(post_date)', 'payment_mode', 'store', $from, $to, 'Transfer', $store);
+                        $totals = $get_total->fetch_sum_2dateCond('payments', 'amount_paid', 'payment_mode', 'date(post_date)', $from, $to, 'Transfer');
                         foreach($totals as $total){
                             echo "₦".number_format($total->total, 2);
                         }
@@ -157,32 +170,32 @@
                 <td style="color:green; font-size:1rem">
                     <?php
                         $get_total = new selects();
-                        $totals = $get_total->fetch_sum_2date2Cond('payments', 'amount_paid', 'date(post_date)', 'payment_mode', 'store', $from, $to, 'Wallet', $store);
+                        $totals = $get_total->fetch_sum_2dateCond('payments', 'amount_paid', 'payment_mode', 'date(post_date)', $from, $to, 'Wallet');
                         foreach($totals as $total){
                             echo "₦".number_format($total->total, 2);
                         }
                     ?>
                 </td>
-                <td style="color:green; font-size:1rem">
+                <!-- <td style="color:green; font-size:1rem">
                     <?php
-                        $get_total = new selects();
+                        /* $get_total = new selects();
                         $totals = $get_total->fetch_sum_2date2Cond('payments', 'amount_due', 'date(post_date)', 'payment_mode', 'store', $from, $to, 'Credit', $store);
                         foreach($totals as $total){
                             echo "₦".number_format($total->total, 2);
-                        }
+                        } */
                     ?>
-                </td>
+                </td> -->
                 <td style="color:red; font-size:1rem">
                     <?php
                         // get sum
                         $get_total = new selects();
-                        $amounts = $get_total->fetch_sum_2dateCond('payments', 'amount_paid', 'store', 'date(post_date)', $from, $to, $store);
+                        $amounts = $get_total->fetch_sum_2date('payments', 'amount_paid', 'date(post_date)', $from, $to);
                         foreach($amounts as $amount){
                             $paid_amount = $amount->total;
                         }
                         // if credit was sold
                         $get_credit = new selects();
-                        $credits = $get_credit->fetch_sum_2date2Cond('payments', 'amount_due', 'date(post_date)', 'payment_mode', 'store', $from, $to, 'Credit', $store);
+                        $credits = $get_credit->fetch_sum_2dateCond('payments', 'amount_due', 'payment_mode', 'date(post_date)', $from, $to, 'Credit');
                         if(gettype($credits) === "array"){
                             foreach($credits as $credit){
                                 $owed_amount = $credit->total;

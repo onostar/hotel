@@ -56,7 +56,7 @@
             <tr>
                 <td style="text-align:center; color:red;"><?php echo $n?></td>
                 <td><a style="color:green" href="javascript:void(0)"><?php echo $detail->invoice?></a></td>
-                <td style="text-align:Center">
+                <td>
                     <?php
                         
                         echo $full_name;

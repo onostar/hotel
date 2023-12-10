@@ -9,7 +9,7 @@
     include "../classes/select.php";
 
     $get_revenue = new selects();
-    $details = $get_revenue->fetch_details_date2Con('expenses', 'date(post_date)', $from, $to, 'store', $store);
+    $details = $get_revenue->fetch_details_date('expenses', 'date(post_date)', $from, $to);
     $n = 1;  
 ?>
 <h2>Expense Report between '<?php echo date("jS M, Y", strtotime($from)) . "' and '" . date("jS M, Y", strtotime($to))?>'</h2>
@@ -71,7 +71,7 @@
     }
     // get sum
     $get_total = new selects();
-    $amounts = $get_total->fetch_sum_2dateCond('expenses', 'amount', 'store', 'date(post_date)', $from, $to, $store);
+    $amounts = $get_total->fetch_sum_2date('expenses', 'amount', 'date(post_date)', $from, $to);
     foreach($amounts as $amount){
         echo "<p class='total_amount' style='color:green'>Total: ₦".number_format($amount->total, 2)."</p>";
     }

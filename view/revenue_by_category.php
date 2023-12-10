@@ -22,7 +22,7 @@
 </section>
     </div>
 <div class="displays allResults new_data" id="revenue_report" style="width:60%">
-    <h2>Revenue by category for today</h2>
+    <h2>Sales by category for today</h2>
     <hr>
     <div class="search">
         <input type="search" id="searchCheckout" placeholder="Enter keyword" onkeyup="searchData(this.value)">
@@ -43,7 +43,7 @@
             <?php
                 $n = 1;
                 $get_users = new selects();
-                $details = $get_users->fetch_revenue_cat($store);
+                $details = $get_users->fetch_revenue_cat();
                 if(gettype($details) === 'array'){
                 foreach($details as $detail):
             ?>

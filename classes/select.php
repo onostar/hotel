@@ -565,9 +565,9 @@
             }
         }
         //fetch revenue by category with date
-        public function fetch_revenue_cat($store){
-            $get_user = $this->connectdb()->prepare("SELECT SUM(sales.total_amount) AS total, SUM(sales.cost) AS total_cost, sales.item, items.item_id, items.cost_price, sales.quantity, items.department FROM sales, items WHERE sales.store = :store AND items.item_id = sales.item AND sales.sales_status = 2 AND date(sales.post_date) = CURDATE()GROUP BY items.department");
-            $get_user->bindValue("store", $store);
+        public function fetch_revenue_cat(){
+            $get_user = $this->connectdb()->prepare("SELECT SUM(sales.total_amount) AS total, SUM(sales.cost) AS total_cost, sales.item, items.item_id, items.cost_price, sales.quantity, items.department FROM sales, items WHERE /* sales.store = :store AND  */items.item_id = sales.item AND sales.sales_status = 2 AND date(sales.post_date) = CURDATE()GROUP BY items.department");
+            // $get_user->bindValue("store", $store);
             $get_user->execute();
             if($get_user->rowCount() > 0){
                 $rows = $get_user->fetchAll();
@@ -578,9 +578,9 @@
             }
         }
         //fetch sales items in each revenue by category with current date
-        public function fetch_revenue_cat_items($department, $store){
-            $get_user = $this->connectdb()->prepare("SELECT sales.total_amount, sales.cost, sales.item, items.item_id, items.cost_price, items.item_name, sales.quantity, items.department, sales.invoice, sales.posted_by, sales.post_date FROM sales, items WHERE sales.store = :store AND items.department ='$department' AND items.item_id = sales.item AND sales.sales_status = 2 AND date(sales.post_date) = CURDATE()");
-            $get_user->bindValue("store", $store);
+        public function fetch_revenue_cat_items($department/* , $store */){
+            $get_user = $this->connectdb()->prepare("SELECT sales.total_amount, sales.cost, sales.item, items.item_id, items.cost_price, items.item_name, sales.quantity, items.department, sales.invoice, sales.posted_by, sales.post_date FROM sales, items WHERE /* sales.store = :store AND */ items.department ='$department' AND items.item_id = sales.item AND sales.sales_status = 2 AND date(sales.post_date) = CURDATE()");
+            // $get_user->bindValue("store", $store);
             $get_user->execute();
             if($get_user->rowCount() > 0){
                 $rows = $get_user->fetchAll();
@@ -591,9 +591,9 @@
             }
         }
         //fetch sales items in each revenue by category with 2 dates
-        public function fetch_revenue_cat_itemsdate($from, $to, $department, $store){
-            $get_user = $this->connectdb()->prepare("SELECT sales.total_amount, sales.cost, sales.item, items.item_id, items.cost_price, items.item_name, sales.quantity, items.department, sales.invoice, sales.posted_by, sales.post_date FROM sales, items WHERE sales.store = :store AND items.department ='$department' AND items.item_id = sales.item AND sales.sales_status = 2 AND date(sales.post_date) BETWEEN '$from' AND '$to'");
-            $get_user->bindValue("store", $store);
+        public function fetch_revenue_cat_itemsdate($from, $to, $department/* , $store */){
+            $get_user = $this->connectdb()->prepare("SELECT sales.total_amount, sales.cost, sales.item, items.item_id, items.cost_price, items.item_name, sales.quantity, items.department, sales.invoice, sales.posted_by, sales.post_date FROM sales, items WHERE /* sales.store = :store AND */ items.department ='$department' AND items.item_id = sales.item AND sales.sales_status = 2 AND date(sales.post_date) BETWEEN '$from' AND '$to'");
+            // $get_user->bindValue("store", $store);
             $get_user->execute();
             if($get_user->rowCount() > 0){
                 $rows = $get_user->fetchAll();
@@ -604,9 +604,9 @@
             }
         }
         //fetch revenue with date
-        public function fetch_revenue($store){
-            $get_user = $this->connectdb()->prepare("SELECT SUM(sales.total_amount) AS total, SUM(sales.cost) AS total_cost, sales.item, items.item_id, items.cost_price, sales.quantity, items.department FROM sales, items WHERE sales.store = :store AND items.item_id = sales.item AND sales.sales_status = 2 AND date(sales.post_date) = CURDATE()");
-            $get_user->bindValue('store', $store);
+        public function fetch_revenue(){
+            $get_user = $this->connectdb()->prepare("SELECT SUM(sales.total_amount) AS total, SUM(sales.cost) AS total_cost, sales.item, items.item_id, items.cost_price, sales.quantity, items.department FROM sales, items WHERE /*sales. store = :store AND  */items.item_id = sales.item AND sales.sales_status = 2 AND date(sales.post_date) = CURDATE()");
+            // $get_user->bindValue('store', $store);
             $get_user->execute();
             if($get_user->rowCount() > 0){
                 $rows = $get_user->fetchAll();
@@ -617,9 +617,9 @@
             }
         }
         //fetch revenue by category with 2 dates
-        public function fetch_revenue_catDate($from, $to, $store){
-            $get_user = $this->connectdb()->prepare("SELECT SUM(sales.total_amount) AS total, SUM(sales.cost) AS total_cost, sales.item, items.item_id, items.cost_price, sales.quantity, items.department FROM sales, items WHERE sales.store = :store AND items.item_id = sales.item AND sales.sales_status = 2 AND date(sales.post_date) BETWEEN '$from' AND '$to' GROUP BY items.department");
-            $get_user->bindValue('store', $store);
+        public function fetch_revenue_catDate($from, $to /* $store */){
+            $get_user = $this->connectdb()->prepare("SELECT SUM(sales.total_amount) AS total, SUM(sales.cost) AS total_cost, sales.item, items.item_id, items.cost_price, sales.quantity, items.department FROM sales, items WHERE /* sales.store = :store AND  */items.item_id = sales.item AND sales.sales_status = 2 AND date(sales.post_date) BETWEEN '$from' AND '$to' GROUP BY items.department");
+            // $get_user->bindValue('store', $store);
             $get_user->execute();
             if($get_user->rowCount() > 0){
                 $rows = $get_user->fetchAll();
@@ -630,9 +630,9 @@
             }
         }
         //fetch revenue with 2 dates
-        public function fetch_revenueDate($from, $to, $store){
-            $get_user = $this->connectdb()->prepare("SELECT SUM(sales.total_amount) AS total, SUM(sales.cost) AS total_cost, sales.item, items.item_id, items.cost_price, sales.quantity, items.department FROM sales, items WHERE sales.store = :store AND items.item_id = sales.item AND sales.sales_status = 2 AND date(sales.post_date) BETWEEN '$from' AND '$to'");
-            $get_user->bindValue('store', $store);
+        public function fetch_revenueDate($from, $to){
+            $get_user = $this->connectdb()->prepare("SELECT SUM(sales.total_amount) AS total, SUM(sales.cost) AS total_cost, sales.item, items.item_id, items.cost_price, sales.quantity, items.department FROM sales, items WHERE /* sales.store = :store AND  */items.item_id = sales.item AND sales.sales_status = 2 AND date(sales.post_date) BETWEEN '$from' AND '$to'");
+            // $get_user->bindValue('store', $store);
             $get_user->execute();
             if($get_user->rowCount() > 0){
                 $rows = $get_user->fetchAll();

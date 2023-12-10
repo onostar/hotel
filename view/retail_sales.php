@@ -47,7 +47,7 @@
             <?php
                 $n = 1;
                 $get_users = new selects();
-                $details = $get_users->fetch_details_curdateGro2con('payments', 'date(post_date)', 'store', $store, 'sales_type', 'Retail', 'invoice');
+                $details = $get_users->fetch_details_curdateGro1con('payments', 'date(post_date)','sales_type', 'Retail', 'invoice');
                 if(gettype($details) === 'array'){
                 foreach($details as $detail):
             ?>
@@ -113,7 +113,7 @@
 
         // get sum
         $get_total = new selects();
-        $amounts = $get_total->fetch_sum_curdate2Con('payments', 'amount_paid', 'post_date', 'store', $store, 'sales_type', 'Retail');
+        $amounts = $get_total->fetch_sum_curdateCon('payments', 'amount_paid', 'post_date','sales_type', 'Retail');
         foreach($amounts as $amount){
             echo "<p class='total_amount' style='color:green'>Total: ₦".number_format($amount->total, 2)."</p>";
         }

@@ -9,7 +9,7 @@
     include "../classes/select.php";
 
     $get_revenue = new selects();
-    $details = $get_revenue->fetch_revenue_catDate($from, $to, $store);
+    $details = $get_revenue->fetch_revenue_catDate($from, $to);
     $n = 1;  
 ?>
 <h2>Revenue by category between '<?php echo date("jS M, Y", strtotime($from)) . "' and '" . date("jS M, Y", strtotime($to))?>'</h2>

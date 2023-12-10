@@ -12,7 +12,7 @@
     $get_dep = new selects();
     $deps = $get_dep->fetch_details_group('departments', 'department', 'department_id', $department);
     $get_revenue = new selects();
-    $details = $get_revenue->fetch_revenue_cat_itemsdate($from, $to, $department, $store);
+    $details = $get_revenue->fetch_revenue_cat_itemsdate($from, $to, $department);
     $n = 1;  
 ?>
 <h2>Items sold for  '<?php echo $deps->department?>' between '<?php echo date("jS M, Y", strtotime($from)) . "' and '" . date("jS M, Y", strtotime($to))?>'</h2>
