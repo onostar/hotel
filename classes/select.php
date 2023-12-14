@@ -168,6 +168,17 @@
                 return "0";
             }
         }
+        //fetch details count with condition where another condition is <= current
+        public function fetch_count_curDateLessCon($table, $column, $condition, $value){
+            $get_user = $this->connectdb()->prepare("SELECT * FROM $table WHERE date($column) <= CURDATE() AND $condition = :$condition");
+            $get_user->bindValue("$condition", $value);
+            $get_user->execute();
+            if($get_user->rowCount() > 0){
+                return $get_user->rowCount();
+            }else{
+                return "0";
+            }
+        }
         //fetch with two condition
         public function fetch_details_2cond($table, $condition1, $condition2, $value1, $value2){
             $get_user = $this->connectdb()->prepare("SELECT * FROM $table WHERE $condition1 = :$condition1 AND $condition2 = :$condition2");
@@ -1213,9 +1224,9 @@
         }
         
         // fetch daily sales
-        public function fetch_daily_sales($store){
-            $get_daily = $this->connectdb()->prepare("SELECT COUNT(distinct invoice) AS customers, SUM(amount_paid) AS revenue, post_date FROM payments WHERE store = :store GROUP BY date(post_date) ORDER BY date(post_date) DESC");
-            $get_daily->bindValue('store', $store);
+        public function fetch_daily_sales(){
+            $get_daily = $this->connectdb()->prepare("SELECT COUNT(distinct invoice) AS customers, SUM(amount_paid) AS revenue, post_date FROM payments WHERE sales_type != 'Accomodation' GROUP BY date(post_date) ORDER BY date(post_date) DESC");
+            // $get_daily->bindValue('store', $store);
             $get_daily->execute();
             if($get_daily->rowCount() > 0){
                 $rows = $get_daily->fetchAll();
@@ -1241,9 +1252,9 @@
             }
         }
         //fetch monthly sales
-        public function fetch_monthly_sales($store){
-            $get_monthly = $this->connectdb()->prepare("SELECT COUNT(distinct invoice) AS customers, SUM(amount_paid) AS revenue, post_date, COUNT(post_date) AS arrivals, COUNT(DISTINCT post_date) AS daily_average FROM payments WHERE store = :store GROUP BY MONTH(post_date) ORDER BY post_date DESC");
-            $get_monthly->bindValue('store', $store);
+        public function fetch_monthly_sales(){
+            $get_monthly = $this->connectdb()->prepare("SELECT COUNT(distinct invoice) AS customers, SUM(amount_paid) AS revenue, post_date, COUNT(post_date) AS arrivals, COUNT(DISTINCT post_date) AS daily_average FROM payments GROUP BY MONTH(post_date) ORDER BY post_date DESC");
+            // $get_monthly->bindValue('store', $store);
             $get_monthly->execute();
             if($get_monthly->rowCount() > 0){
                 $rows = $get_monthly->fetchAll();
@@ -1256,7 +1267,7 @@
         }
         // fetch daily checkins
         public function fetch_daily_checkins(){
-            $get_daily = $this->connectdb()->prepare("SELECT COUNT(distinct check_ins.guest_id) AS customers, SUM(payments.amount_paid) AS revenue, check_ins.check_in_date FROM check_ins, payments WHERE date(payments.post_date) = date(check_ins.check_in_date) AND check_ins.guest_id = payments.guest GROUP BY check_ins.check_in_date ORDER BY check_ins.check_in_date DESC");
+            $get_daily = $this->connectdb()->prepare("SELECT COUNT(distinct check_ins.checkin_id) AS customers, SUM(payments.amount_paid) AS revenue, check_ins.check_in_date FROM check_ins, payments WHERE date(payments.post_date) = date(check_ins.check_in_date) AND check_ins.checkin_id = payments.customer GROUP BY check_ins.check_in_date ORDER BY check_ins.check_in_date DESC");
             $get_daily->execute();
             if($get_daily->rowCount() > 0){
                 $rows = $get_daily->fetchAll();
@@ -1269,7 +1280,7 @@
         }
         //fetch monthly check ins
         public function fetch_monthly_checkins(){
-            $get_monthly = $this->connectdb()->prepare("SELECT COUNT(guest_id) AS customers, check_in_date, COUNT(check_in_date) AS arrivals, COUNT(DISTINCT check_in_date) AS daily_average FROM check_ins WHERE status != 0 GROUP BY MONTH(check_in_date) ORDER BY check_in_date DESC");
+            $get_monthly = $this->connectdb()->prepare("SELECT COUNT(checkin_id) AS customers, check_in_date, COUNT(check_in_date) AS arrivals, COUNT(DISTINCT check_in_date) AS daily_average FROM check_ins WHERE guest_status != 0 GROUP BY MONTH(check_in_date) ORDER BY MONTH(check_in_date)");
             $get_monthly->execute();
             if($get_monthly->rowCount() > 0){
                 $rows = $get_monthly->fetchAll();

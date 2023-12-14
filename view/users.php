@@ -114,8 +114,8 @@ date_default_timezone_set("Africa/Lagos");
                             <!-- <p>Direct sales</p> -->
                         </div>
                         
-                        <div class="links page_navs" onclick="showPage('customer_statement.php')" title="View guest report">
-                            <i class="fas fa-house-user"></i>
+                        <div class="links page_navs" onclick="showPage('customer_statement.php')" title="Search Guest">
+                            <i class="fas fa-search"></i>
                             <!-- <p>Direct sales</p> -->
                         </div>
                         <div class="links page_navs" onclick="showPage('guest_payment.php')" title="New guest payment">
@@ -123,29 +123,70 @@ date_default_timezone_set("Africa/Lagos");
                             <!-- <p>Direct sales</p> -->
                         </div>
                     </div>
+                    <?php }elseif($role == "Admin"){?>
+                    <div class="quick_links">
+                        
+                        <div class="links page_navs" onclick="showPage('guest_payment.php')" title="Reservations">
+                            <i class="fas fa-clipboard"></i>
+                            <p>
+                                <?php
+                                    //get reservations
+                                    $get_rserv = new selects();
+                                    $res = $get_rserv->fetch_count_cond('check_ins', 'guest_status', 0);
+                                    echo $res;
+                                ?>
+                            </p>
+                        </div>
+                        <div class="links page_navs" onclick="showPage('guest_list.php')" title="Current Guest List">
+                            <i class="fas fa-users" style="color:green"></i>
+                            <p>
+                                <?php
+                                    //get total guests
+                                    $get_cus = new selects();
+                                    $customers =  $get_cus->fetch_count_cond('check_ins', 'guest_status', 1);
+                                    echo $customers;
+                                ?>
+                            </p>
+                        </div>
+                        <div class="links page_navs" onclick="showPage('check_out.php')" title="Due for check out">
+                            <i class="fas fa-calendar-times" style="color:brown"></i>
+                            <p style="color:red">
+                                <?php
+                                    $get_sales = new selects();
+                                    $rows = $get_sales->fetch_count_curDateLessCon('check_ins', 'date(check_out_date)', 'guest_status', 1);
+                                    echo $rows;
+                                ?>
+                            </p>
+                        </div>
+                        <div class="links page_navs" onclick="showPage('reached_reorder.php')" title="Reached reorder level">
+                            <i class="fas fa-sort-amount-down"></i>
+                            <p>
+                                <?php
+                                    $get_level = new selects();
+                                    $levels = $get_level->fetch_lesser_cond('inventory',  'quantity', 'reorder_level', 'store', $store_id);
+                                    echo $levels;
+                                ?>
+                            </p>
+                        </div>
+                        <div class="links page_navs" onclick="showPage('out_of_stock.php')" title="Out of stock">
+                            <i class="fas fa-drum" style="color:red"></i>
+                            <p style="color:red">
+                                <?php
+                                    $out_stock = new selects();
+                                    $stock = $out_stock->fetch_count_2cond('inventory', 'quantity', 0, 'store', $store_id);
+                                    echo $stock;
+                                ?>
+                            </p>
+                        </div>
+                    </div>
                     <?php }else{?>
                     <div class="quick_links">
-                        <!-- check if sales right exist -->
-                        <?php 
-                            $get_rights = new selects();
-                            $row = $get_rights->fetch_count_2cond('rights', 'user', $user_id, 'sub_menu', "12");
-                            if($row > 0 || $role == "Admin"){
-                        ?>
-                        <div class="links page_navs" onclick="showPage('direct_sales.php')" title="Make Direct retail sales">
+                        
+                        <div class="links page_navs" onclick="showPage('sales_order.php')" title="Create new order">
                             <i class="fas fa-pen-alt"></i>
                             <!-- <p>Direct sales</p> -->
                         </div>
-                        <?php }?>
-                        <?php 
-                            $get_rights = new selects();
-                            $row = $get_rights->fetch_count_2cond('rights', 'user', $user_id, 'sub_menu', "13");
-                            if($row > 0){
-                        ?>
-                        <div class="links page_navs" onclick="showPage('sales_order.php')" title="Make a sales order">
-                            <i class="fas fa-pen-alt"></i>
-                            <!-- <p>Direct sales</p> -->
-                        </div>
-                        <?php }?>
+                        <!-- <?php /* } */?> -->
                         <div class="links page_navs" onclick="showPage('expire_soon.php')" title="Soon to expire">
                             <i class="fas fa-chart-line" style="color:green"></i>
                             <p>
@@ -262,7 +303,7 @@ date_default_timezone_set("Africa/Lagos");
             } ); */
             var ctx = document.getElementById("chartjs_bar2").getContext('2d');
                 var myChart = new Chart(ctx, {
-                    type: 'bar',
+                    type: 'pie',
                     data: {
                         labels:<?php echo json_encode($month); ?>,
                         datasets: [{
@@ -270,8 +311,9 @@ date_default_timezone_set("Africa/Lagos");
                                "#ffffff",
                                "#0f8ca1",
                                "rgb(3, 69, 75)",
+                               "#f1fefe",
                             ],
-                            data:<?php echo json_encode($revenue); ?>,
+                            data:<?php echo json_encode($customer); ?>,
                         }]
                     },
                     options: {

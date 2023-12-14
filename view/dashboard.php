@@ -134,11 +134,11 @@
         <div class="cards" id="card4">
             <a href="javascript:void(0)" onclick="showPage('check_out.php')">
                 <div class="infos">
-                    <p><i class="fas fa-sign-out-alt"></i> Due for checkout</p>
+                    <p><i class="fas fa-sign-out-alt"></i> Due for check out</p>
                     <p>
                     <?php
                         $get_sales = new selects();
-                        $rows = $get_sales->fetch_count_curDateCon('check_ins', 'date(check_out_date)', 'guest_status', 1);
+                        $rows = $get_sales->fetch_count_curDateLessCon('check_ins', 'date(check_out_date)', 'guest_status', 1);
                         echo $rows;
                     ?>
                     </p>
@@ -258,7 +258,7 @@
     <div class="daily_monthly">
         <!-- daily revenue summary -->
         <div class="daily_report allResults">
-            <h3 style="background:var(--otherColor)">Daily Encounters</h3>
+            <h3 style="background:var(--otherColor)">Daily Checkins</h3>
             <table>
                 <thead>
                     <tr>
@@ -271,7 +271,7 @@
                 <?php
                     $n = 1;
                     $get_daily = new selects();
-                    $dailys = $get_daily->fetch_daily_sales($store_id);
+                    $dailys = $get_daily->fetch_daily_checkins();
                     if(gettype($dailys) == "array"){
                     foreach($dailys as $daily):
 
@@ -279,7 +279,7 @@
                 <tbody>
                     <tr>
                         <td><?php echo $n?></td>
-                        <td><?php echo date("jS M, Y",strtotime($daily->post_date))?></td>  
+                        <td><?php echo date("jS M, Y",strtotime($daily->check_in_date))?></td>  
                         <td style="text-align:center; color:var(--otherColor)"><?php echo $daily->customers?></td>
                         <td style="color:green;"><?php echo "₦".number_format($daily->revenue)?></td>
                     </tr>
@@ -297,24 +297,24 @@
         <!-- monthly revenue summary -->
         <div class="monthly_report allResults">
             <div class="chart">
-                <!-- chart for technical group -->
+                <!-- chart for monthly checkins -->
                 <?php
-                $get_monthly = new selects();
-                $monthlys = $get_monthly->fetch_monthly_sales($store_id);
-                if(gettype($monthlys) == "array"){
-                    foreach($monthlys as $monthly){
-                        $revenue[] = $monthly->revenue;
-                        $month[] = date("M, Y", strtotime($monthly->post_date));
+                $get_monthly_stat = new selects();
+                $monthlystats = $get_monthly_stat->fetch_monthly_checkins();
+                if(gettype($monthlystats) == "array"){
+                    foreach($monthlystats as $monthlystat){
+                        $customer[] = $monthlystat->customers;
+                        $month[] = date("M, Y", strtotime($monthlystat->check_in_date));
                     }
                 }
                 ?>
-                <h3 style="background:var(--moreColor)">Monthly statistics</h3>
+                <h3 style="background:var(--moreColor)">Monthly checkin statistics</h3>
                 <canvas id="chartjs_bar2"></canvas>
             </div>
         </div>
         <div class="monthly_report allResults">
             <div class="monthly_encounter">
-                <h3>Monthly Encounters</h3>
+                <h3 style="background:#000">Monthly Revenue Summary</h3>
                 <table>
                     <thead>
                         <tr>
@@ -356,7 +356,44 @@
                 ?>
             </div>
         </div>
-        
+        <!-- daily sales statistics -->
+        <div class="daily_report allResults">
+            <h3 style="background:var(--otherColor)">Daily Sales Summary</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <td>S/N</td>
+                        <td>Date</td>
+                        <td>Customers</td>
+                        <td>Revenue</td>
+                    </tr>
+                </thead>
+                <?php
+                    $n = 1;
+                    $get_daily = new selects();
+                    $dailys = $get_daily->fetch_daily_sales();
+                    if(gettype($dailys) == "array"){
+                    foreach($dailys as $daily):
+
+                ?>
+                <tbody>
+                    <tr>
+                        <td><?php echo $n?></td>
+                        <td><?php echo date("jS M, Y",strtotime($daily->post_date))?></td>  
+                        <td style="text-align:center; color:var(--otherColor)"><?php echo $daily->customers?></td>
+                        <td style="color:green;"><?php echo "₦".number_format($daily->revenue)?></td>
+                    </tr>
+                </tbody>
+                <?php $n++; endforeach; }?>
+
+                
+            </table>
+            <?php
+                if(gettype($dailys) == "string"){
+                    echo "<p class='no_result'>'$dailys'</p>";
+                }
+            ?>
+        </div>
     </div>
 </div>
 
@@ -396,10 +433,9 @@
                         }
                         //get payments
                         $get_payments = new selects();
-                        $results = $get_payments->fetch_details_cond('payments', 'customer', $detail->checkin_id);
+                        $results = $get_payments->fetch_sum_single('payments', 'amount_paid', 'customer', $detail->checkin_id);
                         foreach($results as $result){
-                            $amount_due = $result->amount_due;
-                            $amount_paid = $result->amount_paid;
+                            $amount_paid = $result->total;
                         }
                 ?>
                 <tr>
@@ -425,7 +461,7 @@
                             echo $rooms->item_name;
                         ?>
                     </td>
-                    <td style="color:var(--moreColor)"><?php echo number_format($amount_due, 2)?></td>
+                    <td style="color:var(--moreColor)"><?php echo number_format($detail->amount_due, 2)?></td>
                     <td style="color:green"><?php echo number_format($amount_paid, 2)?></td>
                     <td><?php echo date("jS M, Y", strtotime($detail->check_in_date));?></td>
                     <td><?php echo date("h:i:ma", strtotime($detail->post_date));?></td>

@@ -266,10 +266,10 @@ header{
     display:flex;
     justify-content: space-between;
     align-items:center;
-    min-height:10vh;
+    min-height:6vh;
     box-shadow: 2px 2px 2px 2px #c4c4c4;
     z-index:2;
-    padding:5px 10px;
+    padding:0px;
 }
 .logo{
     width:15vw;
@@ -319,10 +319,10 @@ header h2{
 .other_menu{
     border-radius:10px;
     box-shadow:2px 2px 2px 2px #c4c4c4;
-    padding:8px;
+    padding:5px 8px;
     /* background:var(--secondaryColor); */
     color:var(--sotherColor);
-    margin:10px;
+    margin:0;
     text-transform: uppercase;
     transition:.2s all ease-in-out;
 }
@@ -362,7 +362,7 @@ header h2{
     right:0;
     background:#fff;
     min-width:15vw;
-    padding:10px 0;
+    padding:5px 0;
     z-index:2;
     box-shadow: 1px 1px 1px 1px #c4c4c4;
 }
@@ -408,7 +408,7 @@ header h2{
 }
 #loginBtn a{
     color:#fff;
-    padding:10px;
+    padding:7px;
 }
 #signupBtn{
     color:rgba(34, 34, 34, .7);
@@ -438,7 +438,7 @@ header h2{
 #logoutBtn{
     display:block;
     width:70%;
-    padding:10px;
+    padding:6px;
     border:none;
     margin:10px 0;
     
@@ -2105,7 +2105,7 @@ table tr:nth-child(even){
     display:flex;
     justify-content: space-between;
     flex-wrap:Wrap;
-    align-items:flex-start;
+    align-items:flex-start!important;
     width:100%;
     gap:0;
     margin:0 auto!important;
@@ -2121,8 +2121,8 @@ table tr:nth-child(even){
 }
 .daily_monthly div{
     width:48%;
-    max-height:700px;
-    overflow-y: scroll;
+    max-height:400px;
+    overflow-y: scroll!important;
 }
 .daily_monthly h3{
     text-align: center;
@@ -2134,9 +2134,7 @@ table tr:nth-child(even){
 .daily_report, .monthly_encounter{
     border-radius:20px;
 }
-.monthly_encounter{
-    margin:20px 0;
-}
+
 .monthly_encounter{
     width:100%!important;
 }
