@@ -122,6 +122,17 @@ date_default_timezone_set("Africa/Lagos");
                             <i class="fas fa-hand-holding-dollar" style="color:brown"></i>
                             <!-- <p>Direct sales</p> -->
                         </div>
+                        <div class="links page_navs" onclick="showPage('guest_payment.php')" title="Reservations">
+                            <i class="fas fa-clipboard"></i>
+                            <p>
+                                <?php
+                                    //get reservations
+                                    $get_rserv = new selects();
+                                    $res = $get_rserv->fetch_count_cond('check_ins', 'guest_status', 0);
+                                    echo $res;
+                                ?>
+                            </p>
+                        </div>
                     </div>
                     <?php }elseif($role == "Admin"){?>
                     <div class="quick_links">
