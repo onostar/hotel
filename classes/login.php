@@ -8,9 +8,9 @@
             $get_pwd->execute();
 
             if($get_pwd->rowCount() > 0){
-                $_SESSION['user'] = $username;
                 $user_password = $get_pwd->fetch();
                 if($user_password->user_password == "123"){
+                    $_SESSION['user'] = $username;
                     header("Location: ../view/change_password.php");
                 }else{
                     $hashedPwd = $user_password->user_password;
@@ -26,10 +26,19 @@
                         $get_user->execute();
 
                         if($get_user->rowCount() > 0){
+                            $rows = $get_user->fetchAll();
+                            foreach($rows as $row){
+                                $user = $row->user_id;
+                            }
+                            include "update.php";
+                            //update online status
+                            $update_online = new Update_table();
+                            $update_online->update('users', 'online','user_id', 1, $user);
                             $_SESSION['user'] = $username;
                             header("Location: ../view/users.php");
+
                         }else{
-                            $_SESSION['error'] = "User Deactivated";
+                            $_SESSION['error'] = "User deactvated";
                             header("Location: ../index.php");
                         }
                     }
